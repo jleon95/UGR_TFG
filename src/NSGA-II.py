@@ -1,18 +1,19 @@
 import numpy as np
 
-def InitializeFirstFront(population, n_features, n_objectives):
+def InitializeFirstFront(objective_scores):
 
 	# "individuals" contains pairs in the format:
 	# 1st element: number of individuals that dominate this one
 	# 2nd element: list of individuals dominated by this one
 	individuals = []
-	fronts = np.zeros(population.shape[0])
+	fronts = np.zeros(objective_scores.shape[0])
+	n_objectives = objective_scores.shape[1]
 
-	for i in range(population.shape[0]): # For each individual
+	for i in range(objective_scores.shape[0]): # For each individual
 
 		individuals.append([0,[]])
 
-		for j in range(population.shape[0]): # For every other individual
+		for j in range(objective_scores.shape[0]): # For every other individual
 
 			dom_less = 0
 			dom_equal = 0
@@ -21,9 +22,9 @@ def InitializeFirstFront(population, n_features, n_objectives):
 			for k in range(n_objectives): # For every objective function value
 
 				# Remember that smaller values are better, the optimal being 0
-				if population[i,n_features+k] < population[j,n_features+k]: 
+				if objective_scores[i,k] < objective_scores[j,k]: 
 					dom_less += 1
-				elif population[i,n_features+k] == population[j,n_features+k]:
+				elif objective_scores[i,k] == objective_scores[j,k]:
 					dom_equal += 1
 				else
 					dom_more += 1
@@ -42,7 +43,7 @@ def InitializeFirstFront(population, n_features, n_objectives):
 # that was obtained in InitializeFirstFront.
 # "front_scores" is a numpy array containing the fronts found in InitializeFirstFront,
 # which means 1 if in first front or default 0 if yet to know.
-def FillFronts(front_info, front_scores, n_features, n_objectives):
+def FillFronts(front_info, front_scores):
 
 	front_number = 1
 	current front = []
@@ -70,16 +71,13 @@ def FillFronts(front_info, front_scores, n_features, n_objectives):
 
 	return front_scores # Now we should have a front number for every individual
 
-# The population consists of n_individuals with their scores for the n_objectives
-# also attached at the end.
-# In this case, the individuals are neural networks and their features are the
-# number of neurons in each layer.
-def NonDominatedSort(population, n_objectives):
+# "objective_scores" consists of a matrix of n_individuals x n_objectives
+# containing the scores of the individuals of a population for certain
+# optimization objectives.
+def NonDominatedSort(objective_scores):
 
-	n_individuals = population.shape[0]
-	n_features = population.shape[1]
-	# "sort scores" contains pairs of [front number, crowding distance] for each individual
+	# "sort scores" will contain pairs of [front number, crowding distance] for each individual
 	# in the original order of appearance in "population".
-	sort_scores = np.zeros((population.shape[0],2))
-	front_info, sort_scores[:,0] = InitializeFirstFront(population,n_features,n_objectives)
-	sort_scores[:,0] = FillFronts(front_info,sort_scores[:,0],n_features,n_objectives)
+	sort_scores = np.zeros((objective_scores.shape[0],2))
+	front_info, sort_scores[:,0] = InitializeFirstFront(objective_scores)
+	sort_scores[:,0] = FillFronts(front_info,sort_scores[:,0])
