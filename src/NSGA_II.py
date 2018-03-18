@@ -27,12 +27,12 @@ def InitializeFirstFront(objective_scores):
 					dom_less += 1
 				elif objective_scores[i,k] == objective_scores[j,k]:
 					dom_equal += 1
-				else
+				else:
 					dom_more += 1
 
-			if dom_less == 0 && dom_equal != n_objectives: # i is farther from the origin than j
+			if dom_less == 0 and dom_equal != n_objectives: # i is farther from the origin than j
 				individuals[-1][0] += 1 # Acknowledge that j dominates i
-			elif dom_more == 0 && dom_equal != n_objectives # i is closer to the origin than j
+			elif dom_more == 0 and dom_equal != n_objectives: # i is closer to the origin than j
 				individuals[-1][1].append(j) # Acknowledge that i dominates j (index-based)
 
 		if individuals[-1][0] == 0:
@@ -47,7 +47,7 @@ def InitializeFirstFront(objective_scores):
 def FillFronts(front_info, front_scores):
 
 	front_number = 1
-	current front = []
+	current_front = []
 	for i in range(front_scores.shape[0]):
 
 		if front_scores[i] == 1: # If the ith individual is in front 1
@@ -63,7 +63,7 @@ def FillFronts(front_info, front_scores):
 				for j in front_info[i][1]: # Loop over those individuals
 
 					front_info[j][0] -= 1
-					if front_info[j][0] == 0 # If no other individual dominates j,
+					if front_info[j][0] == 0: # If no other individual dominates j,
 						front_scores[j] = front + 1 # it belongs to front n+1.
 						next_front.append(j)
 						
