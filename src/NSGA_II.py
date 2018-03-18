@@ -1,5 +1,4 @@
 import numpy as np
-import math
 
 def InitializeFirstFront(objective_scores):
 
@@ -64,10 +63,10 @@ def FillFronts(front_info, front_scores):
 
 					front_info[j][0] -= 1
 					if front_info[j][0] == 0: # If no other individual dominates j,
-						front_scores[j] = front + 1 # it belongs to front n+1.
+						front_scores[j] = front_number + 1 # it belongs to front n+1.
 						next_front.append(j)
 						
-		front += 1
+		front_number += 1
 		current_front = list(next_front)
 
 	return front_scores # Now we should have a front number for every individual
@@ -76,7 +75,7 @@ def CrowdingDistance(objective_scores, front_scores):
 
 	# Indices for the individuals in fronts 1, 2, 3 and so on
 	front_sort_indices = np.argsort(front_scores)
-	max_front = front_scores[front_sort_indices[-1]]
+	max_front = int(front_scores[front_sort_indices[-1]])
 	distances = np.zeros(objective_scores.shape[0])
 	start_index = 0 # Points to the start of this front
 	end_index = 0 # Points to the end of this front
@@ -91,7 +90,7 @@ def CrowdingDistance(objective_scores, front_scores):
 		# The objective scores for the individuals of this front 
 		objective_scores_front = objective_scores[front_sort_indices[start_index:end_index]]
 
-		for obj in objective_scores.shape[1]:
+		for obj in range(objective_scores.shape[1]):
 
 			# Sort the new subset by their score at objective "obj"
 			obj_sort_indices = np.argsort(objective_scores_front[:,obj])
@@ -102,19 +101,21 @@ def CrowdingDistance(objective_scores, front_scores):
 
 			# Boundary values (i.e. the first and the last) have
 			# an infinite value of distance
-			distances[front_sort_indices[obj_sort_indices[0]]] = math.inf
-			distances[front_sort_indices[obj_sort_indices[-1]]] = math.inf
+			distances[front_sort_indices[obj_sort_indices[0]]] = float("inf")
+			distances[front_sort_indices[obj_sort_indices[-1]]] = float("inf")
 
 			# Now we calculate the values that are inside the boundaries
 			for i in range(1, obj_sort_indices.shape[0]-1):
 
 				if f_max - f_min == 0:
-					distance[front_sort_indices[obj_sort_indices[i]]] = math.inf
+					distance[front_sort_indices[obj_sort_indices[i]]] = float("inf")
 				else:
 					next_value = sorted_front[i+1]
 					prev_value = sorted_front[i-1]
 					distances[front_sort_indices[obj_sort_indices[i]]] += \
 						(next_value - prev_value) / (f_max - f_min)
+
+			start_index = end_index + 1
 
 	return distances
 
