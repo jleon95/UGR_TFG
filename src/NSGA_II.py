@@ -83,7 +83,8 @@ def CrowdingDistance(objective_scores, front_scores):
 	for front in range(1, max_front+1):
 
 		# Find the interval of individuals of this front
-		while front_scores[front_sort_indices[end_index]] != front:
+		while (end_index < front_sort_indices.shape[0] and
+			front_scores[front_sort_indices[end_index]] == front):
 
 			end_index += 1
 
@@ -100,22 +101,25 @@ def CrowdingDistance(objective_scores, front_scores):
 			f_min = sorted_front[0]
 
 			# Boundary values (i.e. the first and the last) have
-			# an infinite value of distance
-			distances[front_sort_indices[obj_sort_indices[0]]] = float("inf")
-			distances[front_sort_indices[obj_sort_indices[-1]]] = float("inf")
+			# an infinite value of distance.
+			# "start_index" is added because "obj_sort_indices" is a local sort
+			# on the array of individuals of a front, meaning that there's an 
+			# offset when considering the whole array.
+			distances[front_sort_indices[obj_sort_indices[0]+start_index]] = float("inf")
+			distances[front_sort_indices[obj_sort_indices[-1]+start_index]] = float("inf")
 
 			# Now we calculate the values that are inside the boundaries
 			for i in range(1, obj_sort_indices.shape[0]-1):
 
 				if f_max - f_min == 0:
-					distance[front_sort_indices[obj_sort_indices[i]]] = float("inf")
+					distance[front_sort_indices[obj_sort_indices[i]+start_index]] = float("inf")
 				else:
 					next_value = sorted_front[i+1]
 					prev_value = sorted_front[i-1]
-					distances[front_sort_indices[obj_sort_indices[i]]] += \
+					distances[front_sort_indices[obj_sort_indices[i]+start_index]] += \
 						(next_value - prev_value) / (f_max - f_min)
 
-			start_index = end_index + 1
+		start_index = end_index
 
 	return distances
 
@@ -130,3 +134,4 @@ def NonDominatedSort(objective_scores):
 	front_info, sort_scores[:,0] = InitializeFirstFront(objective_scores)
 	sort_scores[:,0] = FillFronts(front_info,sort_scores[:,0])
 	sort_scores[:,1] = CrowdingDistance(objective_scores,sort_scores[:,0])
+	return sort_scores
