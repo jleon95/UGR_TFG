@@ -1,6 +1,50 @@
 from NonDominatedSort import NonDominatedSort
 import numpy as np
-from numpy.random import randint
+from numpy.random import randint, ranf
+
+#-------------------- Crossover operators --------------------
+# Given:
+# 11111111111
+# 00000000000
+# Take a random section from the first and the rest from the second, as in:
+# 11110000000
+def SinglePointCrossover(parent1, parent2):
+
+	pivot = randint(1,len(parent1))
+	offspring = np.copy(parent1)
+	offspring[:pivot] = parent2[:pivot]
+	return offspring
+
+# Given:
+# 11111111111
+# 00000000000
+# Use two pivots to insert a section of the second into the first, as in:
+# 11110000011
+def TwoPointCrossover(parent1, parent2):
+
+	pivot1 = randint(len(parent1))
+	pivot2 = randint(len(parent1))
+	while pivot1 == pivot2:
+		pivot2 = randint(len(parent1))
+	if pivot1 > pivot2:
+		pivot1, pivot2 = pivot2, pivot1
+	offspring = np.copy(parent1)
+	offspring[pivot1:pivot2] = parent2[pivot1:pivot2]
+	return offspring
+
+# Given:
+# 01100111111
+# 01000000110
+# Keep the matching elements and choose the rest using probabilities, as in:
+# 01100010110
+def UniformCrossover(parent1, parent2, prob = 0.5):
+
+	offspring = np.copy(parent1)
+	for i in range(len(parent1)):
+		if parent1[i] != parent2[i]:
+			offspring[i] = parent1[i] if ranf() <= prob else parent2[i]
+
+	return offspring
 
 # Returns a population of "pop_size" binary-encoded individuals whose
 # active features have been selected from the interval [0,"total_features"].
