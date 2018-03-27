@@ -6,7 +6,7 @@ from numpy.random import randint, ranf
 # Given:
 # 11111111111
 # 00000000000
-# Take a random section from the first and the rest from the second, as in:
+# Takes a random section from the first and the rest from the second, as in:
 # 11110000000
 def SinglePointCrossover(parent1, parent2):
 
@@ -18,7 +18,7 @@ def SinglePointCrossover(parent1, parent2):
 # Given:
 # 11111111111
 # 00000000000
-# Use two pivots to insert a section of the second into the first, as in:
+# Uses two pivots to insert a section of the second into the first, as in:
 # 11110000011
 def TwoPointCrossover(parent1, parent2):
 
@@ -35,7 +35,7 @@ def TwoPointCrossover(parent1, parent2):
 # Given:
 # 01100111111
 # 01000000110
-# Keep the matching elements and choose the rest using probabilities, as in:
+# Keeps the matching elements and choose the rest using probabilities, as in:
 # 01100010110
 def UniformCrossover(parent1, parent2, prob = 0.5):
 
@@ -47,7 +47,7 @@ def UniformCrossover(parent1, parent2, prob = 0.5):
 	return offspring
 
 # Returns a population of "pop_size" binary-encoded individuals whose
-# active features have been selected from the interval [0,"total_features"].
+# active features have been selected from the interval [0,"total_features").
 # The number of ones of each individual is in the range provided by "count_range".
 def InitializePopulation(pop_size, total_features, count_range):
 
@@ -60,6 +60,16 @@ def InitializePopulation(pop_size, total_features, count_range):
 		population[i][randint(total_features,size=active_features[i])] = 1
 
 	return population
+
+#-------------------- Mutation operator --------------------
+# Swaps len(chromosome) * prob (rounded) random bits.
+# Assumes that the elements are boolean in type.
+def FlipBitsMutation(chromosome, prob = 0.02):
+
+	mutated = np.copy(chromosome)
+	swap_positions = randint(len(mutated),size=round(len(mutated) * prob))
+	mutated[swap_positions] = np.invert(mutated[swap_positions])
+	return mutated
 
 # Main procedure of this module.
 # "data": a matrix of samples x features.
