@@ -1,6 +1,6 @@
 from NonDominatedSort import NonDominatedSort
 import numpy as np
-from numpy.random import randint, choice, ranf
+from numpy.random import choice, ranf
 
 #-------------------- Crossover operators --------------------
 
@@ -11,7 +11,7 @@ from numpy.random import randint, choice, ranf
 # 11110000000
 def SinglePointCrossover(parent1, parent2, max_features):
 
-	pivot = randint(1,len(parent1))
+	pivot = choice(len(parent1))
 	offspring = np.copy(parent1)
 	offspring[:pivot] = parent2[:pivot]
 	offspring_ones = offspring[offspring > 0]
@@ -68,13 +68,13 @@ def UniformCrossover(parent1, parent2, max_features, prob = 0.5):
 
 # Returns a population of "pop_size" binary-encoded individuals whose
 # active features have been selected from the interval [0,"total_features").
-# The number of ones of each individual is in the range provided by "count_range".
-def InitializePopulation(pop_size, total_features, count_range):
+# The number of ones of each individual is in the range [1,"max_features").
+def InitializePopulation(pop_size, total_features, max_features):
 
 	# Matrix of individuals.
 	population = np.zeros((pop_size,total_features))
 	# Get the number of ones of each individual in one go.
-	active_features = randint(*count_range,size=pop_size)
+	active_features = choice(np.arange(1,max_features),size=pop_size)
 	# For each individual, swap some of its zeros for ones.
 	for i in range(pop_size):
 		population[i][choice(total_features,replace=False,
@@ -102,17 +102,17 @@ def FlipBitsMutation(chromosome, max_features, prob = 0.02):
 # Main procedure of this module.
 # "data": a matrix of samples x features.
 # "labels": class labels for the samples in "data" (same order).
-# "count_range": interval for the desired number of selected features.
+# "max_features": upper bound for the number of selected features.
 # "objective_funcs": a list of Python functions for fitness evaluation.
 # "pop_size": the working population size of the genetic algorithm.
 # "generations": how many generations the algorithm will run for.
 # "seed": random seed for reproducible experiments.
-def FeatureSelection(data, labels, count_range, objective_funcs, pop_size, generations, seed = 29):
+def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, generations, seed = 29):
 
 	assert data.shape[0] > 0, "You need a non-empty training set"
 	assert labels.shape[0] == data.shape[0], \
 			"You need an equal number of labels than of samples"
-	assert count_range > 0 and count_range < data.shape[1], \
+	assert max_features > 0 and max_features < data.shape[1], \
 			"You need a feature count between 0 and all features"
 	assert len(objective_funcs) > 1, \
 			"You need at least 2 objective functions."
