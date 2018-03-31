@@ -20,6 +20,8 @@ def SinglePointCrossover(parent1, parent2, max_features):
 		offspring_ones[choice(len(offspring_ones),replace=False,
 						size=len(offspring_ones)-max_features)] = 0
 		offspring[offspring > 0] = offspring_ones
+	elif len(offspring_ones) < 1: # For this rather unlikely situation,
+		offspring = np.copy(parent2) # just avoid increasing the running time
 	return offspring
 
 # Given:
@@ -42,6 +44,8 @@ def TwoPointCrossover(parent1, parent2, max_features):
 		offspring_ones[choice(len(offspring_ones),replace=False,
 						size=len(offspring_ones)-max_features)] = 0
 		offspring[offspring > 0] = offspring_ones
+	elif len(offspring_ones) < 1: # For this rather unlikely situation,
+		offspring = np.copy(parent2) # just avoid increasing the running time
 	return offspring
 
 # Given:
@@ -61,6 +65,8 @@ def UniformCrossover(parent1, parent2, max_features, prob = 0.5):
 		offspring_ones[choice(len(offspring_ones),replace=False,
 						size=len(offspring_ones)-max_features)] = 0
 		offspring[offspring > 0] = offspring_ones
+	elif len(offspring_ones) < 1: # For this rather unlikely situation,
+		offspring = np.copy(parent2) # just avoid increasing the running time
 	return offspring
 
 
@@ -97,6 +103,8 @@ def FlipBitsMutation(chromosome, max_features, prob = 0.02):
 		mutated_ones[choice(len(mutated_ones),replace=False,
 						size=len(mutated_ones)-max_features)] = 0
 		mutated[mutated > 0] = mutated_ones
+	elif len(mutated_ones) < 1: # Probably won't happen too often
+		mutated = np.copy(chromosome)
 	return mutated
 
 # Main procedure of this module.
