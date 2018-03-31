@@ -1,18 +1,25 @@
 from NonDominatedSort import NonDominatedSort
 import numpy as np
-from numpy.random import randint, ranf
+from numpy.random import randint, choice, ranf
 
 #-------------------- Crossover operators --------------------
+
 # Given:
 # 11111111111
 # 00000000000
 # Takes a random section from the first and the rest from the second, as in:
 # 11110000000
-def SinglePointCrossover(parent1, parent2):
+def SinglePointCrossover(parent1, parent2, max_features):
 
 	pivot = randint(1,len(parent1))
 	offspring = np.copy(parent1)
 	offspring[:pivot] = parent2[:pivot]
+	offspring_ones = offspring[offspring > 0]
+	if len(offspring_ones) > max_features: # If there are more ones than allowed
+		# Swap some of them for zeros
+		offspring_ones[choice(len(offspring_ones),replace=False,
+						size=len(offspring_ones)-max_features)] = 0
+		offspring[offspring > 0] = offspring_ones
 	return offspring
 
 # Given:
@@ -20,16 +27,21 @@ def SinglePointCrossover(parent1, parent2):
 # 00000000000
 # Uses two pivots to insert a section of the second into the first, as in:
 # 11110000011
-def TwoPointCrossover(parent1, parent2):
+def TwoPointCrossover(parent1, parent2, max_features):
 
-	pivot1 = randint(len(parent1))
-	pivot2 = randint(len(parent1))
+	pivot1 = choice(len(parent1))
+	pivot2 = choice(len(parent1))
 	while pivot1 == pivot2:
-		pivot2 = randint(len(parent1))
+		pivot2 = choice(len(parent1))
 	if pivot1 > pivot2:
 		pivot1, pivot2 = pivot2, pivot1
 	offspring = np.copy(parent1)
 	offspring[pivot1:pivot2] = parent2[pivot1:pivot2]
+	offspring_ones = offspring[offspring > 0]
+	if len(offspring_ones) > max_features:
+		offspring_ones[choice(len(offspring_ones),replace=False,
+						size=len(offspring_ones)-max_features)] = 0
+		offspring[offspring > 0] = offspring_ones
 	return offspring
 
 # Given:
@@ -37,14 +49,22 @@ def TwoPointCrossover(parent1, parent2):
 # 01000000110
 # Keeps the matching elements and choose the rest using probabilities, as in:
 # 01100010110
-def UniformCrossover(parent1, parent2, prob = 0.5):
+def UniformCrossover(parent1, parent2, max_features, prob = 0.5):
 
 	offspring = np.copy(parent1)
 	for i in range(len(parent1)):
 		if parent1[i] != parent2[i]:
 			offspring[i] = parent1[i] if ranf() <= prob else parent2[i]
 
+	offspring_ones = offspring[offspring > 0]
+	if len(offspring_ones) > max_features:
+		offspring_ones[choice(len(offspring_ones),replace=False,
+						size=len(offspring_ones)-max_features)] = 0
+		offspring[offspring > 0] = offspring_ones
 	return offspring
+
+
+#-------------------- Population initialization --------------------
 
 # Returns a population of "pop_size" binary-encoded individuals whose
 # active features have been selected from the interval [0,"total_features").
@@ -57,17 +77,20 @@ def InitializePopulation(pop_size, total_features, count_range):
 	active_features = randint(*count_range,size=pop_size)
 	# For each individual, swap some of its zeros for ones.
 	for i in range(pop_size):
-		population[i][randint(total_features,size=active_features[i])] = 1
+		population[i][choice(total_features,replace=False,
+							size=active_features[i])] = 1
 
 	return population
 
 #-------------------- Mutation operator --------------------
+
 # Swaps len(chromosome) * prob (rounded) random bits.
 # Assumes that the elements are boolean in type.
 def FlipBitsMutation(chromosome, prob = 0.02):
 
 	mutated = np.copy(chromosome)
-	swap_positions = randint(len(mutated),size=round(len(mutated) * prob))
+	swap_positions = choice(len(mutated),replace=False,
+							size=round(len(mutated) * prob))
 	mutated[swap_positions] = np.invert(mutated[swap_positions])
 	return mutated
 
