@@ -47,7 +47,7 @@ def TwoPointCrossover(parent1, parent2, max_features):
 # Given:
 # 01100111111
 # 01000000110
-# Keeps the matching elements and choose the rest using probabilities, as in:
+# Keeps the matching elements and chooses the rest using probabilities, as in:
 # 01100010110
 def UniformCrossover(parent1, parent2, max_features, prob = 0.5):
 
@@ -86,12 +86,17 @@ def InitializePopulation(pop_size, total_features, count_range):
 
 # Swaps len(chromosome) * prob (rounded) random bits.
 # Assumes that the elements are boolean in type.
-def FlipBitsMutation(chromosome, prob = 0.02):
+def FlipBitsMutation(chromosome, max_features, prob = 0.02):
 
 	mutated = np.copy(chromosome)
 	swap_positions = choice(len(mutated),replace=False,
 							size=round(len(mutated) * prob))
 	mutated[swap_positions] = np.invert(mutated[swap_positions])
+	mutated_ones = mutated[mutated > 0]
+	if len(mutated_ones) > max_features:
+		mutated_ones[choice(len(mutated_ones),replace=False,
+						size=len(mutated_ones)-max_features)] = 0
+		mutated[mutated > 0] = mutated_ones
 	return mutated
 
 # Main procedure of this module.
