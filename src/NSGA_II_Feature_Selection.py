@@ -107,6 +107,31 @@ def FlipBitsMutation(chromosome, max_features, prob = 0.02):
 		mutated = np.copy(chromosome)
 	return mutated
 
+#-------------------- Selection process --------------------
+
+# Binary tournament. Takes as many random individuals as 2 * "pool_size"
+# and outputs "pool_size" winners as individuals selected for crossover.
+# For each pair, we choose the individual with the lower rank; if there's
+# a draw, we favor the one with greater crowding distance.
+# "sort_scores" contains (front, crowding distance) for each individual.
+# Returns an array of indices pointing to the original individuals.
+def TournamentSelection(sort_scores, pool_size):
+
+	selected = np.zeros(pool_size,dtype=np.uint16)
+	for i in range(len(selected)):
+
+		candidates = choice(sort_scores.shape[0],replace=False,size=2)
+		best_front_pos = candidates[np.argmin(sort_scores[candidates,0])]
+
+		# If both fronts are the same, we can't use "best_front_pos"
+		if sort_scores[candidates[0]][0] != sort_scores[candidates[1]][0]:
+			selected[i] = best_front_pos
+		else:
+			max_distance_pos = candidates[np.argmax(sort_scores[candidates,1])]
+			selected[i] = max_distance_pos
+
+	return selected
+
 # Main procedure of this module.
 # "data": a matrix of samples x features.
 # "labels": class labels for the samples in "data" (same order).
