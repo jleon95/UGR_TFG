@@ -31,10 +31,7 @@ def SinglePointCrossover(parent1, parent2, max_features):
 # 11110000011
 def TwoPointCrossover(parent1, parent2, max_features):
 
-	pivot1 = choice(len(parent1))
-	pivot2 = choice(len(parent1))
-	while pivot1 == pivot2:
-		pivot2 = choice(len(parent1))
+	pivot1, pivot2 = choice(len(parent1),replace=False,size=2)
 	if pivot1 > pivot2:
 		pivot1, pivot2 = pivot2, pivot1
 	offspring = np.copy(parent1)
