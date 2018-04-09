@@ -1,5 +1,7 @@
 from NonDominatedSort import NonDominatedSort
 import numpy as np
+import multiprocessing
+from sklearn.externals.joblib import Parallel, delayed
 from numpy.random import choice, ranf
 
 #-------------------- Crossover operators --------------------
@@ -75,7 +77,7 @@ def UniformCrossover(parent1, parent2, max_features, prob = 0.5):
 def InitializePopulation(pop_size, total_features, max_features):
 
 	# Matrix of individuals.
-	population = np.zeros((pop_size,total_features))
+	population = np.zeros((pop_size,total_features),dtype=bool)
 	# Get the number of ones of each individual in one go.
 	active_features = choice(np.arange(1,max_features),size=pop_size)
 	# For each individual, swap some of its zeros for ones.
@@ -148,6 +150,40 @@ def CreateOffspring(parents, crossover, mutation, max_features,
 			offspring[n] = mutation(offspring[n],max_features)
 
 	return offspring
+
+#-------------------- Population evaluation --------------------
+
+# Evaluates every individual of the given population using the
+# metrics specified in the list of functions "objective_funcs".
+# It can also attempt to decrease computation time by means of
+# parallelism ("n_cores"), but if the metrics are too simple
+# it can lead to worse performance by overhead.
+def EvaluatePopulation(population, objective_funcs, n_cores = 1):
+
+	results = np.empty((population.shape[0],len(objective_funcs)))
+
+	if n_cores > multiprocessing.cpu_count():
+		n_cores = -1 # -1 means all cores for joblib
+
+	with Parallel(n_jobs=n_cores) as parallel:
+
+		for o in range(len(objective_funcs)):
+
+			results[:,o] = parallel(delayed(objective_funcs[o])(population[i,:])
+							for i in range(population.shape[0]))
+
+	return results
+
+#-------------------- Fitness metrics --------------------
+# Values closer to zero imply better fitness. Thus, in multiobjective
+# optimization, the point (0,0,...,0) is the theoretical optimum.
+
+# Measures the simplicity of a feature set by taking into account its
+# number of active features. A lower count results in a higher score
+# (closer to 0).
+def Simplicity(individual):
+
+	return np.count_nonzero(individual)
 
 # Main procedure of this module.
 # "data": a matrix of samples x features.
