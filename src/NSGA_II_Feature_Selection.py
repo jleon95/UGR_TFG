@@ -154,7 +154,10 @@ def CreateOffspring(parents, crossover, mutation, max_features,
 #-------------------- Population evaluation --------------------
 
 # Evaluates every individual of the given population using the
-# metrics specified in the list of functions "objective_funcs".
+# metrics contained in "objective_funcs".
+# "objective_funcs" is a list of tuples (function, [arguments])
+# meant to provide optional arguments to the evaluation functions
+# if needed (for example, data for model training).
 # It can also attempt to decrease computation time by means of
 # parallelism ("n_cores"), but if the metrics are too simple
 # it can lead to worse performance by overhead.
@@ -167,9 +170,9 @@ def EvaluatePopulation(population, objective_funcs, n_cores = 1):
 
 	with Parallel(n_jobs=n_cores) as parallel:
 
-		for o in range(len(objective_funcs)):
+		for o, (f, args) in enumerate(objective_funcs):
 
-			results[:,o] = parallel(delayed(objective_funcs[o])(population[i,:])
+			results[:,o] = parallel(delayed(f)(population[i,:],*args)
 							for i in range(population.shape[0]))
 
 	return results
@@ -179,7 +182,7 @@ def EvaluatePopulation(population, objective_funcs, n_cores = 1):
 # optimization, the point (0,0,...,0) is the theoretical optimum.
 
 # Measures the simplicity of a feature set by taking into account its
-# number of active features. A lower count results in a higher score
+# number of active features. A lower count results in a better score
 # (closer to 0).
 def Simplicity(individual):
 
