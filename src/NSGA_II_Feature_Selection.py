@@ -2,6 +2,7 @@ from NonDominatedSort import NonDominatedSort
 import numpy as np
 import multiprocessing
 from sklearn.externals.joblib import Parallel, delayed
+from sklearn import linear_model
 from numpy.random import choice, ranf
 
 #-------------------- Crossover operators --------------------
@@ -181,12 +182,25 @@ def EvaluatePopulation(population, objective_funcs, n_cores = 1):
 # Values closer to zero imply better fitness. Thus, in multiobjective
 # optimization, the point (0,0,...,0) is the theoretical optimum.
 
-# Measures the simplicity of a feature set by taking into account its
-# number of active features. A lower count results in a better score
-# (closer to 0).
+# Measures the simplicity of a feature set by counting the active
+# features. A lower count results in a better score (closer to 0).
 def Simplicity(individual):
 
 	return np.count_nonzero(individual)
+
+# Assesses the agreement between the test labels and a classifier
+# trained using the active features of "individual", taking chance
+# into account. The returned value is 1 - Kappa coefficient.
+# "data" and "labels" are two dictionaries whose keys 'train' and
+# 'test' contain the corresponding samples or class labels.
+def KappaValue(individual, data, labels):
+
+	test_data = data['test'][:,individual]
+	log_reg = linear_model.LogisticRegression()
+	log_reg.fit(data['train'][:,individual],labels['train'])
+	predictions = log_reg.predict(data['test'])
+	accuracy = np.sum(predictions == labels['test']) / len(predictions)
+	return accuracy
 
 # Main procedure of this module.
 # "data": a matrix of samples x features.
