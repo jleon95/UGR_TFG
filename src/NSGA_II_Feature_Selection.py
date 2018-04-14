@@ -2,7 +2,7 @@ from NonDominatedSort import NonDominatedSort
 import numpy as np
 import multiprocessing
 from sklearn.externals.joblib import Parallel, delayed
-from sklearn.metrics import cohen_kappa_score
+from sklearn.metrics import cohen_kappa_score, accuracy_score
 from sklearn import linear_model
 from numpy.random import choice, ranf
 
@@ -202,6 +202,19 @@ def KappaLoss(individual, data, labels):
 	log_reg.fit(data['train'][:,individual],labels['train'])
 	predictions = log_reg.predict(data['test'][:,individual])
 	return 1 - cohen_kappa_score(predictions,labels['test'])
+
+# Assesses the agreement between the test labels and a classifier
+# trained using the active features of "individual".
+# "data" and "labels" are two dictionaries whose keys 'train' and
+# 'test' contain the corresponding samples or class labels.
+# The returned value is 1 - accuracy.
+def SimpleLoss(individual, data, labels):
+
+	test_data = data['test'][:,individual]
+	log_reg = linear_model.LogisticRegression()
+	log_reg.fit(data['train'][:,individual],labels['train'])
+	predictions = log_reg.predict(data['test'][:,individual])
+	return 1 - accuracy_score(predictions,labels['test'])
 
 # Main procedure of this module.
 # "data": a dictionary with two matrices of samples x features (train and test).
