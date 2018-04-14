@@ -1,10 +1,11 @@
 from NonDominatedSort import NonDominatedSort
-import numpy as np
 import multiprocessing
+import numpy as np
+from numpy.random import choice, ranf
 from sklearn.externals.joblib import Parallel, delayed
+from sklearn.model_selection import cross_val_score
 from sklearn.metrics import cohen_kappa_score, accuracy_score
 from sklearn import linear_model
-from numpy.random import choice, ranf
 
 #-------------------- Crossover operators --------------------
 
@@ -180,6 +181,7 @@ def EvaluatePopulation(population, objective_funcs, n_cores = 1):
 	return results
 
 #-------------------- Fitness metrics --------------------
+
 # Values closer to zero imply better fitness. Thus, in multiobjective
 # optimization, the point (0,0,...,0) is the theoretical optimum.
 
@@ -197,7 +199,6 @@ def Simplicity(individual):
 # The returned value is 1 - Kappa coefficient.
 def KappaLoss(individual, data, labels):
 
-	test_data = data['test'][:,individual]
 	log_reg = linear_model.LogisticRegression()
 	log_reg.fit(data['train'][:,individual],labels['train'])
 	predictions = log_reg.predict(data['test'][:,individual])
@@ -210,11 +211,24 @@ def KappaLoss(individual, data, labels):
 # The returned value is 1 - accuracy.
 def SimpleLoss(individual, data, labels):
 
-	test_data = data['test'][:,individual]
 	log_reg = linear_model.LogisticRegression()
 	log_reg.fit(data['train'][:,individual],labels['train'])
 	predictions = log_reg.predict(data['test'][:,individual])
 	return 1 - accuracy_score(predictions,labels['test'])
+
+# Returns the k-fold cross-validation accuracy loss using
+# "individual" to choose active features and "rounds" as k.
+# "data" and "labels" are two dictionaries whose keys 'train' and
+# 'test' contain the corresponding samples or class labels.
+# The returned value is 1 - cross-validation accuracy.
+def CrossValidationLoss(individual, data, labels, rounds = 5):
+
+	log_reg = linear_model.LogisticRegression()
+	scores = cross_val_score(log_reg,data['train'][:,individual],
+							labels['train'],cv=rounds)
+	return 1 - scores.mean()
+
+#-------------------- NSGA-II Algorithm --------------------
 
 # Main procedure of this module.
 # "data": a dictionary with two matrices of samples x features (train and test).
