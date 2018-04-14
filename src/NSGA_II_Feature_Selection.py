@@ -2,6 +2,7 @@ from NonDominatedSort import NonDominatedSort
 import numpy as np
 import multiprocessing
 from sklearn.externals.joblib import Parallel, delayed
+from sklearn.metrics import cohen_kappa_score
 from sklearn import linear_model
 from numpy.random import choice, ranf
 
@@ -190,21 +191,21 @@ def Simplicity(individual):
 
 # Assesses the agreement between the test labels and a classifier
 # trained using the active features of "individual", taking chance
-# into account. The returned value is 1 - Kappa coefficient.
+# into account.
 # "data" and "labels" are two dictionaries whose keys 'train' and
 # 'test' contain the corresponding samples or class labels.
-def KappaValue(individual, data, labels):
+# The returned value is 1 - Kappa coefficient.
+def KappaLoss(individual, data, labels):
 
 	test_data = data['test'][:,individual]
 	log_reg = linear_model.LogisticRegression()
 	log_reg.fit(data['train'][:,individual],labels['train'])
-	predictions = log_reg.predict(data['test'])
-	accuracy = np.sum(predictions == labels['test']) / len(predictions)
-	return accuracy
+	predictions = log_reg.predict(data['test'][:,individual])
+	return 1 - cohen_kappa_score(predictions,labels['test'])
 
 # Main procedure of this module.
-# "data": a matrix of samples x features.
-# "labels": class labels for the samples in "data" (same order).
+# "data": a dictionary with two matrices of samples x features (train and test).
+# "labels": corresponding class labels for the samples in "data" (same order).
 # "max_features": upper bound for the number of selected features.
 # "objective_funcs": a list of Python functions for fitness evaluation.
 # "pop_size": the working population size of the genetic algorithm.
