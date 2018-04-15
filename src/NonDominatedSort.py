@@ -135,3 +135,12 @@ def NonDominatedSort(objective_scores):
 	sort_scores[:,0] = FillFronts(front_info,sort_scores[:,0])
 	sort_scores[:,1] = CrowdingDistance(objective_scores,sort_scores[:,0])
 	return sort_scores
+
+# Assuming non-dominated sort scores with columns [front, crowding_distance],
+# sorts according to two keys:
+# - Front: ascending order, primary criterion.
+# - Crowding distance: descending order, secondary criterion.
+# Returns the indices that sort the elements.
+def IndirectSort(sort_scores):
+
+	return np.lexsort((-sort_scores[:,1],sort_scores[:,0]))
