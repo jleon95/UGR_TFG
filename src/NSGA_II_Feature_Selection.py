@@ -1,4 +1,4 @@
-from NonDominatedSort import NonDominatedSort
+from NonDominatedSort import NonDominatedSortScores, IndirectSort
 import multiprocessing
 import numpy as np
 from numpy.random import choice, ranf
@@ -145,7 +145,7 @@ def CreateOffspring(parents, crossover, mutation, max_features,
 			 crossover_prob = 0.9, mutation_prob = 0.1):
 
 	n_crossovers = round(parents.shape[0] * crossover_prob)
-	offspring = np.empty((n_crossovers,parents.shape[1]))
+	offspring = np.empty((n_crossovers,parents.shape[1]),dtype=bool)
 	for n in range(n_crossovers):
 		p1, p2 = choice(parents.shape[0],replace=False,size=2)
 		offspring[n] = crossover(parents[p1],parents[p2],max_features)
@@ -239,11 +239,15 @@ def CrossValidationLoss(individual, data, labels, rounds = 5):
 # "generations": how many generations the algorithm will run for.
 # "seed": random seed for reproducible experiments.
 # "crossover_prob": in practice, size(parents) x this = size(offspring).
+# "crossover_func": crossover method. Built-in Uniform Crossover by default.
 # "mutation_prob": probability of a mutation after a successful crossover.
+# "mutation_func": mutation method. Built-in Flip Bits Mutation by default.
 # "pool_fraction": proportion of parent pool size with respect to "pop_size".
 # "n_cores": number of processor cores used in the evaluation step.
 def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, generations, 
-		seed = 29, crossover_prob = 0.9, mutation_prob = 0.1, pool_fraction = 0.5, n_cores = 1):
+		seed = 29, crossover_prob = 0.9, crossover_func = UniformCrossover, 
+		mutation_prob = 0.8, mutation_func = FlipBitsMutation, pool_fraction = 0.5, 
+		n_cores = 1):
 
 	assert data['train'].shape[0] > 0, \
 			"You need a non-empty training set"
@@ -264,26 +268,34 @@ def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, gene
 		funcs_with_args.append((f,[data,labels]))
 
 	# Preallocate intermediate population array (for allocation efficiency).
-	intermediate_pop = np.empty((pop_size+round(pop_size*pool_size*crossover_prob),
-										data['train'].shape[1]))
+	intermediate_pop = np.empty((pop_size+round(pop_size*pool_fraction*crossover_prob),
+										data['train'].shape[1]),dtype=bool)
 	# Initial population.
 	population = InitializePopulation(pop_size,data['train'].shape[1],max_features)
 	# Initial evaluation using objective_funcs.
 	evaluation = EvaluatePopulation(population,funcs_with_args)
 	# Initial non-domination scores [front, crowding_distance].
-	nds_scores = NonDominatedSort(evaluation)
+	nds_scores = NonDominatedSortScores(evaluation)
 	# Pool size for parent selection.
 	pool_size = round(pop_size * pool_fraction)
 
 	for gen in range(generations):
 
 		# Parents pool
-		parents = TournamentSelection(population,nds_scores,pool_size)
+		parents = TournamentSelection(population,nds_scores[:pop_size],pool_size)
 		# Fill the intermediate population with previous generation + offspring.
 		intermediate_pop[:pop_size,:] = population
-		intermediate_pop[pop_size:,:] = CreateOffspring(parents,TwoPointCrossover,
-											FlipBitsMutation,max_features,crossover_prob,
+		intermediate_pop[pop_size:,:] = CreateOffspring(parents,crossover_func,
+											mutation_func,max_features,crossover_prob,
 											mutation_prob)
 		# Apply evaluation and non-dominated sort to the joint population.
 		evaluation = EvaluatePopulation(intermediate_pop,funcs_with_args)
-		nds_scores = NonDominatedSort(evaluation)
+		nds_scores = NonDominatedSortScores(evaluation)
+
+		# Sort population and scores based on front and crowding distance,
+		# then keep the best "pop_size" of them for the next generation.
+		nds_indices = IndirectSort(nds_scores)
+		population = intermediate_pop[nds_indices][:pop_size,:]
+		nds_scores = nds_scores[nds_indices][:pop_size,:]
+	
+	return population, nds_scores, evaluation[nds_indices][:pop_size,:]
