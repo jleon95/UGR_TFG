@@ -299,3 +299,31 @@ def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, gene
 		nds_scores = nds_scores[nds_indices][:pop_size,:]
 	
 	return population, nds_scores, evaluation[nds_indices][:pop_size,:]
+
+if __name__ == '__main__':
+	
+	# Pathnames assume that the script is called from parent directory
+	# and not from 'src' (data not included in the repository).
+
+	data_list = [{'train': np.load("data/data_training_104.npy"),
+				  'test': np.load("data/data_test_104.npy")},
+				 {'train': np.load("data/data_training_107.npy"),
+				  'test': np.load("data/data_test_107.npy")},
+				 {'train': np.load("data/data_training_110.npy"),
+				  'test': np.load("data/data_test_110.npy")}]
+
+	labels_list = [{'train': np.load("data/labels_training_104.npy"),
+				   'test': np.load("data/labels_test_104.npy")},
+				   {'train': np.load("data/labels_training_107.npy"),
+				   'test': np.load("data/labels_test_107.npy")},
+				   {'train': np.load("data/labels_training_110.npy"),
+				   'test': np.load("data/labels_test_110.npy")}]
+
+	for data, labels in zip(data_list,labels_list):
+
+		population, sort_scores, evaluation = \
+				FeatureSelection(data=data,labels=labels,max_features=40,
+				objective_funcs=[Simplicity,CrossValidationLoss],
+				pop_size=50,generations=30,n_cores=2)
+
+		print(evaluation)
