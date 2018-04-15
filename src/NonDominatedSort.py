@@ -112,7 +112,7 @@ def CrowdingDistance(objective_scores, front_scores):
 			for i in range(1, obj_sort_indices.shape[0]-1):
 
 				if f_max - f_min == 0:
-					distance[front_sort_indices[obj_sort_indices[i]+start_index]] = float("inf")
+					distances[front_sort_indices[obj_sort_indices[i]+start_index]] = float("inf")
 				else:
 					next_value = sorted_front[i+1]
 					prev_value = sorted_front[i-1]
