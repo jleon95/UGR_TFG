@@ -126,7 +126,7 @@ def CrowdingDistance(objective_scores, front_scores):
 # "objective_scores" consists of a matrix of n_individuals x n_objectives
 # containing the scores of the individuals of a population for certain
 # optimization objectives.
-def NonDominatedSort(objective_scores):
+def NonDominatedSortScores(objective_scores):
 
 	# "sort scores" will contain pairs of [front number, crowding distance] for each individual
 	# in the original order of appearance in "population".
