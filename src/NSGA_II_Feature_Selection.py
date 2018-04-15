@@ -256,3 +256,34 @@ def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, gene
 	assert pop_size >= 10, "You need at least 10 individuals"
 	assert generations >= 5, "You need at least 5 generations"
 	np.random.seed(seed)
+
+	# As some evaluation functions need more arguments,
+	# put them together in a generic way for simplicity.
+	funcs_with_args = []
+	for f in objective_funcs:
+		funcs_with_args.append((f,[data,labels]))
+
+	# Preallocate intermediate population array (for allocation efficiency).
+	intermediate_pop = np.empty((pop_size+round(pop_size*pool_size*crossover_prob),
+										data['train'].shape[1]))
+	# Initial population.
+	population = InitializePopulation(pop_size,data['train'].shape[1],max_features)
+	# Initial evaluation using objective_funcs.
+	evaluation = EvaluatePopulation(population,funcs_with_args)
+	# Initial non-domination scores [front, crowding_distance].
+	nds_scores = NonDominatedSort(evaluation)
+	# Pool size for parent selection.
+	pool_size = round(pop_size * pool_fraction)
+
+	for gen in range(generations):
+
+		# Parents pool
+		parents = TournamentSelection(population,nds_scores,pool_size)
+		# Fill the intermediate population with previous generation + offspring.
+		intermediate_pop[:pop_size,:] = population
+		intermediate_pop[pop_size:,:] = CreateOffspring(parents,TwoPointCrossover,
+											FlipBitsMutation,max_features,crossover_prob,
+											mutation_prob)
+		# Apply evaluation and non-dominated sort to the joint population.
+		evaluation = EvaluatePopulation(intermediate_pop,funcs_with_args)
+		nds_scores = NonDominatedSort(evaluation)
