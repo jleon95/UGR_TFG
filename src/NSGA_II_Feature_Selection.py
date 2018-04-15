@@ -26,7 +26,7 @@ def SinglePointCrossover(parent1, parent2, max_features):
 						size=len(offspring_ones)-max_features)] = 0
 		offspring[offspring > 0] = offspring_ones
 	elif len(offspring_ones) < 1: # For this rather unlikely situation,
-		offspring = np.copy(parent2) # just avoid increasing the running time
+		offspring = np.copy(parent2) # just avoid increasing the running time.
 	return offspring
 
 # Given:
@@ -47,7 +47,7 @@ def TwoPointCrossover(parent1, parent2, max_features):
 						size=len(offspring_ones)-max_features)] = 0
 		offspring[offspring > 0] = offspring_ones
 	elif len(offspring_ones) < 1: # For this rather unlikely situation,
-		offspring = np.copy(parent2) # just avoid increasing the running time
+		offspring = np.copy(parent2) # just avoid increasing the running time.
 	return offspring
 
 # Given:
@@ -68,7 +68,7 @@ def UniformCrossover(parent1, parent2, max_features, prob = 0.5):
 						size=len(offspring_ones)-max_features)] = 0
 		offspring[offspring > 0] = offspring_ones
 	elif len(offspring_ones) < 1: # For this rather unlikely situation,
-		offspring = np.copy(parent2) # just avoid increasing the running time
+		offspring = np.copy(parent2) # just avoid increasing the running time.
 	return offspring
 
 
@@ -105,7 +105,7 @@ def FlipBitsMutation(chromosome, max_features, swaps = 1):
 		mutated_ones[choice(len(mutated_ones),replace=False,
 						size=len(mutated_ones)-max_features)] = 0
 		mutated[mutated > 0] = mutated_ones
-	elif len(mutated_ones) < 1: # Probably won't happen too often
+	elif len(mutated_ones) < 1: # Probably won't happen too often.
 		mutated = np.copy(chromosome)
 	return mutated
 
@@ -116,21 +116,21 @@ def FlipBitsMutation(chromosome, max_features, swaps = 1):
 # For each pair, we choose the individual with the lower rank; if there's
 # a draw, we favor the one with greater crowding distance.
 # "sort_scores" contains (front, crowding distance) for each individual.
-# Returns an array of indices pointing to the original individuals.
-def TournamentSelection(sort_scores, pool_size):
+# Returns an array of individuals.
+def TournamentSelection(population, sort_scores, pool_size):
 
-	selected = np.zeros(pool_size,dtype=np.uint16)
-	for i in range(len(selected)):
+	selected = np.zeros((pool_size,population.shape[1]))
+	for i in range(selected.shape[0]):
 
 		candidates = choice(sort_scores.shape[0],replace=False,size=2)
 		best_front_pos = candidates[np.argmin(sort_scores[candidates,0])]
 
-		# If both fronts are the same, we can't use "best_front_pos"
+		# If both fronts are the same, we can't use "best_front_pos".
 		if sort_scores[candidates[0]][0] != sort_scores[candidates[1]][0]:
-			selected[i] = best_front_pos
+			selected[i] = population[best_front_pos]
 		else:
 			max_distance_pos = candidates[np.argmax(sort_scores[candidates,1])]
-			selected[i] = max_distance_pos
+			selected[i] = population[max_distance_pos]
 
 	return selected
 
@@ -169,7 +169,7 @@ def EvaluatePopulation(population, objective_funcs, n_cores = 1):
 	results = np.empty((population.shape[0],len(objective_funcs)))
 
 	if n_cores > multiprocessing.cpu_count():
-		n_cores = -1 # -1 means all cores for joblib
+		n_cores = -1 # -1 means all cores for joblib.
 
 	with Parallel(n_jobs=n_cores) as parallel:
 
@@ -187,7 +187,7 @@ def EvaluatePopulation(population, objective_funcs, n_cores = 1):
 
 # Measures the simplicity of a feature set by counting the active
 # features. A lower count results in a better score (closer to 0).
-def Simplicity(individual):
+def Simplicity(individual, *_):
 
 	return np.count_nonzero(individual)
 
@@ -197,7 +197,7 @@ def Simplicity(individual):
 # "data" and "labels" are two dictionaries whose keys 'train' and
 # 'test' contain the corresponding samples or class labels.
 # The returned value is 1 - Kappa coefficient.
-def KappaLoss(individual, data, labels):
+def KappaLoss(individual, data, labels, *_):
 
 	log_reg = linear_model.LogisticRegression()
 	log_reg.fit(data['train'][:,individual],labels['train'])
@@ -209,7 +209,7 @@ def KappaLoss(individual, data, labels):
 # "data" and "labels" are two dictionaries whose keys 'train' and
 # 'test' contain the corresponding samples or class labels.
 # The returned value is 1 - accuracy.
-def SimpleLoss(individual, data, labels):
+def SimpleLoss(individual, data, labels, *_):
 
 	log_reg = linear_model.LogisticRegression()
 	log_reg.fit(data['train'][:,individual],labels['train'])
@@ -238,12 +238,18 @@ def CrossValidationLoss(individual, data, labels, rounds = 5):
 # "pop_size": the working population size of the genetic algorithm.
 # "generations": how many generations the algorithm will run for.
 # "seed": random seed for reproducible experiments.
-def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, generations, seed = 29):
+# "crossover_prob": in practice, size(parents) x this = size(offspring).
+# "mutation_prob": probability of a mutation after a successful crossover.
+# "pool_fraction": proportion of parent pool size with respect to "pop_size".
+# "n_cores": number of processor cores used in the evaluation step.
+def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, generations, 
+		seed = 29, crossover_prob = 0.9, mutation_prob = 0.1, pool_fraction = 0.5, n_cores = 1):
 
-	assert data.shape[0] > 0, "You need a non-empty training set"
-	assert labels.shape[0] == data.shape[0], \
+	assert data['train'].shape[0] > 0, \
+			"You need a non-empty training set"
+	assert labels['train'].shape[0] == data['train'].shape[0], \
 			"You need an equal number of labels than of samples"
-	assert max_features > 0 and max_features < data.shape[1], \
+	assert max_features > 0 and max_features < data['train'].shape[1], \
 			"You need a feature count between 0 and all features"
 	assert len(objective_funcs) > 1, \
 			"You need at least 2 objective functions."
