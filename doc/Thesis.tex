@@ -65,11 +65,10 @@
 	%*******************************************************
 	\include{FrontBackmatter/Titlepage}
 	\include{FrontBackmatter/Titleback}
-	%\cleardoublepage\include{FrontBackmatter/Dedication}
-	%\cleardoublepage\include{FrontBackmatter/Abstract}
-	%\cleardoublepage\include{FrontBackmatter/Publications}
-	%\cleardoublepage\include{FrontBackmatter/Acknowledgments}
-	%\cleardoublepage\include{FrontBackmatter/Contents}
+	\cleardoublepage\include{FrontBackmatter/Dedication}
+	\cleardoublepage\include{FrontBackmatter/Abstract}
+	\cleardoublepage\include{FrontBackmatter/Acknowledgments}
+	\cleardoublepage\include{FrontBackmatter/Contents}
 	%********************************************************************
 	% Mainmatter
 	%*******************************************************
@@ -77,18 +76,16 @@
 	\pagestyle{scrheadings}
 	\pagenumbering{arabic}
 	\cleardoublepage
-	\part{Some Kind of Manual}\label{pt:manual}
+	%\ctparttext{}
+	\part{Introduction}\label{pt:introduction}
 	%\include{Chapters/Chapter01}
 	\cleardoublepage
-	\ctparttext{You can put some informational part preamble text here.
-	Illo principalmente su nos. Non message \emph{occidental} angloromanic
-	da. Debitas effortio simplificate sia se, auxiliar summarios da que,
-	se avantiate publicationes via. Pan in terra summarios, capital
-	interlingua se que. Al via multo esser specimen, campo responder que
-	da. Le usate medical addresses pro, europa origine sanctificate nos se.}
-	\part{The Showcase}\label{pt:showcase}
+	%\ctparttext{}
+	\part{Objectives}\label{pt:objectives}
 	%\include{Chapters/Chapter02}
 	%\include{Chapters/Chapter03}
+	\part{Methodology}\label{pt:methodology}
+	\part{Results and discussion}\label{pt:results}
 
 	
 	% Backmatter
@@ -101,9 +98,8 @@
 	%********************************************************************
 	% Other Stuff in the Back
 	%*******************************************************
-	%\cleardoublepage\include{FrontBackmatter/Bibliography}
+	\cleardoublepage\include{FrontBackmatter/Bibliography}
 	%\cleardoublepage\include{FrontBackmatter/Declaration}
 	%\cleardoublepage\include{FrontBackmatter/Colophon}
 
 \end{document}
-
