@@ -3,8 +3,26 @@
 
 \section{Brain-Computer Interfaces}
 
-	In the famous movie \textit{The Matrix}, humans are plugged into the evil matrix through a port in the back of their skulls. In the 1995 Japanese animated movie \textit{Ghost in the Shell}, a number of characters also sport a similar device (although voluntarily) in order to perform several tasks, a remarkable one being diving into virtual reality.
+	In the famous movie \textit{The Matrix}, humans are plugged into the evil matrix through a port in the back of their skulls. In the 1995 Japanese animated movie \textit{Ghost in the Shell}, a number of characters also sport a similar device (this time voluntarily) in order to perform several tasks, a remarkable one being diving into virtual reality.
 
-	These and many other variations of this sci-fi concept fall into the term \ac{BCI}. \acs{BCI}s function as communication channels that do not rely on peripheral nerves or muscles \cite{bcidef}. Put in a practical way, they allow for a compensation and even augmentation of some human abilities.
+	These and many other variations of this sci-fi concept fall into the term \ac{BCI}. \acs{BCI}s function as communication channels that do not rely on peripheral nerves or muscles \cite{bcidef}; put in a practical way, they can allow for a compensation and even augmentation of some human abilities.
 
-	While not as futuristic as in fiction, the prospects of real \acs{BCI} technology range from convenient to humanitarian---from mind-controlled typewriters to advanced systems that aid paralyzed patients in their communication and daily lives.
+	While not as futuristic as in fiction, the prospects of current \acs{BCI} technology range from convenient to humanitarian---from brain-operated typewriters to medical diagnosis or advanced systems that aid paralyzed patients in their daily lives.
+
+\section{Electroencephalography}
+
+	As the name Brain-Computer Interface suggests, we need some sort of contraption in order to establish a link between our brain and a computer. Generally, it can be of one of three kinds:
+
+	\begin{itemize}
+
+		\item
+		Invasive: these include the most powerful applications, like vision and mobility restoration; brain implants are an example of this. However, they come with important downsides, such as neurosurgery and its collateral effects.
+		\item
+		Non-invasive: when surgery is not appropriate, there exist other technologies that trade in precision for ease of use and lower operation costs. Among these we find \ac{EEG}.
+		\item
+		Partially invasive: a compromise between the two in the form of a not-so-aggressive procedure that only reaches the outside of the brain. \ac{ECoG} is a promising method.
+
+	\end{itemize}
+
+	In particular, the dataset employed in the experiments of this document was obtained with \acs{EEG}. This paradigm utilizes a set of electrodes placed on the scalp to record electrical activity from the brain; those readings are later useful for medical diagnosis or diverse engineering purposes (ours being one of them).
+
