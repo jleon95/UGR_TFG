@@ -1,28 +1,44 @@
 \chapter{Introduction}\label{ch:introduction}
 %************************************************
 
-\section{Brain-Computer Interfaces}
+\section{Context}
 
-	In the famous movie \textit{The Matrix}, humans are plugged into the evil matrix through a port in the back of their skulls. In the 1995 Japanese animated movie \textit{Ghost in the Shell}, a number of characters also sport a similar device (this time voluntarily) in order to perform several tasks, a remarkable one being diving into virtual reality.
+	\subsection{Brain-Computer Interfaces}
 
-	These and many other variations of this sci-fi concept fall into the term \ac{BCI}. \acs{BCI}s function as communication channels that do not rely on peripheral nerves or muscles \cite{bcidef}; put in a practical way, they can allow for a compensation and even augmentation of some human abilities.
+		In the famous movie \textit{The Matrix}, humans are plugged into the evil matrix through a port in the back of their skulls. In the 1995 Japanese animated movie \textit{Ghost in the Shell}, a number of characters also sport a similar device (this time voluntarily) in order to perform several tasks, a remarkable one being diving into virtual reality.
 
-	While not as futuristic as in fiction, the prospects of current \acs{BCI} technology range from convenient to humanitarian---from brain-operated typewriters to medical diagnosis or advanced systems that aid paralyzed patients in their daily lives.
+		These and many other variations of this sci-fi concept fall into the term \ac{BCI}. \acs{BCI}s function as communication channels that do not rely on peripheral nerves or muscles \cite{bcidef}; put in a practical way, they can allow for a compensation or even augmentation of human abilities.
 
-\section{Electroencephalography}
+		While not as futuristic as in fiction, the prospects of current \acs{BCI} technology range from convenient to humanitarian---from brain-operated typewriters to medical diagnosis or advanced systems that aid paralyzed patients in their daily lives.
 
-	As the name Brain-Computer Interface suggests, we need some sort of contraption in order to establish a link between our brain and a computer. Generally, it can be of one of three kinds:
+	\subsection{Electroencephalography}
 
-	\begin{itemize}
+		As the name Brain-Computer Interface suggests, we need a tool to link our brain to a computer. It can be of one of three kinds:
 
-		\item
-		Invasive: these include the most powerful applications, like vision and mobility restoration; brain implants are an example of this. However, they come with important downsides, such as neurosurgery and its collateral effects.
-		\item
-		Non-invasive: when surgery is not appropriate, there exist other technologies that trade in precision for ease of use and lower operation costs. Among these we find \ac{EEG}.
-		\item
-		Partially invasive: a compromise between the two in the form of a not-so-aggressive procedure that only reaches the outside of the brain. \ac{ECoG} is a promising method.
+		\begin{itemize}
 
-	\end{itemize}
+			\item
+			Invasive: these include the most powerful applications, like vision and mobility restoration; brain implants are an example of this. Nonetheless, they come with important downsides, such as neurosurgery and its collateral effects.
+			\item
+			Non-invasive: when surgery is not appropriate, there exist other technologies that trade in precision for ease of use and lower costs. Among these we find \ac{EEG}.
+			\item
+			Partially invasive: a compromise between the two in the form of a not-so-aggressive procedure that only reaches the outside of the brain. \ac{ECoG} is a promising method.
 
-	In particular, the dataset employed in the experiments of this document was obtained with \acs{EEG}. This paradigm utilizes a set of electrodes placed on the scalp to record electrical activity from the brain; those readings are later useful for medical diagnosis or diverse engineering purposes (ours being one of them).
+		\end{itemize}
+
+		In particular, the dataset employed in the experiments of this document was obtained with \acs{EEG}. This paradigm utilizes a set of electrodes placed on the scalp to record electrical activity from the brain; those readings are later useful for medical diagnosis or diverse engineering purposes (ours being one of them).
+
+	\subsection{Artificial neural networks}
+
+		\ac{ANN} have existed for many decades as a theoretical model. However, it was not until a few years ago, with the significant increases in computational power, that we started to grasp some of their true potential.
+
+		A classic definition encompassing the main points could be the following: 
+
+		\begin{quotation}
+			\textit{A neural network is an interconnected assembly of simple processing elements, units or nodes, whose functionality is loosely based on the animal neuron. The processing ability of the network is stored in the interunit connection strengths, or weights, obtained by a process of adaptation to, or learning from, a set of training patterns.\cite{nnintro}}
+		\end{quotation}
+
+		As far as we are concerned, this means that \acs{ANN}s draw inspiration from nature to build a model capable of prediction from inputs, given sufficient training. And, as we will see in subsequent chapters, the key is precisely the training phase. It is the most arduous task in order to get desired outcomes, for it requires tuning a number of parameters.
+
+
 
