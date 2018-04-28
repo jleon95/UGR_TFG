@@ -31,7 +31,7 @@
 	\begin{figure}[bth]
 
         \myfloatalign
-        \includegraphics[width=0.95\textwidth]{gfx/NeuralNetwork.png}
+        \includegraphics[width=0.9\textwidth]{gfx/NeuralNetwork.png}
         \caption{A neural network with one hidden layer.}
 
     \end{figure}
@@ -46,8 +46,8 @@
     	Propagation. Generate predictions for the training examples, then calculate the error at the output layer; a common error measure is the squared difference between the actual value and the expected value. Afterwards, recursively propagate the error calculations to the successive hidden layers taking into acount the already computed error values, until the input layer is reached.
 
     	\item
-    	Weight update. Multiply the value of the activation function of each neuron and its error obtained in the first step. This is called the \textit{gradient}. Finally, subtract a fraction of this gradient from the weight; that fraction (\textit{learning rate}) has a significant effect on the process, for a value too high can cause the algorithm to alternate between the sides of a local minimum without actually reaching it, and a value too low can overextend the training time.
+    	Weight update. Multiply the value of the activation function of each neuron and its error obtained in the first step. This is called the \textit{gradient} in \textit{Gradient Descent}. Finally, subtract a fraction of this gradient from the weight; that fraction (\textit{learning rate}) has a significant effect on the process, for a value too high can cause the algorithm to jump over a local minimum without reaching it, and a value too low can overextend the training time.
 
     \end{enumerate}
 
-    The above procedure is repeated until the model's performance is adequate. If we wish to speed it up with a reasonable tradeoff in quality, we can use not the whole training set for each iteration but smaller subsets called \textit{batches}. This allows us to maintain enough generalization while at the same time reducing the computational cost of gradient computation.
+    The above procedure is repeated until the model's performance is adequate. If we wish to speed it up with a reasonable tradeoff in quality, we can use not the whole training set for each iteration but smaller subsets called \textit{batches} (\textit{Stochastic Gradient Descent}). This allows us to maintain enough generalization while at the same time reducing the cost of gradient computation \cite{lecun-dl}.
