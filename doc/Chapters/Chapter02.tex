@@ -38,7 +38,7 @@
 
     We can see that the hidden layer has its neurons labeled $H_i$. The input layer is represented by the $I_i$ units and the output layer corresponds to the different $O_i$. 
 
-    This image further introduces a new concept: \textit{backpropagation}. Whereas the information is transformed by means of the weights and transmitted forward, the adjustment of those weights also needs of a propagation in the opposite direction. To sum it up, backpropagation has two main steps:
+    This image introduces another new concept: \textit{backpropagation}. Whereas the information is transformed by means of the weights and transmitted forward, the adjustment of those weights also needs of a propagation in the opposite direction. To sum it up, backpropagation has two main steps:
 
     \begin{enumerate}
 
@@ -51,3 +51,23 @@
     \end{enumerate}
 
     The above procedure is repeated until the model's performance is adequate. If we wish to speed it up with a reasonable tradeoff in quality, we can use not the whole training set for each iteration but smaller subsets called \textit{batches} (\textit{Stochastic Gradient Descent}). This allows us to maintain enough generalization while at the same time reducing the cost of gradient computation \cite{lecun-dl}.
+
+    In general, as the complexity of a model grows, so does the difficulty of its training. Neural networks are, in theory, capable of approximating every possible function, and this comes at a price: some of the following common issues in machine learning \cite{nn-atc} have increased consequences.
+
+    \begin{itemize}
+
+    	\item
+    	Limited data: without delving too much into the underlying theory, the more powerful a model is, the more training samples are needed in a substantial proportion. Coupled with it, the smaller the training set, the smaller the chance that it will represent the whole population.
+
+    	\item
+    	Imbalanced data: when there are far more examples of one or more classes than of the rest, we speak of imbalance. Apart from not representing the population, this phenomenon can even bias a classifier in a way that it only outputs one class, as it seems the best way to minimize the error.
+
+    	\item
+    	Incomplete data: this is the case when the available samples have missing values. In this situation there are two options: either we discard incomplete fields from across all samples or we try to infer them.
+
+    	\item
+    	High dimensionality: linking with the first bullet point, powerful models can suffer of \textit{overfitting} with limited and/or high-dimensional samples. The latter can cause the model to just learn the available data ``by heart'' and fail to generalize to new examples.
+
+    \end{itemize}
+
+    The dataset we will be using is affected by the first and last problems, and addressing them will be a key part of the work.
