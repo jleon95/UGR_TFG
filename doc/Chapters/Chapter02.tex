@@ -20,7 +20,7 @@
 
 	\end{itemize}
 
-	A typical vanilla feed-forward neural network contains directed connections between its different layers, but not between components of the same layer. Also, the term \textit{feed-forward} implies that there are no cycles in the graph of the network, and so the information moves from the input to the output through the hidden layers. The way in which this information flows is defined by the \textit{weights} of the connections between neurons: although it is frequent to have fully-connected layers, it does not mean that one unit passes the same value to all the other units it points to, or even that it is not null; determining that is precisely the task of the learning algorithm.
+	A typical vanilla feed-forward neural network contains directed connections between its different layers, but not between components of the same layer. Also, the term \textit{feed-forward} implies that there are no cycles in the graph of the network, and so the information moves from the input to the output through the hidden layers. The way in which this information flows is defined by the \textit{activation function} (the response of a neuron from an input number) as well as the \textit{weights} of the connections between neurons: although it is frequent to have fully-connected layers, it does not mean that one unit passes the same value to all the other units it points to, or even that they are not null; determining that is precisely the task of the learning algorithm.
 
 \newpage
 
@@ -70,4 +70,4 @@
 
     \end{itemize}
 
-    The dataset we will be using is affected by the first and last problems, and addressing them will be a key part of the work.
+    Another problem is the \textit{vanishing gradient}, which occurs only in the training stage of neural networks. Because of the chain rule used to propagate the error through the layers, if the activation function provides many values close to zero, the gradient will approach that value too. In worst-case scenarios, it results in a practical standstill of the training. Plausible solutions to this matter, which has been a major deterrent against deep architectures for a long time, include the use of alternative activation functions (such as \textit{ReLU} and its variants, very popular in recent years \cite{delv-deep-relu,deep-res-relu}).
