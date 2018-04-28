@@ -38,4 +38,16 @@
 
     We can see that the hidden layer has its neurons labeled $H_i$. The input layer is represented by the $I_i$ units and the output layer corresponds to the different $O_i$. 
 
-    This image also introduces a new concept: \textit{backpropagation}. Whereas the information is transformed by means of the weights and transmitted forward, the adjustment of those weights needs of a propagation in the opposite direction.
+    This image further introduces a new concept: \textit{backpropagation}. Whereas the information is transformed by means of the weights and transmitted forward, the adjustment of those weights also needs of a propagation in the opposite direction. To sum it up, backpropagation has two main steps:
+
+    \begin{enumerate}
+
+    	\item
+    	Propagation. Generate predictions for the training examples, then calculate the error at the output layer; a common error measure is the squared difference between the actual value and the expected value. Afterwards, recursively propagate the error calculations to the successive hidden layers taking into acount the already computed error values, until the input layer is reached.
+
+    	\item
+    	Weight update. Multiply the value of the activation function of each neuron and its error obtained in the first step. This is called the \textit{gradient}. Finally, subtract a fraction of this gradient from the weight; that fraction (\textit{learning rate}) has a significant effect on the process, for a value too high can cause the algorithm to alternate between the sides of a local minimum without actually reaching it, and a value too low can overextend the training time.
+
+    \end{enumerate}
+
+    The above procedure is repeated until the model's performance is adequate. If we wish to speed it up with a reasonable tradeoff in quality, we can use not the whole training set for each iteration but smaller subsets called \textit{batches}. This allows us to maintain enough generalization while at the same time reducing the computational cost of gradient computation.
