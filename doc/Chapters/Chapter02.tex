@@ -52,6 +52,38 @@
 
     The above procedure is repeated until the model's performance is adequate. If we wish to speed it up with a reasonable tradeoff in quality, we can use not the whole training set for each iteration but smaller subsets called \textit{batches} (\textit{Stochastic Gradient Descent}). This allows us to maintain enough generalization while at the same time reducing the cost of gradient computation \cite{lecun-dl}.
 
+    A problem related to backpropagation is the \textit{vanishing gradient}, which only occurs in the training stage of neural networks. Because of the chain rule used to propagate the error through the layers, if the activation function has a near-zero derivative at some points, the gradient will approach that value too. In worst-case scenarios, it results in a practical standstill of the training.
+
+    Multiple solutions have been proposed in the past few years, and research on the topic is still ongoing. A few popular activation functions as of now include:
+
+    \begin{itemize}
+
+    	\item
+    	\textit{Hyperbolic tangent}: the classic, due to it being bounded, which increases the efficiency of the training. However, its shape at both ends produces the vanishingly small gradients.
+
+    	\item
+    	\textit{\ac{ReLU}}: defined by $f(x) = 0$ if $x \leq 0$ and $f(x) = x$ if $x > 0$. It avoids small gradients for high input values and makes networks sparser with its negative part (accounting again for more efficiency). The downside is the \textit{dying} \acs{ReLU}, in which some neurons become perpetually inactive.
+
+    	\item
+    	\textit{Leaky \acs{ReLU}}: one of the variants of \acs{ReLU} that tries to avoid inactive neurons by setting $f(x)$ for negative $x$ to $0.01x$ instead of $0$. Its generalization is the \textit{Parameterized ReLU}.
+
+    	\item
+    	\textit{\ac{ELU}} \cite{elu}: another recent alternative that replaces the horizontal section of the \acs{ReLU} with an exponential function.
+
+    \end{itemize}
+
+    These functions can be observed in the following figure:
+
+    \vspace{0.2cm}
+
+    \begin{figure}[bth]
+
+        \myfloatalign
+        \includegraphics[width=0.7\textwidth]{gfx/ActivationFunctions.png}
+        \caption{Four of the most popular activation functions.}
+
+    \end{figure}
+
     In general, as the complexity of a model grows, so does the difficulty of its training. Neural networks are, in theory, capable of approximating every possible function, and this comes at a price: some of the following common issues in machine learning \cite{nn-atc} have increased consequences.
 
     \begin{itemize}
@@ -66,8 +98,8 @@
     	Incomplete data: this is the case when the available samples have missing values. In this situation there are two options: either we discard incomplete fields from across all samples or we try to infer them.
 
     	\item
-    	High dimensionality: linking with the first bullet point, powerful models can suffer of \textit{overfitting} with limited and/or high-dimensional samples. The latter can cause the model to just learn the available data ``by heart'' and fail to generalize to new examples.
+    	High dimensionality: linking with the first bullet point, powerful models can suffer of \textit{overfitting} with limited and/or high-dimensional samples. The latter can cause the model to just learn the available data ``by heart'' and fail to generalize to new examples. Even leaving extreme cases aside, the number of features directly impacts the time required for training.
 
     \end{itemize}
 
-    Another problem is the \textit{vanishing gradient}, which occurs only in the training stage of neural networks. Because of the chain rule used to propagate the error through the layers, if the activation function provides many values close to zero, the gradient will approach that value too. In worst-case scenarios, it results in a practical standstill of the training. Plausible solutions to this matter, which has been a major deterrent against deep architectures for a long time, include the use of alternative activation functions (such as \textit{ReLU} and its variants, very popular in recent years \cite{delv-deep-relu,deep-res-relu}).
+    
