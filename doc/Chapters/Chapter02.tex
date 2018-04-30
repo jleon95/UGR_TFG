@@ -104,25 +104,28 @@
 
     It is clear that we must minimize the hurdles posed by the data, and also make sure we pick the right parameters. For this second task, we have \acf{EA}.
 
-\section{Evolutionary algorithms as optimizers}
+\section{Evolutionary algorithms}
 
 	Evolutionary algorithms are iterative procedures that take a population of feasible solutions to a problem and try to progressively find the best possible answer by mimicking nature in its selection process. 
 
-	Because they are not tied to a fixed type of problem, they can be used in fields as disparate as computer science, medicine, economics or cryptography, among many others. In the business at hand, they will serve as neural network optimizers, in addition to feature selectors in a preliminar step.
+	Because they are not tied to a fixed type of problem, they find use in fields as disparate as computer science, medicine, economics or cryptography, among many others. In the business at hand, they will serve as neural network optimizers, in addition to feature selectors in a preliminar step.
 
 \newpage
 
-	The kind of \acs{EA}s we will be using are known as \textit{evolutionary algorithms}. Now, if we analyze them, we find that they have three main pieces:
+	The kind of \acs{EA}s we will be using are known as \textit{genetic algorithms}. Now, if we analyze them, we find that they have several main pieces:
 
 	\begin{itemize}
 
 		\item
-		Selection:
+		Population: a list of candidate solutions (called \textit{individuals}) to a problem.
 
 		\item
-		Crossover:
+		Selection process: every genetic algorithm has one or more fitness functions which evaluate the quality of an individual. On that basis, we can choose some \textit{parents} to help us find better individuals.
 
 		\item
-		Mutation:
+		Crossover operator: once we have a list of potential parents, this operator defines how to create \textit{offspring} that resemble them in some way.
+
+		\item
+		Mutation operator: in order to maintain diversity, random mutations are introduced with a certain probability.
 
 	\end{itemize}
