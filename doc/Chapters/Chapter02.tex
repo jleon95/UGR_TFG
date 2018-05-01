@@ -65,7 +65,7 @@
     	\textit{\ac{ReLU}}: defined by $f(x) = 0$ if $x \leq 0$ and $f(x) = x$ if $x > 0$. It avoids small gradients for high input values and makes networks sparser with its negative part (accounting again for more efficiency). The downside is the \textit{dying} \acs{ReLU}, in which some neurons become perpetually inactive.
 
     	\item
-    	\textit{Leaky \acs{ReLU}}: one of the variants of \acs{ReLU} that tries to avoid inactive neurons by setting $f(x)$ for negative $x$ to $0.01x$ instead of $0$. Its generalization is the \textit{Parameterized ReLU}.
+    	\textit{Leaky \acs{ReLU}}: one of the variants of \acs{ReLU} that tries to avoid inactive neurons by setting $f(x)$ for negative $x$ to $0.01x$ instead of $0$. Its generalization is the \textit{Parameterized ReLU} \cite{delv-deep-relu,deep-res-relu}.
 
     	\item
     	\textit{\ac{ELU}} \cite{elu}: another recent alternative that replaces the horizontal section of the \acs{ReLU} with an exponential function.
@@ -136,6 +136,8 @@
 
 	\end{itemize}
 
+	Strong emphasis is placed on a solid balance between finding novel solutions and improving the best ones yet, also known as the \textit{exploration-exploitation tradeoff}. Hence, all the pieces as a whole must attain a delicate synergy. With that in mind, let us go into a bit more detail in the next sections.
+
 	\subsection{Individuals}
 
 		The individuals of a genetic algorithm may be represented in a variety of ways. It is crucial to find the best suited for our needs, as it will not only impact time and space efficiency but also the overall performance of the optimization, enabling some genetic operators and discarding others.
@@ -146,7 +148,9 @@
 
 	\subsection{Population}
 
-		Population size must have an equilibrium between enough individuals to explore the solution space and not too many of them, because fitness evaluation is performed for every individual in every generation.
+		Population size must have an equilibrium between enough individuals to explore the solution space and not too many of them, which would lead to excessive running times.
+
+		Another relevant discussion is how to initialize the first set of individuals. For the sake of a good exploration, it should include a decent portion of the search space, often taking advantage of randomness.
 
 	\subsection{Fitness}
 
@@ -155,3 +159,23 @@
 		If we hope to find a global maximum or minimum in a complex function, the fitness will just compute the value at a given point. If we want to choose from a set of features, the evaluation will need to assess how good a subset is by training and testing a machine-learning model; similarly, if we wanted to further optimize that model, we would need to try many variations of its parameters.
 
 		However, suppose we can't decide on what we prefer to improve: for instance, we want a solution to be as accurate as possible, but we want it to be simple, too. This is when \textit{multiobjective optimization} comes in: instead of returning the best candidate, we accept a compromise between the two criteria and return a list of candidates that are not better or worse than the others. They just score well in both measures but in different proportions.
+
+	\subsection{Selection}
+
+		Parent selection process is one of the keys for the success or failure of the algorithm. Since it is a problem-independent part of the algorithm, in contrast with the more specific crossover and mutation operators, we can reduce our choices to a handful of classic techniques \cite{selection-ga}:
+
+		\begin{itemize}
+
+			\item
+			Proportional: the probability of picking an individual is driven by its relative fitness with respect to the overall sum.
+
+			\item
+			Tournament: $n$ random individuals are set side by side and compared by fitness score, after which the best is taken. Repeat until the parent quota is met.
+
+			\item
+			Ranking (any kind): with the population sorted by fitness, it assigns order-based probabilities following some function. The catch here is that the probabilities are not directly related to the measured quality of the solutions, which allows for more control over convergence-exploration.
+
+			\item
+			Randomized: little to no influence of fitness in the decision.
+
+		\end{itemize}
