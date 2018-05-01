@@ -184,7 +184,7 @@
 
 		A highly representation-dependent operator, there exist a plethora of options. As it is unfeasible to list them all, even just the most relevant ones, we will limit this section to the kinds we will use. The only prerequesite is that they offer a degree of continuity from parent to offspring.
 
-		\subsubsection{Binary representation}
+		\subsubsection{In binary representation}
 
 			Like we mentioned earlier, a binary representation consists of a series of zeros and ones. While not the most memory-efficient alternative, it results in fairly straightforward yet powerful operators:
 
@@ -231,7 +231,7 @@
 
 			\end{itemize}
 
-		\subsubsection{Neural networks}
+		\subsubsection{In neural networks}
 
 			If binary representations and crossovers are among the most widely studied, it is not quite the case with neural networks in genetic algorithms (probably because the revival of the field happened not many years ago).
 
@@ -240,3 +240,18 @@
 			For the first two, one could do something along the lines of the binary crossovers we just explained: take some layer sizes from one parent and the rest from the other, have the child get as many hidden layers as the average of its parents, etc. Perhaps we want to keep the numbers inside tolerance intervals, so we should check after each operation too.
 
 			To pass learning rates on, maybe a simple average would do. Given that we don't have prior knowledge about the function we are trying to optimize--only that it has a global optimum somewhere--, it would be a reasonable strategy: if the optimum is between two values, an average would keep us in range; if not, we would not have known anyway.
+
+\newpage
+
+	\subsection{Mutation}
+
+		Evolution needs some diversity, and what we have not done with selection and crossover, we must do with mutations in the offspring.
+		Again, the mutation operator can take many forms, so we will restrict ourselves to what is applicable.
+
+		\subsubsection{In binary representation}
+
+			The easiest way to mutate a vector of binary elements is to randomly flip one or more of them i.e. write 1 where there was 0 and viceversa. Both the amount of flips and the probability of a mutation rule how much diversity is introduced.
+
+		\subsubsection{In neural networks}
+
+			When dealing with quantities, such as the number of layers or of neurons per layer, the simplest thing to do is to add or subtract. A more frequent mutation could be to just alter the number of neurons in one (or more than one) layer either by a fixed amount or by using a probability distribution (gaussian noise, for instance). A much rarer mutation--for its impact in the structure of the network--could involve a slight change in the number of layers.
