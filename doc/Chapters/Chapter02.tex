@@ -276,5 +276,18 @@
 
 		Because these categories are not strict, we could have a genetic algorithm that ranks halfway between the two: not all the previous individuals have to be replaced. We usually make this decision with the help of additional criteria: imagine that we lump together all the individuals and sort them by fitness; all offspring could be better than the best old individual, and thus the entire population would be replaced, but it might very well not be the case, and end up with a mix of old and new.
 
-		The way in which we choose to do the replacement causes, along with the selection procedure, a certain degree of \textit{selective pressure} \cite{selection-ga}. Selective pressure characterizes the extent to which better individuals are prioritized in the evolution stages of the algorithm
+		The way in which we choose to do the replacement causes, along with the selection procedure, a certain degree of \textit{selective pressure} \cite{selection-ga}. Selective pressure characterizes the extent to which better individuals are prioritized in the evolution stages of the algorithm.
 
+		Finally, here is a graphic overview of how a genetic algorithm works:
+
+		\vspace{0.2cm}
+
+	    \begin{figure}[bth]
+
+	        \myfloatalign
+	        \includegraphics[width=0.9\textwidth]{gfx/GeneticAlgorithm.png}
+	        \caption{General overview of a cycle in a genetic algorithm. Blue boxes represent operations. Violet boxes represent sets of individuals.}
+
+	    \end{figure}
+
+	    It is important to note that this basic scheme is complemented by the stopping conditions, which range from finding the optimum (when have the number but need the associated solution) to an artificial limit by iteration count or a streak of non-productive generations.
