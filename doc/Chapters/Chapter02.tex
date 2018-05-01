@@ -179,3 +179,55 @@
 			Randomized: little to no influence of fitness in the decision.
 
 		\end{itemize}
+
+	\subsection{Crossover}
+
+		A highly representation-dependent operator, there exist a plethora of options. As it is unfeasible to list them all, even just the most relevant ones, we will limit this section to the kinds we will use. The only prerequesite is that they offer a degree of continuity from parent to offspring.
+
+		\subsubsection{Binary representation}
+
+			Like we mentioned earlier, a binary representation consists of a series of zeros and ones. While not the most memory-efficient alternative, it results in fairly straightforward yet powerful operators:
+
+			\begin{itemize}
+
+				\item
+				Single-point: choose a random position between the first and the last. To each side of that point we only add the elements of a single parent.
+
+				\vspace{0.2cm}
+
+			    \begin{figure}[bth]
+
+			        \myfloatalign
+			        \includegraphics[width=0.5\textwidth]{gfx/SinglePointCrossover.png}
+			        \caption{Single-point crossover example.}
+
+			    \end{figure}
+
+			    \item
+			    Double-point: this time, generate two random positions. Use them to alternate the two parents' elements. Note that this idea can be extended to $n$-point crossovers.
+
+			    \vspace{0.2cm}
+
+			    \begin{figure}[bth]
+
+			        \myfloatalign
+			        \includegraphics[width=0.5\textwidth]{gfx/DoublePointCrossover.png}
+			        \caption{Double-point crossover example.}
+
+			    \end{figure}
+
+			    \item
+			    Uniform (UX): choose a uniform real number between 0 and 1 and use it to decide which of the two parents the $ith$ bit will come from. From a practical standpoint, this means that bits shared by both of them will always be passed on to the next generation.
+
+			    \vspace{0.2cm}
+
+			    \begin{figure}[bth]
+
+			        \myfloatalign
+			        \includegraphics[width=0.5\textwidth]{gfx/UniformCrossover.png}
+			        \caption{Uniform crossover example. Note that the highlighted elements are present in both individuals.}
+
+			    \end{figure}
+
+
+			\end{itemize}
