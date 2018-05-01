@@ -20,7 +20,7 @@
 
 	\end{itemize}
 
-	A typical vanilla feed-forward neural network contains directed connections between its different layers, but not between components of the same layer. Also, the term \textit{feed-forward} implies that there are no cycles in the graph of the network, and so the information moves from the input to the output through the hidden layers. The way in which this information flows is defined by the \textit{activation function} (the response of a neuron from an input number) as well as the \textit{weights} of the connections between neurons: although it is frequent to have fully-connected layers, it does not mean that one unit passes the same value to all the other units it points to, or even that they are not null; determining that is precisely the task of the learning algorithm.
+	A typical vanilla feed-forward neural network contains directed connections between its different layers, but not between components of the same layer. Also, the term \textit{feed-forward} implies that there are no cycles in the graph of the network, and so the information moves from the input to the output through the hidden layers. The way in which this information flows is defined by the \textit{activation function} (the response of a neuron from an input number) as well as the \textit{weights} of the connections between neurons: although it is frequent to have fully-connected layers, it does not mean that one unit passes the same value to all the other units it points to, or even that they are not null; finding it out is precisely the task of the learning algorithm.
 
 \newpage
 
@@ -65,7 +65,7 @@
     	\textit{\ac{ReLU}}: defined by $f(x) = 0$ if $x \leq 0$ and $f(x) = x$ if $x > 0$. It avoids small gradients for high input values and makes networks sparser with its negative part (accounting again for more efficiency). The downside is the \textit{dying} \acs{ReLU}, in which some neurons become perpetually inactive.
 
     	\item
-    	\textit{Leaky \acs{ReLU}}: one of the variants of \acs{ReLU} that tries to avoid inactive neurons by setting $f(x)$ for negative $x$ to $0.01x$ instead of $0$. Its generalization is the \textit{Parameterized ReLU} \cite{delv-deep-relu,deep-res-relu}.
+    	\textit{Leaky \acs{ReLU}}: one of the variants of \acs{ReLU} which tries to avoid inactive neurons by setting $f(x)$ for negative $x$ to $0.01x$ instead of $0$. Its generalization is the \textit{Parameterized ReLU} \cite{delv-deep-relu,deep-res-relu}.
 
     	\item
     	\textit{\ac{ELU}} \cite{elu}: another recent alternative that replaces the horizontal section of the \acs{ReLU} with an exponential function.
@@ -89,7 +89,7 @@
     \begin{itemize}
 
     	\item
-    	Limited data: without delving too much into the underlying theory, the more powerful a model is, the more training samples are needed in a substantial proportion. Coupled with it, the smaller the training set, the smaller the chance that it will represent the whole population.
+    	Limited data: without delving too much into the underlying theory, the more powerful a model is, the more training samples are needed in a substantial proportion. Coupled with it, the smaller the training set, the smaller the chance it will represent the whole population.
 
     	\item
     	Imbalanced data: when there are far more examples of one or more classes than of the rest, we speak of imbalance. Apart from not representing the population, this phenomenon can even bias a classifier in a way that it only outputs one class, as it seems the best way to minimize the error.
@@ -112,7 +112,7 @@
 
 \newpage
 
-	The kind of \acs{EA}s we will be using are known as \textit{genetic algorithms}. Now, if we analyze them, we find that they have several main pieces:
+	The kind of \acs{EA}s we will be using are known as \textit{genetic algorithms}. Now, if we analyze them, we find they have several main pieces:
 
 	\begin{itemize}
 
@@ -133,6 +133,9 @@
 
 		\item
 		Mutation operator: in order to maintain diversity, random mutations are introduced with a certain probability.
+
+		\item
+		Replacement: how the old population and the offspring set will be used to create a new population.
 
 	\end{itemize}
 
@@ -191,7 +194,7 @@
 			\begin{itemize}
 
 				\item
-				Single-point: choose a random position between the first and the last. To each side of that point we only add the elements of a single parent.
+				Single-point: choose a random position between the first and the last. To each of its sides we only add the elements of a single parent.
 
 				\vspace{0.2cm}
 
@@ -255,3 +258,23 @@
 		\subsubsection{In neural networks}
 
 			When dealing with quantities, such as the number of layers or of neurons per layer, the simplest thing to do is to add or subtract. A more frequent mutation could be to just alter the number of neurons in one (or more than one) layer either by a fixed amount or by using a probability distribution (gaussian noise, for instance). A much rarer mutation--for its impact in the structure of the network--could involve a slight change in the number of layers.
+
+
+	\subsection{Replacement}
+
+		The act of combining the old population and the freshly-created offspring into a new population for the next generations has a great significance in the final outcome of the algorithm. Let us start reviewing the two categories of genetic algorithms according to the magnitude of the replacement:
+
+		\begin{itemize}
+
+			\item
+			Steady-state: only a few parents--typically two--are selected for reproduction in each generation, and the offspring they yield replace the same amount of individuals in the original population.
+
+			\item
+			Generational: the whole previous population is displaced by a newly created group.
+
+		\end{itemize}
+
+		Because these categories are not strict, we could have a genetic algorithm that ranks halfway between the two: not all the previous individuals have to be replaced. We usually make this decision with the help of additional criteria: imagine that we lump together all the individuals and sort them by fitness; all offspring could be better than the best old individual, and thus the entire population would be replaced, but it might very well not be the case, and end up with a mix of old and new.
+
+		The way in which we choose to do the replacement causes, along with the selection procedure, a certain degree of \textit{selective pressure} \cite{selection-ga}. Selective pressure characterizes the extent to which better individuals are prioritized in the evolution stages of the algorithm
+
