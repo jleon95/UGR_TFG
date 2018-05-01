@@ -229,5 +229,14 @@
 
 			    \end{figure}
 
-
 			\end{itemize}
+
+		\subsubsection{Neural networks}
+
+			If binary representations and crossovers are among the most widely studied, it is not quite the case with neural networks in genetic algorithms (probably because the revival of the field happened not many years ago).
+
+			Some parameters (\textit{hyperparameters}, because their values are fixed before the training phase) to tune are the number of hidden layers, or neurons per layer, or the learning rate.
+
+			For the first two, one could do something along the lines of the binary crossovers we just explained: take some layer sizes from one parent and the rest from the other, have the child get as many hidden layers as the average of its parents, etc. Perhaps we want to keep the numbers inside tolerance intervals, so we should check after each operation too.
+
+			To pass learning rates on, maybe a simple average would do. Given that we don't have prior knowledge about the function we are trying to optimize--only that it has a global optimum somewhere--, it would be a reasonable strategy: if the optimum is between two values, an average would keep us in range; if not, we would not have known anyway.
