@@ -108,7 +108,7 @@
 
 	Evolutionary algorithms are iterative procedures that take a population of feasible solutions to a problem and try to progressively find the best possible answer by mimicking nature in its selection process. 
 
-	Because they are not tied to a fixed type of problem, they find use in fields as disparate as computer science, medicine, economics or cryptography, among many others. In the business at hand, they will serve as neural network optimizers, in addition to feature selectors in a preliminar step.
+	Because they are general-purpose metaheuristics, they find use in fields as disparate as computer science, medicine, economics or cryptography, among many others. In the business at hand, they will serve as neural network optimizers, in addition to feature selectors in a preliminar step.
 
 \newpage
 
@@ -117,10 +117,16 @@
 	\begin{itemize}
 
 		\item
-		Population: a list of candidate solutions (called \textit{individuals}) to a problem.
+		Individual: a potential solution to a problem, represented in an adequate manner.
 
 		\item
-		Selection process: every genetic algorithm has one or more fitness functions which evaluate the quality of an individual. On that basis, we can choose some \textit{parents} to help us find better individuals.
+		Population: a set of individuals for a given iteration (\textit{generation}).
+
+		\item
+		Fitness: every genetic algorithm has one or more fitness functions which evaluate the quality of an individual. It can be the most expensive operation, depending on the situation.
+
+		\item
+		Selection process: the creation of new individuals (\textit{offspring}) needs a set of parents. The selection process chooses them based on some criteria, usually involving the fitness.
 
 		\item
 		Crossover operator: once we have a list of potential parents, this operator defines how to create \textit{offspring} that resemble them in some way.
@@ -129,3 +135,23 @@
 		Mutation operator: in order to maintain diversity, random mutations are introduced with a certain probability.
 
 	\end{itemize}
+
+	\subsection{Individuals}
+
+		The individuals of a genetic algorithm may be represented in a variety of ways. It is crucial to find the best suited for our needs, as it will not only impact time and space efficiency but also the overall performance of the optimization, enabling some genetic operators and discarding others.
+
+		For example, in feature selection we could code our solutions as a binary vector in which the ones represent active features and the zeros inactive features. Alternatively, we could just keep a list of the indices of active features; this would use less memory but also make some very simple operators in binary codification way more convoluted to implement.
+
+		That said, common representations include binary, order-based and real-valued. The first already exemplified, order-based is natural in \textit{Travelling Salesman Problem}-like cases and real-valued can be found in numerical function optimization.
+
+	\subsection{Population}
+
+		Population size must have an equilibrium between enough individuals to explore the solution space and not too many of them, because fitness evaluation is performed for every individual in every generation.
+
+	\subsection{Fitness}
+
+		Fitness measures, both in type and in number, depend on what aspect of a problem we want to tackle. 
+
+		If we hope to find a global maximum or minimum in a complex function, the fitness will just compute the value at a given point. If we want to choose from a set of features, the evaluation will need to assess how good a subset is by training and testing a machine-learning model; similarly, if we wanted to further optimize that model, we would need to try many variations of its parameters.
+
+		However, suppose we can't decide on what we prefer to improve: for instance, we want a solution to be as accurate as possible, but we want it to be simple, too. This is when \textit{multiobjective optimization} comes in: instead of returning the best candidate, we accept a compromise between the two criteria and return a list of candidates that are not better or worse than the others. They just score well in both measures but in different proportions.
