@@ -290,4 +290,16 @@
 
 	    \end{figure}
 
-	    It is important to note that this basic scheme is complemented by the stopping conditions, which range from finding the optimum (when have the number but need the associated solution) to an artificial limit by iteration count or a streak of non-productive generations.
+	    It is important to note that this basic scheme is complemented by the stopping conditions, which range from finding the optimum (when we have the number but need the associated solution) to an artificial limit by iteration count or a streak of non-productive generations.
+
+\section{Multiobjective optimization}
+
+	As was briefly discussed in a previous section, it is possible to have several criteria to guide our search of good solutions for our problem.
+
+	We can define multiobjective optimization in a more formal way:
+
+	$$\min_{x \in X}(f_1(x),f_2(x),...,f_n(x))$$
+
+	Where $X$ represents the space of possible solutions, and $n > 1$ is the number of objective functions. An alternative notation would be taking $F(x)$ as a vectorial function containing all $f_n(x)$.
+
+	In order to deal with the intricacies of the compromises between perfomance across several functions, we usually rely on the \textit{Pareto} fronts.
