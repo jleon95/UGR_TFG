@@ -302,4 +302,30 @@
 
 	Where $X$ represents the space of possible solutions, and $n > 1$ is the number of objective functions. An alternative notation would be taking $F(x)$ as a vectorial function containing all $f_n(x)$.
 
-	In order to deal with the intricacies of the compromises between perfomance across several functions, we usually rely on the \textit{Pareto} fronts.
+	When looking for suitable solutions, we pay special attention to \textit{Pareto-optimal} solutions, which are \textit{non-dominated}. Domination of $x_1$ over $x_2$, with $x_1,x_2 \in X$, can be defined by the following two conditions:
+
+	\begin{enumerate}
+
+		\item
+		$f_i(x_1) \leq f_i(x_2), i : 1\leq i \leq n$
+
+		\item
+		$f_i(x_1) < f_i(x_2),$ for one or more $i \in \{1,2,...,n\}$
+
+	\end{enumerate}
+
+\newpage
+
+	The \textit{Pareto front} is the set of solutions which meet both conditions for the rest of solutions but fail to meet the first one when compared among themselves. An example of a Pareto front is shown in the next figure:
+
+	\vspace{0.2cm}
+
+	\begin{figure}[bth]
+
+        \myfloatalign
+        \includegraphics[width=0.9\textwidth]{gfx/ParetoFront.png}
+        \caption{A two-dimensional Pareto front with its points highlighted in blue and an approximate curve outlined in orange.}
+
+    \end{figure}
+
+\newpage
