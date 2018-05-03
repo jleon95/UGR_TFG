@@ -36,3 +36,6 @@ _minted*
 *-blx.aux
 *-blx.bib
 *.run.xml
+
+# listings
+*.lol
