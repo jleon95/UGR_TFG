@@ -298,7 +298,9 @@
 
 	We can define multiobjective optimization in a more formal way:
 
-	$$\min_{x \in X}(f_1(x),f_2(x),...,f_n(x))$$
+	\begin{equation}
+		\min_{x \in X}(f_1(x),f_2(x),...,f_n(x))
+	\end{equation}
 
 	Where $X$ represents the space of possible solutions, and $n > 1$ is the number of objective functions. An alternative notation would be taking $F(x)$ as a vectorial function containing all $f_n(x)$.
 
@@ -307,7 +309,7 @@
 	\begin{enumerate}
 
 		\item
-		$f_i(x_1) \leq f_i(x_2), i : 1\leq i \leq n$
+		$f_i(x_1) \leq f_i(x_2), \forall i : 1\leq i \leq n$
 
 		\item
 		$f_i(x_1) < f_i(x_2),$ for one or more $i \in \{1,2,...,n\}$
@@ -327,5 +329,7 @@
         \caption{A two-dimensional Pareto front with its points highlighted in blue and an approximate curve outlined in orange.}
 
     \end{figure}
+
+    A multiobjective optimization algorithm typically returns the Pareto front in its entirety, and it is our duty to make an informed decision about which element(s) we deem more appropriate.
 
 \newpage
