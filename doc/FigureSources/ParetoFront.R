@@ -11,6 +11,7 @@ ggplot(data = points, aes(x = x, y = y, group = 1)) +
   geom_point(data = points[front, c("x","y")], color = "blue", size = 2) +
   geom_point(data = points[-front, c("x","y")], size = 1.4) + theme_bw() +
   labs(x = expression(f[1](x)), y = expression(f[2](x))) +
+  coord_fixed(ratio = 1) +
   theme(panel.border = element_blank(),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         axis.text.x = element_blank(), axis.ticks.x = element_blank(),
