@@ -10,7 +10,7 @@
 	\begin{itemize}
 
 		\item
-		Input layer: with as many neurons as characteristics describing a single sample. Each unit receives the value of its corresponding characteristic as is. Depending on the problem (and not just for this sort of model), it may be useful to preprocess the data so as not to bias the model.
+		Input layer: with as many neurons as characteristics describing a single sample. Each unit receives the original value of its corresponding characteristic. Depending on the problem (and not just for this sort of model), it may be useful to preprocess the data so as not to bias the model.
 
 		\item
 		Output layer: the number of possible outputs dictates its number of neurons. Only one of them can be active at a time, indicating the answer of the neural network to the classification question.
@@ -98,7 +98,7 @@
     	Incomplete data: this is the case when the available samples have missing values. In this situation there are two options: either we discard incomplete fields from across all samples or we try to infer them.
 
     	\item
-    	High dimensionality: linking with the first bullet point, powerful models can suffer of \textit{overfitting} with limited and/or high-dimensional samples. The latter can cause the model to just learn the available data ``by heart'' and fail to generalize to new examples. Even leaving extreme cases aside, the number of features directly impacts the time required for training.
+    	High dimensionality: linking with the first bullet point, powerful models can suffer of \textit{overfitting} with limited and/or high-dimensional samples. The latter can cause the model to just learn the available data ``by heart'' and fail to generalize to new examples. Even leaving extreme cases aside, the number of features has a direct impact on the time required for training.
 
     \end{itemize}
 
@@ -108,7 +108,7 @@
 
 	Evolutionary algorithms are iterative procedures that take a population of feasible solutions to a problem and try to progressively find the best possible answer by mimicking nature in its selection process. 
 
-	Because they are general-purpose metaheuristics, they find use in fields as disparate as computer science, medicine, economics or cryptography, among many others. In the business at hand, they will serve as neural network optimizers, in addition to feature selectors in a preliminar step.
+	Being general-purpose metaheuristics, they find use in fields as disparate as computer science, medicine, economics or cryptography, among many others. In the business at hand, they will serve as neural network optimizers, in addition to feature selectors in a preliminar step.
 
 \newpage
 
@@ -147,7 +147,7 @@
 
 		For example, in feature selection we could code our solutions as a binary vector in which the ones represent active features and the zeros inactive features. Alternatively, we could just keep a list of the indices of active features; this would use less memory but also make some very simple operators in binary codification way more convoluted to implement.
 
-		That said, common representations include binary, order-based and real-valued. The first already exemplified, order-based is natural in \textit{Travelling Salesman Problem}-like cases and real-valued can be found in numerical function optimization.
+		Common representations include binary, order-based and real-valued. Having already exemplified the first, order-based is natural in \textit{Travelling Salesman Problem}-like cases and real-valued can be found in numerical function optimization.
 
 	\subsection{Population}
 
@@ -185,7 +185,7 @@
 
 	\subsection{Crossover}
 
-		A highly representation-dependent operator, there exist a plethora of options. As it is unfeasible to list them all, even just the most relevant ones, we will limit this section to the kinds we will use. The only prerequesite is that they offer a degree of continuity from parent to offspring.
+		There exist a plethora of options for this highly representation-dependent operator. As it is unfeasible to list them all, even just the most relevant ones, we will limit this section to the kinds we will use. The only prerequesite is that they offer a degree of continuity from parent to offspring.
 
 		\subsubsection{In binary representation}
 
@@ -274,7 +274,7 @@
 
 		\end{itemize}
 
-		Because these categories are not strict, we could have a genetic algorithm that ranks halfway between the two: not all the previous individuals have to be replaced. We usually make this decision with the help of additional criteria: imagine that we lump together all the individuals and sort them by fitness; all offspring could be better than the best old individual, and thus the entire population would be replaced, but it might very well not be the case, and end up with a mix of old and new.
+		Since these categories are not strict, we could have a genetic algorithm that ranks halfway between the two: not all the previous individuals have to be replaced. We usually make this decision with the help of additional criteria: imagine that we lump together all the individuals and sort them by fitness; all offspring could be better than the best old individual, and thus the entire population would be replaced, but it might very well not be the case, and end up with a mix of old and new.
 
 		The way in which we choose to do the replacement causes, along with the selection procedure, a certain degree of \textit{selective pressure} \cite{selection-ga}. Selective pressure characterizes the extent to which better individuals are prioritized in the evolution stages of the algorithm.
 
