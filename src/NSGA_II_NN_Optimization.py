@@ -5,6 +5,11 @@ from numpy.random import choice, ranf, randint
 from sklearn.externals.joblib import Parallel, delayed
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import cohen_kappa_score, accuracy_score
+from keras.wrappers.scikit_learn import KerasClassifier
+from keras.models import Sequential
+from keras.layers import Dense, Dropout
+from keras.optimizers import SGD
+from keras.utils import to_categorical
 
 #-------------------- Population initialization --------------------
 
@@ -14,9 +19,9 @@ from sklearn.metrics import cohen_kappa_score, accuracy_score
 # (the width is maximal at the middle and decreases towards both ends).
 def InitializePopulation(pop_size, input_size, n_hidden):
 
-	population = np.zeros((pop_size,n_hidden),dtype=np.uint16)
+	population = np.zeros((pop_size,n_hidden),dtype=np.int32)
 	population[:,0] = randint(input_size,int(input_size*1.75),
-							size=population.shape[0],dtype=np.uint16)
+							size=population.shape[0],dtype=np.int32)
 
 	if n_hidden > 1:
 
@@ -88,6 +93,52 @@ def TournamentSelection(population, sort_scores, pool_size):
 
 #-------------------- Fitness metrics --------------------
 
+# Creates a Keras model compatible with the scikit-learn API.
+# "input_size": number of input features.
+# "output_size": number of different classes (2 or more).
+# "layers": a list or numpy array of neurons per layer.
+# "activation": Keras name of the activation function.
+# "lr": learning rate.
+# "dropout": dropout rate, if used (> 0). Recommended (0.2-0.5).
+def CreateNeuralNetwork(input_size, output_size, layers, activation,
+	lr = 0.0, dropout = 0.0):
+
+	model = Sequential()
+	model.add(Dense(layers[0],activation=activation,input_dim=input_size))
+
+	for layer in layers[1:]:
+
+		if dropout > 0.0:
+			model.add(Dropout(dropout))
+		model.add(Dense(layer,activation=activation))
+
+	sgd = SGD(lr=lr if lr > 0.0 else 0.1)
+	if output_size > 2:
+		model.add(Dense(output_size,activation='softmax'))
+		model.compile(optimizer=sgd,loss='categorical_crossentropy',
+              metrics=['accuracy'])
+	else:
+		model.add(Dense(output_size,activation='sigmoid'))
+		model.compile(optimizer=sgd,loss='binary_crossentropy',
+              metrics=['accuracy'])
+
+	return model
+
+# Returns the k-fold cross-validation accuracy loss using
+# "individual" to build the hidden layers and "rounds" as k.
+# "data" and "labels" are two dictionaries whose keys 'train' and
+# 'test' contain the corresponding samples or class labels.
+# The returned value is 1 - cross-validation accuracy.
+def CrossValidationLoss(individual, data, labels, activation, rounds = 5):
+
+	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
+		input_size=data['train'].shape[1],
+		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
+		layers=individual,activation=activation,epochs=300,verbose=0)
+	scores = cross_val_score(network,data['train'],
+							labels['train'],cv=rounds)
+	return 1 - scores.mean()
+
 #-------------------- NSGA-II Algorithm --------------------
 
 # Main procedure of this module.
@@ -141,4 +192,4 @@ if __name__ == '__main__':
 				   {'train': np.load("data/labels_training_107.npy"),
 				   'test': np.load("data/labels_test_107.npy")},
 				   {'train': np.load("data/labels_training_110.npy"),
-				   'test': np.load("data/labels_test_110.npy")}] 
+				   'test': np.load("data/labels_test_110.npy")}]
