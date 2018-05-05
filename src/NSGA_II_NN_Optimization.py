@@ -93,6 +93,9 @@ def TournamentSelection(population, sort_scores, pool_size):
 
 #-------------------- Fitness metrics --------------------
 
+# Values closer to zero imply better fitness. Thus, in multiobjective
+# optimization, the point (0,0,...,0) is the theoretical optimum.
+
 # Creates a Keras model compatible with the scikit-learn API.
 # "input_size": number of input features.
 # "output_size": number of different classes (2 or more).
@@ -123,6 +126,12 @@ def CreateNeuralNetwork(input_size, output_size, layers, activation,
               metrics=['accuracy'])
 
 	return model
+
+# Measures the simplicity of a model by counting the total amount of
+# hidden units. A lower count results in a better score (closer to 0).
+def Simplicity(individual, *_):
+
+	return np.sum(individual)
 
 # Returns the k-fold cross-validation accuracy loss using
 # "individual" to build the hidden layers and "rounds" as k.
