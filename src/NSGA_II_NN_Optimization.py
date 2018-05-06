@@ -143,10 +143,11 @@ def SimpleLoss(individual, data, labels, activation, dropout = 0.0, *_):
 	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
 		input_size=data['train'].shape[1],
 		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
-		layers=individual,activation=activation,epochs=300,verbose=0)
+		layers=individual,activation=activation,dropout=dropout,epochs=300,
+		verbose=0)
 	network.fit(data['train'],labels['train'])
-	predictions = network.predict(data['test'])
-	return 1 - accuracy_score(predictions,labels['test'])
+	score = network.score(data['test'],labels['test'])
+	return 1 - score
 
 # Returns the k-fold cross-validation accuracy loss using
 # "individual" to build the hidden layers and "rounds" as k.
@@ -159,7 +160,8 @@ def CrossValidationLoss(individual, data, labels, activation,
 	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
 		input_size=data['train'].shape[1],
 		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
-		layers=individual,activation=activation,epochs=300,verbose=0)
+		layers=individual,activation=activation,dropout=dropout,epochs=300,
+		verbose=0)
 	scores = cross_val_score(network,data['train'],
 							labels['train'],cv=rounds)
 	return 1 - scores.mean()
