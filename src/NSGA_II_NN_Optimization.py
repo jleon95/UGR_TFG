@@ -96,6 +96,11 @@ def TournamentSelection(population, sort_scores, pool_size):
 # Values closer to zero imply better fitness. Thus, in multiobjective
 # optimization, the point (0,0,...,0) is the theoretical optimum.
 
+# Since Keras internally works with one-hot encodings for training
+# labels (and sometimes for test labels too), it is important
+# to have all labels in one-hot encoding to unify the workflow in
+# this respect. It can be done with keras.utils.to_categorical().
+
 # Creates a Keras model compatible with the scikit-learn API.
 # "input_size": number of input features.
 # "output_size": number of different classes (2 or more).
@@ -148,7 +153,7 @@ def KappaLoss(individual, data, labels, activation, dropout = 0.0, *_):
 		verbose=0)
 	network.fit(data['train'],labels['train'])
 	predictions = network.predict(data['test'])
-	return 1 - cohen_kappa_score(predictions,labels['test'])
+	return 1 - cohen_kappa_score(predictions,labels['test'].argmax(1))
 
 # Assesses the agreement between the test labels and a classifier
 # trained using the layers described by "individual".
