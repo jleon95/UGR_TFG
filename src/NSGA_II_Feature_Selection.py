@@ -7,6 +7,75 @@ from sklearn.model_selection import cross_val_score
 from sklearn.metrics import cohen_kappa_score, accuracy_score
 from sklearn import linear_model
 
+#-------------------- Population initialization --------------------
+
+# Returns a population of "pop_size" binary-encoded individuals whose
+# active features have been selected from the interval [0,"total_features").
+# The number of ones of each individual is in the range [1,"max_features").
+def InitializePopulation(pop_size, total_features, max_features):
+
+	# Matrix of individuals.
+	population = np.zeros((pop_size,total_features),dtype=bool)
+	# Get the number of ones of each individual in one go.
+	active_features = choice(np.arange(1,max_features),size=pop_size)
+	# For each individual, swap some of its zeros for ones.
+	for i in range(pop_size):
+		population[i][choice(total_features,replace=False,
+							size=active_features[i])] = 1
+
+	return population
+
+#-------------------- Population evaluation --------------------
+
+# Evaluates every individual of the given population using the
+# metrics contained in "objective_funcs".
+# "objective_funcs" is a list of tuples (function, [arguments])
+# meant to provide optional arguments to the evaluation functions
+# if needed (for example, data for model training).
+# It can also attempt to decrease computation time by means of
+# parallelism ("n_cores"), but if the metrics are too simple
+# it can lead to worse performance by overhead.
+def EvaluatePopulation(population, objective_funcs, n_cores = 1):
+
+	results = np.empty((population.shape[0],len(objective_funcs)))
+
+	if n_cores > multiprocessing.cpu_count():
+		n_cores = -1 # -1 means all cores for joblib.
+
+	with Parallel(n_jobs=n_cores) as parallel:
+
+		for o, (f, args) in enumerate(objective_funcs):
+
+			results[:,o] = parallel(delayed(f)(population[i,:],*args)
+							for i in range(population.shape[0]))
+
+	return results
+
+#-------------------- Selection process --------------------
+
+# Binary tournament. Takes as many random individuals as 2 * "pool_size"
+# and outputs "pool_size" winners as individuals selected for crossover.
+# For each pair, we choose the individual with the lower rank; if there's
+# a draw, we favor the one with greater crowding distance.
+# "sort_scores" contains (front, crowding distance) for each individual.
+# Returns an array of individuals.
+def TournamentSelection(population, sort_scores, pool_size):
+
+	selected = np.zeros((pool_size,population.shape[1]))
+	for i in range(selected.shape[0]):
+
+		candidates = choice(sort_scores.shape[0],replace=False,size=2)
+		best_front_pos = candidates[np.argmin(sort_scores[candidates,0])]
+
+		# If both fronts are the same, we can't use "best_front_pos".
+		if sort_scores[candidates[0]][0] != sort_scores[candidates[1]][0]:
+			selected[i] = population[best_front_pos]
+		else:
+			max_distance_pos = candidates[np.argmax(sort_scores[candidates,1])]
+			selected[i] = population[max_distance_pos]
+
+	return selected
+
 #-------------------- Crossover operators --------------------
 
 # Given:
@@ -71,25 +140,6 @@ def UniformCrossover(parent1, parent2, max_features, prob = 0.5):
 		offspring = np.copy(parent2) # just avoid increasing the running time.
 	return offspring
 
-
-#-------------------- Population initialization --------------------
-
-# Returns a population of "pop_size" binary-encoded individuals whose
-# active features have been selected from the interval [0,"total_features").
-# The number of ones of each individual is in the range [1,"max_features").
-def InitializePopulation(pop_size, total_features, max_features):
-
-	# Matrix of individuals.
-	population = np.zeros((pop_size,total_features),dtype=bool)
-	# Get the number of ones of each individual in one go.
-	active_features = choice(np.arange(1,max_features),size=pop_size)
-	# For each individual, swap some of its zeros for ones.
-	for i in range(pop_size):
-		population[i][choice(total_features,replace=False,
-							size=active_features[i])] = 1
-
-	return population
-
 #-------------------- Mutation operator --------------------
 
 # Swaps "swaps" random bits.
@@ -108,31 +158,6 @@ def FlipBitsMutation(chromosome, max_features, swaps = 1):
 	elif len(mutated_ones) < 1: # Probably won't happen too often.
 		mutated = np.copy(chromosome)
 	return mutated
-
-#-------------------- Selection process --------------------
-
-# Binary tournament. Takes as many random individuals as 2 * "pool_size"
-# and outputs "pool_size" winners as individuals selected for crossover.
-# For each pair, we choose the individual with the lower rank; if there's
-# a draw, we favor the one with greater crowding distance.
-# "sort_scores" contains (front, crowding distance) for each individual.
-# Returns an array of individuals.
-def TournamentSelection(population, sort_scores, pool_size):
-
-	selected = np.zeros((pool_size,population.shape[1]))
-	for i in range(selected.shape[0]):
-
-		candidates = choice(sort_scores.shape[0],replace=False,size=2)
-		best_front_pos = candidates[np.argmin(sort_scores[candidates,0])]
-
-		# If both fronts are the same, we can't use "best_front_pos".
-		if sort_scores[candidates[0]][0] != sort_scores[candidates[1]][0]:
-			selected[i] = population[best_front_pos]
-		else:
-			max_distance_pos = candidates[np.argmax(sort_scores[candidates,1])]
-			selected[i] = population[max_distance_pos]
-
-	return selected
 
 #-------------------- Offspring generation --------------------
 
@@ -153,32 +178,6 @@ def CreateOffspring(parents, crossover, mutation, max_features,
 			offspring[n] = mutation(offspring[n],max_features)
 
 	return offspring
-
-#-------------------- Population evaluation --------------------
-
-# Evaluates every individual of the given population using the
-# metrics contained in "objective_funcs".
-# "objective_funcs" is a list of tuples (function, [arguments])
-# meant to provide optional arguments to the evaluation functions
-# if needed (for example, data for model training).
-# It can also attempt to decrease computation time by means of
-# parallelism ("n_cores"), but if the metrics are too simple
-# it can lead to worse performance by overhead.
-def EvaluatePopulation(population, objective_funcs, n_cores = 1):
-
-	results = np.empty((population.shape[0],len(objective_funcs)))
-
-	if n_cores > multiprocessing.cpu_count():
-		n_cores = -1 # -1 means all cores for joblib.
-
-	with Parallel(n_jobs=n_cores) as parallel:
-
-		for o, (f, args) in enumerate(objective_funcs):
-
-			results[:,o] = parallel(delayed(f)(population[i,:],*args)
-							for i in range(population.shape[0]))
-
-	return results
 
 #-------------------- Fitness metrics --------------------
 
@@ -254,9 +253,9 @@ def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, gene
 	assert labels['train'].shape[0] == data['train'].shape[0], \
 			"You need an equal number of labels than of samples"
 	assert max_features > 0 and max_features < data['train'].shape[1], \
-			"You need a feature count between 0 and all features"
+			"You need a feature count between 1 and all features"
 	assert len(objective_funcs) > 1, \
-			"You need at least 2 objective functions."
+			"You need at least 2 objective functions"
 	assert pop_size >= 10, "You need at least 10 individuals"
 	assert generations >= 5, "You need at least 5 generations"
 	np.random.seed(seed)
