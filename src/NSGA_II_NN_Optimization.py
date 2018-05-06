@@ -134,6 +134,23 @@ def Simplicity(individual, *_):
 	return np.sum(individual)
 
 # Assesses the agreement between the test labels and a classifier
+# trained using the layers described by "individual", taking chance
+# into account.
+# "data" and "labels" are two dictionaries whose keys 'train' and
+# 'test' contain the corresponding samples or class labels.
+# The returned value is 1 - Kappa coefficient.
+def KappaLoss(individual, data, labels, activation, dropout = 0.0, *_):
+
+	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
+		input_size=data['train'].shape[1],
+		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
+		layers=individual,activation=activation,dropout=dropout,epochs=300,
+		verbose=0)
+	network.fit(data['train'],labels['train'])
+	predictions = network.predict(data['test'])
+	return 1 - cohen_kappa_score(predictions,labels['test'])
+
+# Assesses the agreement between the test labels and a classifier
 # trained using the layers described by "individual".
 # "data" and "labels" are two dictionaries whose keys 'train' and
 # 'test' contain the corresponding samples or class labels.
