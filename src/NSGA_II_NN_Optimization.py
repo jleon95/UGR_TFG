@@ -127,10 +127,22 @@ def SinglePointCrossover(parent1, parent2):
 def SingleLayerMutation(individual, magnitude = 0.3):
 
 	mutated = np.copy(individual)
-	layer = choice(len(mutated))
+	valid_layers = np.argmax(mutated == 0) or len(mutated)
+	layer = choice(valid_layers)
 	change = mutated[layer] * magnitude * standard_normal()
-	mutated -= int(change//(len(mutated)-1))
-	mutated[layer] += change + int(change//(len(mutated)-1))
+	mutated[:valid_layers] -= int(change//valid_layers)
+	mutated[layer] += change + np.sign(change) * int(change//valid_layers)
+	return mutated
+
+# Scales the whole network evenly using a magnitude modifier. The
+# sign of the change is decided randomly.
+# It is a size change rather than a shape change.
+def ScaleMutation(individual, magnitude = 0.1):
+
+	mutated = np.copy(individual)
+	valid_layers = np.argmax(mutated == 0) or len(mutated)
+	sign = 1 if ranf() > 0.5 else -1
+	mutated[:valid_layers] += sign * int((np.sum(mutated) * magnitude) // valid_layers)
 	return mutated
 
 #-------------------- Offspring generation --------------------
