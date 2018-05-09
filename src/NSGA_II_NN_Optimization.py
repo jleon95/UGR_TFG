@@ -93,6 +93,30 @@ def TournamentSelection(population, sort_scores, pool_size):
 
 #-------------------- Crossover operators --------------------
 
+# Let N and M be the biggest layers of "parent1" and "parent2",
+# assuming a structure somewhat resembling of a diamond.
+# The offspring is created as follows:
+# - "parent1" contributes its layers until N (excluding it).
+# - "parent2" contributes M and its subsequent layers.
+# The excess layers (size > allowed amount of layers) are discarded
+# from the end of the array.
+def SinglePointCrossover(parent1, parent2):
+
+	# Make sure the splice doesn't overflow the temporal array.
+	offspring = np.zeros(len(parent1)*2,dtype=np.int32)
+	# Find the biggest layers (ideally around the middle).
+	biggest_layer_p1 = np.argmax(parent1)
+	biggest_layer_p2 = np.argmax(parent2)
+	# last layer - biggest layer yields the number of layers
+	# that "parent2" contributes to the offspring.
+	last_layers_p2 = (np.argmax(parent2 == 0) or len(parent2)) - \
+						 biggest_layer_p2
+	# Assemble the offspring.
+	offspring[:biggest_layer_p1] = parent1[:biggest_layer_p1]
+	offspring[biggest_layer_p1:biggest_layer_p1+last_layers_p2] = \
+		parent2[biggest_layer_p2:biggest_layer_p2+last_layers_p2]
+	return offspring[:len(parent1)]
+
 #-------------------- Mutation operator --------------------
 
 #-------------------- Offspring generation --------------------
@@ -201,7 +225,7 @@ def CrossValidationLoss(individual, data, labels, activation,
 # Main procedure of this module.
 # "data": a dictionary with two matrices of samples x features (train and test).
 # "labels": corresponding class labels for the samples in "data" (same order).
-# "n_hidden": number of hidden layers.
+# "max_hidden": number of hidden layers.
 # "objective_funcs": a list of Python functions for fitness evaluation.
 # "activation": a string with the Keras name of the activation function.
 # "pop_size": the working population size of the genetic algorithm.
@@ -213,20 +237,20 @@ def CrossValidationLoss(individual, data, labels, activation,
 # "mutation_func": mutation method.
 # "pool_fraction": proportion of parent pool size with respect to "pop_size".
 # "n_cores": number of processor cores used in the evaluation step.
-def NNOptimization(data, labels, n_hidden, objective_funcs, activation,
+def NNOptimization(data, labels, max_hidden, objective_funcs, activation,
 		pop_size, generations, seed = 29,
-		crossover_prob = 0.9, crossover_func = None, 
-		mutation_prob = 0.8, mutation_func = None, 
+		crossover_prob = 0.2, crossover_func = None, 
+		mutation_prob = 1.0, mutation_func = None, 
 		pool_fraction = 0.5, n_cores = 1):
 
 	assert data['train'].shape[0] > 0, \
 			"You need a non-empty training set"
 	assert labels['train'].shape[0] == data['train'].shape[0], \
 			"You need an equal number of labels than of samples"
-	assert n_hidden > 0, \
+	assert max_hidden > 0, \
 			"You need at least 1 hidden layer"
 	assert len(objective_funcs) > 1, \
-			"You need at least 2 objective functions."
+			"You need at least 2 objective functions"
 	assert pop_size >= 10, "You need at least 10 individuals"
 	assert generations >= 5, "You need at least 5 generations"
 	np.random.seed(seed)
