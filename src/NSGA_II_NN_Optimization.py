@@ -110,7 +110,7 @@ def TournamentSelection(population, sort_scores, pool_size):
 # Creates a Keras model compatible with the scikit-learn API.
 # "input_size": number of input features.
 # "output_size": number of different classes (2 or more).
-# "layers": a list or numpy array of neurons per layer.
+# "layers": a numpy array of neurons per layer.
 # "activation": Keras name of the activation function.
 # "lr": learning rate.
 # "dropout": dropout rate, if used (> 0). Recommended (0.2-0.5).
@@ -120,7 +120,9 @@ def CreateNeuralNetwork(input_size, output_size, layers, activation,
 	model = Sequential()
 	model.add(Dense(layers[0],activation=activation,input_dim=input_size))
 
-	for layer in layers[1:]:
+	# Since "layers" has a fixed size equal to the maximum layer count allowed,
+	# networks with less layers have 0s starting at some point in the array.
+	for layer in layers[1:np.argmax(layers == 0)]:
 
 		if dropout > 0.0:
 			model.add(Dropout(dropout))
