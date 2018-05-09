@@ -129,9 +129,14 @@ def SingleLayerMutation(individual, magnitude = 0.3):
 	mutated = np.copy(individual)
 	valid_layers = np.argmax(mutated == 0) or len(mutated)
 	layer = choice(valid_layers)
-	change = mutated[layer] * magnitude * standard_normal()
+	change = int(mutated[layer] * magnitude * standard_normal())
 	mutated[:valid_layers] -= int(change//valid_layers)
 	mutated[layer] += change + np.sign(change) * int(change//valid_layers)
+	# If there are invalid layer sizes (<= 0), avoid a crash by
+	# making them the mean of the valid elements.
+	if len(mutated[:valid_layers][mutated[:valid_layers] <= 0]) > 0:
+		mean = np.mean(mutated[:valid_layers][mutated[:valid_layers] > 0])
+		mutated[:valid_layers][mutated[:valid_layers] <= 0] = int(mean)
 	return mutated
 
 # Scales the whole network evenly using a magnitude modifier. The
@@ -143,6 +148,11 @@ def ScaleMutation(individual, magnitude = 0.1):
 	valid_layers = np.argmax(mutated == 0) or len(mutated)
 	sign = 1 if ranf() > 0.5 else -1
 	mutated[:valid_layers] += sign * int((np.sum(mutated) * magnitude) // valid_layers)
+	# If there are invalid layer sizes (<= 0), avoid a crash by
+	# making them the mean of the valid elements.
+	if len(mutated[:valid_layers][mutated[:valid_layers] <= 0]) > 0:
+		mean = np.mean(mutated[:valid_layers][mutated[:valid_layers] > 0])
+		mutated[:valid_layers][mutated[:valid_layers] <= 0] = int(mean)
 	return mutated
 
 #-------------------- Offspring generation --------------------
