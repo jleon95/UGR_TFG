@@ -13,26 +13,32 @@ from keras.utils import to_categorical
 
 #-------------------- Population initialization --------------------
 
-# Returns a population of "pop_size" neural networks with "n_hidden"
-# hidden layers. The number of units at each layer is decided using 
-# "input_size" such that the network has a diamond-like structure
-# (the width is maximal at the middle and decreases towards both ends).
-def InitializePopulation(pop_size, input_size, n_hidden):
+# Returns a population of "pop_size" neural network structures 
+# whose number of hidden layers are inside the interval [1,"max_hidden"].
+# The number of units at each layer is decided using "input_size" 
+# such that the network has a diamond-like structure(the width is maximal
+# at the middle and decreases towards both ends).
+def InitializePopulation(pop_size, input_size, max_hidden):
 
-	population = np.zeros((pop_size,n_hidden),dtype=np.int32)
-	population[:,0] = randint(input_size,int(input_size*1.75),
-							size=population.shape[0],dtype=np.int32)
+	# Matrix of individuals
+	pop = np.zeros((pop_size,max_hidden),dtype=np.int32)
+	# Initialize their first layer (used as a base for subsequent ones).
+	pop[:,0] = randint(input_size,int(input_size*1.75),
+							size=pop.shape[0],dtype=np.int32)
+	# Choose how many layers each individual will have.
+	active_layers = choice(np.arange(1,max_hidden+1),size=pop_size)
 
-	if n_hidden > 1:
+	for i in range(pop_size):
 
-		for ind in population:
-			middle = int(len(ind)/2.0)
-			for i in range(1,middle):
-				ind[i] = int(ind[i-1] + ind[i-1] * ranf())
-			for i in range(middle,len(ind)):
-				ind[i] = max(int(ind[0]/2.0),int(ind[i-1] - ind[i-1] * ranf()))
+		if active_layers[i] > 1:
+			middle = int(active_layers[i]/2.0)+1 # Middle layer is the biggest.
+			for j in range(1,middle): # Go from smaller to bigger layers.
+				pop[i,j] = pop[i,j-1] + pop[i,j-1] * ranf()
+			for j in range(middle,active_layers[i]): # From bigger to smaller.
+				pop[i,j] = max(int(pop[i,0]/2.0),
+							   int(pop[i,j-1] - pop[i,j-1] * ranf()))
 
-	return population	
+	return pop	
 
 #-------------------- Population evaluation --------------------
 
