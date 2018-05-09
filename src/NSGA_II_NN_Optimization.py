@@ -1,7 +1,7 @@
 from NonDominatedSort import NonDominatedSortScores, IndirectSort
 import multiprocessing
 import numpy as np
-from numpy.random import choice, ranf, randint
+from numpy.random import choice, ranf, randint, standard_normal
 from sklearn.externals.joblib import Parallel, delayed
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import cohen_kappa_score, accuracy_score
@@ -117,7 +117,21 @@ def SinglePointCrossover(parent1, parent2):
 		parent2[biggest_layer_p2:biggest_layer_p2+last_layers_p2]
 	return offspring[:len(parent1)]
 
-#-------------------- Mutation operator --------------------
+#-------------------- Mutation operators --------------------
+
+# Chooses a layer and changes its size using a magnitude modifier
+# and a sample from a normal distribution (to add randomness).
+# Afterwards, it compensates the overall unit count of the network
+# by approximately offsetting the change in the other layers-
+# Therefore, it is a shape change rather than a size change.
+def SingleLayerMutation(individual, magnitude = 0.3):
+
+	mutated = np.copy(individual)
+	layer = choice(len(mutated))
+	change = mutated[layer] * magnitude * standard_normal()
+	mutated -= int(change//(len(mutated)-1))
+	mutated[layer] += change + int(change//(len(mutated)-1))
+	return mutated
 
 #-------------------- Offspring generation --------------------
 
