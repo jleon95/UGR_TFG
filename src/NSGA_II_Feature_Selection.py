@@ -246,7 +246,7 @@ def CrossValidationLoss(individual, data, labels, rounds = 5):
 def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, generations, 
 		seed = 29, crossover_prob = 0.9, crossover_func = UniformCrossover, 
 		mutation_prob = 0.8, mutation_func = FlipBitsMutation, pool_fraction = 0.5, 
-		n_cores = 1):
+		n_cores = 1, show_metrics = False):
 
 	assert data['train'].shape[0] > 0, \
 			"You need a non-empty training set"
@@ -260,6 +260,12 @@ def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, gene
 	assert generations >= 5, "You need at least 5 generations"
 	np.random.seed(seed)
 
+	if show_metrics:
+		print("Population size: "+str(pop_size))
+		print("Generations: "+str(generations))
+		print("Seed: "+str(seed))
+		print("Max features: "+str(max_features))
+
 	# As some evaluation functions need more arguments,
 	# put them together in a generic way for simplicity.
 	funcs_with_args = []
@@ -272,11 +278,15 @@ def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, gene
 	# Initial population.
 	population = InitializePopulation(pop_size,data['train'].shape[1],max_features)
 	# Initial evaluation using objective_funcs.
-	evaluation = EvaluatePopulation(population,funcs_with_args)
+	evaluation = EvaluatePopulation(population,funcs_with_args,n_cores=n_cores)
 	# Initial non-domination scores [front, crowding_distance].
 	nds_scores = NonDominatedSortScores(evaluation)
 	# Pool size for parent selection.
 	pool_size = round(pop_size * pool_fraction)
+
+	if show_metrics:
+		print("Mean fitness values of each generation")
+		print(np.mean(evaluation,axis=0))
 
 	for gen in range(generations):
 
@@ -288,7 +298,7 @@ def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, gene
 											mutation_func,max_features,crossover_prob,
 											mutation_prob)
 		# Apply evaluation and non-dominated sort to the joint population.
-		evaluation = EvaluatePopulation(intermediate_pop,funcs_with_args)
+		evaluation = EvaluatePopulation(intermediate_pop,funcs_with_args,n_cores=n_cores)
 		nds_scores = NonDominatedSortScores(evaluation)
 
 		# Sort population and scores based on front and crowding distance,
@@ -296,6 +306,10 @@ def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, gene
 		nds_indices = IndirectSort(nds_scores)
 		population = intermediate_pop[nds_indices][:pop_size,:]
 		nds_scores = nds_scores[nds_indices][:pop_size,:]
+
+		if show_metrics:
+			#print("Mean fitness values of the generation")
+			print(np.mean(evaluation[nds_indices][:pop_size],axis=0))
 	
 	return population, nds_scores, evaluation[nds_indices][:pop_size,:]
 
