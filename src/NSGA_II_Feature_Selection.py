@@ -265,6 +265,9 @@ def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, gene
 		print("Generations: "+str(generations))
 		print("Seed: "+str(seed))
 		print("Max features: "+str(max_features))
+		print("Crossover probability: "+str(crossover_prob))
+		print("Mutation probability: "+str(mutation_prob))
+		print("Pool proportion (to population size): "+str(pool_fraction))
 
 	# As some evaluation functions need more arguments,
 	# put them together in a generic way for simplicity.
@@ -308,7 +311,6 @@ def FeatureSelection(data, labels, max_features, objective_funcs, pop_size, gene
 		nds_scores = nds_scores[nds_indices][:pop_size,:]
 
 		if show_metrics:
-			#print("Mean fitness values of the generation")
 			print(np.mean(evaluation[nds_indices][:pop_size],axis=0))
 	
 	return population, nds_scores, evaluation[nds_indices][:pop_size,:]
