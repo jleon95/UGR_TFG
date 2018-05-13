@@ -325,11 +325,17 @@
 	\begin{figure}[bth]
 
         \myfloatalign
-        \includegraphics[width=0.9\textwidth]{gfx/ParetoFront.png}
+        \includegraphics[width=0.75\textwidth]{gfx/ParetoFront.png}
         \caption{A two-dimensional Pareto front with its points highlighted in blue and an approximate curve outlined in orange.}
 
     \end{figure}
 
     A multiobjective optimization algorithm typically returns the Pareto front in its entirety, and it is our duty to make an informed decision about which element(s) we deem more appropriate.
 
-\newpage
+\section{Feature selection}
+
+	When we face a complex classification or regression job, we often have a lot of unorganized information. In these cases, one of the keys for success is to weed out whatever data that does not contribute anything useful. An excess of data does not just increase the computational cost of training our models, it can also hamper its performance--and in no small proportion, to make things worse.
+
+	It is therefore clear that we need some kind of method for choosing the right information to keep. However, achieving this is no easy feat, as it falls into the category of \textit{NP-hard} problems \cite{amaldi1998approximability}. For this reason, a number of approximate alternatives have been proposed. They can be of one of three classes \cite{guyon2003introduction}.
+
+	\textit{Wrappers} use the performance of a model to score different feature subsets. \textit{Filters} select features as a preprocessing step, independent from any models we later use. \textit{Embedded} methods incorporate the selection in their training processes. Wrappers tend to yield the best outcomes because of their more extensive search, and are a good option if given enough computational resources; with these conditions met, we will be using genetic algorithms, a popular example.
