@@ -1,0 +1,39 @@
+\chapter{The dataset}\label{ch:dataset}
+%************************************************
+
+\section{Description}
+
+	As stated in Chapter \ref{ch:context}, we will be working with \acs{EEG} readings. The patterns have been built using a kind of \ac{MRA} \cite{daubechies1992ten} called the \ac{DWT}, applied in \cite{asensio2013multiresolution} to characterize \acs{EEG}s from \ac{MI} tasks. On this occasion, our aim is to use them to distinguish between an imagined movement of the left hand, the right hand or the feet.
+
+	The feature extraction procedure yields a variable but always huge number of coefficients. This number is determined by:
+
+	\begin{itemize}
+
+		\item
+		$S$: number of segments.
+
+		\item
+		$E$: number of electrodes.
+
+		\item
+		$L$: number of levels.
+
+	\end{itemize}
+
+	If we input them in the formula $2 \times S \times E \times L$, we obtain how many sets of coefficients describe the pattern. In turn, each set can contain from 4 to 128 coefficients. For the experiment at hand, $S = 20$, $E = 15$ and $L = 6$, making a total of 3600 sets and the overall limit being 151200 features.
+
+	Again, \cite{asensio2013multiresolution} proposed a way of reducing this amount by computing the variance of each set, leaving us with 3600 features altogether.
+
+	Whereas this is a massive reduction in dimensionality, the scarcity of sample patterns (about 360 in total) still poses a challenge for the task of classification at hand.
+
+\section{The curse of dimensionality} 
+
+	When dealing with high-dimensional spaces (those with hundreds or thousands of dimensions), we face issues that are often not present in simpler ones. As the volume of the space grows, the samples become sparser and thus they fail to represent the whole set of possibilities in a statistically significant way.
+
+	Applied to machine learning, the number of features plays a pivotal role: a low count may not provide enough information, and a high count may prevent a good generalization by introducing superfluous or noisy details. Thus, the key lies somewhere in the middle: we have to find a delicate balance so that our models do not \textit{underfit} nor \textit{overfit}. 
+
+\newpage
+
+	The latter is our main concern when trying to bring down the feature count, so we will restrict ourselves to a subset smaller than the training one. Since we are going to split the (approximately) 360 samples evenly for training and testing, this means that we should consider at most 180 features--ideally, only a fraction of that.
+
+	As a final note, it is important to mention that we have several instances of this dataset structure that correspond to different test subjects (namely, 104, 107 and 110). These subjects were the best performers in the recordings, because one of the downsides of \acs{EEG} and \acs{MI} is that the person has to learn how to use the device. The other subjects were not so good at the task, and so they will not be considered here.
