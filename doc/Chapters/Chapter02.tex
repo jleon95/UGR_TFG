@@ -339,3 +339,9 @@
 	It is therefore clear that we need some kind of method for choosing the right information to keep. However, achieving this is no easy feat, as it falls into the category of \textit{NP-hard} problems \cite{amaldi1998approximability}. For this reason, a number of approximate alternatives have been proposed. They can be of one of three classes \cite{guyon2003introduction}.
 
 	\textit{Wrappers} use the performance of a model to score different feature subsets. \textit{Filters} select features as a preprocessing step, independent from any models we later use. \textit{Embedded} methods incorporate the selection in their training processes. Wrappers tend to yield the best outcomes because of their more extensive search, and are a good option if given enough computational resources; with these conditions met, we will be using genetic algorithms, a popular example.
+
+	As we want to have more than one measure of classification quality, we will use a multiobjective genetic algorithm. Picking up on what we said in the last section, Pareto-based approaches are quite common. Among these, the state of the art is mainly comprised of some of the most famous algorithms: \ac{NSGA-II} \cite{deb2002fast}, \ac{SPEA2} \cite{zitzler2001spea2} and \ac{PAES} \cite{knowles1999pareto}. 
+
+	The first one is the most widely used by a large margin, and we will use it too for two main reasons: its higher general performance against the other alternatives, along with its better population diversity (refer to the original paper for more details), is a decisive factor; in addition, since it works with a single population instead of keeping a concurrent one for the best individuals, it is easier to implement and conceptually more intuitive.
+
+	One important downside of multiobjective genetic algorithms is, though, that they do not perform so well with many objectives. But, since we will use a maximum of two or three, it should not become a problem for us.
