@@ -688,6 +688,28 @@
         \renewcommand{\theequation}{\arabic{equation}}%
 }
 
+\makeatletter
+    \newlistof{algorithms}{loa}{\listalgorithmcfname}%
+    \renewcommand*{\listalgorithmcfname}{List of Algorithms}%
+    \renewcommand*{\algorithmcfname}{Algorithm}%
+    \renewcommand{\cftalgorithmspresnum}{\scshape\MakeTextLowercase}%
+    \renewcommand{\cftalgorithmsfont}{\normalfont}%
+    \renewcommand{\cftalgorithmspresnum}{\algorithmcfname~}%
+    \renewcommand{\cftalgorithmspagefont}{\normalfont}%
+    \ifthenelse{\boolean{ct@dottedtoc}}{\relax}%
+    {%
+    \renewcommand{\cftalgorithmsleader}{\hspace{1.5em}}%
+    \renewcommand{\cftalgorithmsafterpnum}{\cftparfillskip}%
+    }
+
+    \newlength{\algorithmslabelwidth}%
+    \settowidth{\algorithmslabelwidth}{\cftalgorithmspresnum~99}%
+    \addtolength{\algorithmslabelwidth}{2.5em}%
+    %\cftsetindents{listings}{0em}{\listingslabelwidth}%
+    \cftsetindents{algorithms}{0em}{\figurelabelwidth}%
+    \let\l@algocf\l@algorithms%
+    \let\lstlistofalgorithms\listofalgorithms%
+\makeatother
 % ********************************************************************
 % Backward-compatibility
 % ********************************************************************

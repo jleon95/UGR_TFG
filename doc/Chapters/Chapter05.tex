@@ -9,18 +9,29 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	The main body of the algorithm corresponds to a typical \acs{NSGA-II} layout. We will see its general form before going over the different parts:
 
-	\vspace{0.2cm}
+	\vspace{0.3cm}
 
 	\begin{algorithm}[H]
 
-		\Proc{NSGA-II($population\_size$, $generations$, $data$, $max\_features$)}{
+		\Proc{NSGA-II}{
 
-			population $\longleftarrow$ Initialize(population\_size,max\_features)\;
-			evaluation $\longleftarrow$ Evaluate(population,data)\;
-			sorting $\longleftarrow$ NonDominatedSort(population,evaluation)\;
+			\KwData{population size, generations, data, max features}
+			\KwResult{final population}
+			population $\longleftarrow$ Initialize(population size, max features)\;
+			evaluation $\longleftarrow$ Evaluate(population, data)\;
+			sorting $\longleftarrow$ Sort(population, evaluation)\;
 			
-			\For{$gen = 0$ \KwTo $total\_generations$}{
+			\For{$gen = 0$ \KwTo $max$ $generations$}{
+
+				parents $\longleftarrow$ Selection(population, sorting)\;
+				offspring $\longleftarrow$ CreateOffspring(parents)\;
+				shared population $\longleftarrow$ population $\cup$ offspring\;
+				evaluation $\longleftarrow$ Evaluate(shared population, data)\;
+				sorting $\longleftarrow$ Sort(shared population, evaluation)\;
+				population $\longleftarrow$ KeepBestN(shared population, sorting)\;
 			}
+
+			\KwRet population
 		}
 
 		\caption{NSGA-II}
