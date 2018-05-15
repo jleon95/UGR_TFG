@@ -1,0 +1,30 @@
+\chapter{Feature selection}\label{ch:featureselection}
+%************************************************
+
+Like we mentioned before, the chosen approach for the feature selection step is a genetic algorithm. With a few modifications specific to our problem, the basic structure will be that of \acs{NSGA-II}.
+
+We previously hinted in chapter \ref{ch:background} at a binary representation when dealing with this kind of task. It not only facilitates the overall implementation, but---as we already said---it also brings with it some easy yet effective operators.
+
+\section{Feature selection procedure}
+
+	The main body of the algorithm corresponds to a typical \acs{NSGA-II} layout. We will see its general form before going over the different parts:
+
+	\vspace{0.2cm}
+
+	\begin{algorithm}[H]
+
+		\Proc{NSGA-II($population\_size$, $generations$, $data$, $max\_features$)}{
+
+			population $\longleftarrow$ Initialize(population\_size,max\_features)\;
+			evaluation $\longleftarrow$ Evaluate(population,data)\;
+			sorting $\longleftarrow$ NonDominatedSort(population,evaluation)\;
+			
+			\For{$gen = 0$ \KwTo $total\_generations$}{
+			}
+		}
+
+		\caption{NSGA-II}
+
+	\end{algorithm}
+
+
