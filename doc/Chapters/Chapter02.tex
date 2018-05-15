@@ -242,7 +242,7 @@
 
 			For the first two, one could do something along the lines of the binary crossovers we just explained: take some layer sizes from one parent and the rest from the other, have the child get as many hidden layers as the average of its parents, etc. Perhaps we want to keep the numbers inside tolerance intervals, so we should check after each operation too.
 
-			To pass learning rates on, maybe a simple average would do. Given that we don't have prior knowledge about the function we are trying to optimize--only that it has a global optimum somewhere--, it would be a reasonable strategy: if the optimum is between two values, an average would keep us in range; if not, we would not have known anyway.
+			To pass learning rates on, maybe a simple average would do. Given that we don't have prior knowledge about the function we are trying to optimize---only that it has a global optimum somewhere---, it would be a reasonable strategy: if the optimum is between two values, an average would keep us in range; if not, we would not have known anyway.
 
 \newpage
 
@@ -257,7 +257,7 @@
 
 		\subsubsection{In neural networks}
 
-			When dealing with quantities, such as the number of layers or of neurons per layer, the simplest thing to do is to add or subtract. A more frequent mutation could be to just alter the number of neurons in one (or more than one) layer either by a fixed amount or by using a probability distribution (gaussian noise, for instance). A much rarer mutation--for its impact in the structure of the network--could involve a slight change in the number of layers.
+			When dealing with quantities, such as the number of layers or of neurons per layer, the simplest thing to do is to add or subtract. A more frequent mutation could be to just alter the number of neurons in one (or more than one) layer either by a fixed amount or by using a probability distribution (gaussian noise, for instance). A much rarer mutation---for its impact in the structure of the network---could involve a slight change in the number of layers.
 
 
 	\subsection{Replacement}
@@ -267,7 +267,7 @@
 		\begin{itemize}
 
 			\item
-			Steady-state: only a few parents--typically two--are selected for reproduction in each generation, and the offspring they yield replace the same amount of individuals in the original population.
+			Steady-state: only a few parents---typically two---are selected for reproduction in each generation, and the offspring they yield replace the same amount of individuals in the original population.
 
 			\item
 			Generational: the whole previous population is displaced by a newly created group.
@@ -334,7 +334,7 @@
 
 \section{Feature selection}
 
-	When we face a complex classification or regression job, we often have a lot of unorganized information. In these cases, one of the keys for success is to weed out whatever data that does not contribute anything useful. An excess of data does not just increase the computational cost of training our models, it can also hamper its performance--and in no small proportion, to make things worse.
+	When we face a complex classification or regression job, we often have a lot of unorganized information. In these cases, one of the keys for success is to weed out whatever data that does not contribute anything useful. An excess of data does not just increase the computational cost of training our models, it can also hamper its performance---and in no small proportion, to make things worse.
 
 	It is therefore clear that we need some kind of method for choosing the right information to keep. However, achieving this is no easy feat, as it falls into the category of \textit{NP-hard} problems \cite{amaldi1998approximability}. For this reason, a number of approximate alternatives have been proposed. They can be of one of three classes \cite{guyon2003introduction}.
 
