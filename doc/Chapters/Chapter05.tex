@@ -60,8 +60,45 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\For{$i = 0$ \KwTo $population$ $size$}{
 				population $\longleftarrow$ population $\cup$ RandomVector(max features)\;
 			}
+
+			\KwRet population
 		}
 
 		\caption{Population initialization}
 
 	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	In the actual code, each element of the population is created as a sequence of zeros which is then modified to introduce ones in random positions.
+
+	After that, and also after each time we create a new population, we have to evaluate the fitness of its individuals. This is accomplished in \texttt{Evaluate}:
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{Evaluate}{
+
+			\KwIn{population, data}
+			\KwOut{evaluation}
+			evaluation $\longleftarrow$ EmptyMatrix(population size, objective count)
+
+			\For{$obj = 0$ \KwTo $objective$ $count$}{
+
+				\For{$ind = 0$ \KwTo $population$ $size$}{
+
+					evaluation[ind][obj] $\longleftarrow$ $F_{obj}$(population[ind], data)
+				}
+			}
+
+			\KwRet evaluation
+		}
+
+		\caption{Population evaluation}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	Here we assume that we already have the different $F_i$ at our disposal. Also, not all fitness functions necessarily use the data for their computations---we will discuss this soon---but it is written this way for uniformity.
