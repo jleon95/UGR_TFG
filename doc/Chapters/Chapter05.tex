@@ -7,7 +7,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 \section{Feature selection procedure}
 
-	The main body of the algorithm corresponds to a typical \acs{NSGA-II} layout. We will see its general form before going over the different parts:
+	The main body of the algorithm corresponds to a typical \acs{NSGA-II} layout. Let us see its general form before going over the different parts:
 
 	\vspace{0.3cm}
 
@@ -15,12 +15,12 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 		\Proc{NSGA-II}{
 
-			\KwData{population size, generations, data, max features}
-			\KwResult{final population}
+			\KwIn{population size, generations, data, max features}
+			\KwOut{final population}
 			population $\longleftarrow$ Initialize(population size, max features)\;
 			evaluation $\longleftarrow$ Evaluate(population, data)\;
 			sorting $\longleftarrow$ Sort(population, evaluation)\;
-			
+
 			\For{$gen = 0$ \KwTo $max$ $generations$}{
 
 				parents $\longleftarrow$ Selection(population, sorting)\;
@@ -28,7 +28,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				shared population $\longleftarrow$ population $\cup$ offspring\;
 				evaluation $\longleftarrow$ Evaluate(shared population, data)\;
 				sorting $\longleftarrow$ Sort(shared population, evaluation)\;
-				population $\longleftarrow$ KeepBestN(shared population, sorting)\;
+				population $\longleftarrow$ Replace(shared population, sorting)\;
 			}
 
 			\KwRet population
@@ -38,4 +38,30 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\end{algorithm}
 
+	\vspace{0.3cm}
 
+	Notice that it returns the whole population from the last generation. Ideally, we want to take its first Pareto front and choose whatever solution we deem more appropriate for our needs.
+
+	We can proceed to go now into more detail about the different functions that make up the body of the algorithm.
+
+\newpage
+
+	At the beginning, there is a randomized initialization of the population, so as to have something to start with:
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{Initialize}{
+
+			\KwIn{population size, max features}
+			\KwOut{population}
+			population $\longleftarrow$ $\emptyset$\;
+			\For{$i = 0$ \KwTo $population$ $size$}{
+				population $\longleftarrow$ population $\cup$ RandomVector(max features)\;
+			}
+		}
+
+		\caption{Population initialization}
+
+	\end{algorithm}
