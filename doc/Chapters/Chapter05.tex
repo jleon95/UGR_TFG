@@ -404,7 +404,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwIn{individual, swaps}
 			\KwOut{individual}
 
-			positions $\longleftarrow$ RandomChoose(size(individuals), swaps)\;
+			positions $\longleftarrow$ RandomChoose(size(individual), swaps)\;
 			\For{$p$ $\in$ \textit{positions}}{
 				individual[p] $=$ individual[p] + $1$ $\pmod{2}$\;
 			}
@@ -447,3 +447,26 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 	\vspace{0.3cm}
 
 	As we can see, since the population is already sorted by front and by crowding distance within the same front, the only thing we have to do is to apply a cutoff to keep the population size stable.
+
+	There is, nevertheless, a topic we have not covered with all the pseudocode of this chapter: the fitness or objective functions. In accordance with the design of the algorithm, they are based on minimization rather than maximization. They are the following:
+
+	\begin{itemize}
+
+		\item
+		Simplicity: measures the number of active features. It is just the count of non-zero positions.
+
+		\item
+		Test set error: trains a model with the training set and evaluates the accuracy on the test set. Its range is between 0 and 1.
+
+		\item
+		Cross-validation error: splits the training set in $n$ sections, using at each time one of them to test and the rest for model training. The final value is the arithmetic mean of all testing errors. Its range is between 0 and 1.
+
+		\item
+		Cohen's Kappa error \cite{cohen1960coefficient}: similar to the test set error, but considering the probability of classifying correctly by chance. It is computed as:
+
+		$$\kappa = \frac{p_0 - p_c}{1 - p_c}$$
+
+		Where $p_0$ is equivalent to the test set error, and $p_c$ is the sum of the probabilities of random agreement for all possible classes.
+
+
+	\end{itemize}
