@@ -23,7 +23,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 			\For{$gen = 0$ \KwTo $max$ $generations$}{
 
-				parents $\longleftarrow$ Selection(population, sorting)\;
+				parents $\longleftarrow$ Selection(population)\;
 				offspring $\longleftarrow$ CreateOffspring(parents)\;
 				shared population $\longleftarrow$ population $\cup$ offspring\;
 				evaluation $\longleftarrow$ Evaluate(shared population, data)\;
@@ -187,6 +187,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				}
 				
 				\If{$n_p$ \textbf{is} $0$}{
+					$p$.front $=$ 1\;
 					$F_1$ $\longleftarrow$ $F_1$ $\cup$ $\{p\}$\;
 				}
 			}
@@ -201,6 +202,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 						$n_q = n_q$ - 1\;
 						\If{$n_q$ \textbf{is} $0$}{
+							$q$.front $=$ i + 1\;
 							Q $\longleftarrow$ Q $\cup$ $\{q\}$\;
 						}
 					}
@@ -218,7 +220,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	The second step will tell us how far each individual is from its neighbors---within its own front---on average. For simplicity, we assume that every one of them ($F_{ij}$) has an attribute \textit{distance} for this purpose.
+	The second step (algorithm \ref{alg:crowding_distance}) will tell us how far each individual is from its neighbors---within its own front---on average.
 
 	\vspace{0.3cm}
 
@@ -254,6 +256,42 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet{fronts}
 		}
 
-		\caption{Crowding distance computation}
+		\caption{Crowding distance computation}\label{alg:crowding_distance}
 
 	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	We are now able to upgrade our $\prec$ operator to take into consideration the crowding distances. Let $p \prec_{nds} q$ be true if $p$.rank $<$ $q$.rank or $p$.rank $=$ $q$.rank and $p$.distance $>$ $q$.distance. We can use it now in our parent selection process:
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{Selection}{
+
+			\KwIn{population}
+			\KwOut{parents}
+			parents $\longleftarrow$ $\emptyset$\;
+
+			\For{$i = 0$ \KwTo $size(population)$/2}{
+
+				$p$, $q$ = RandomChoose(population, 2)\;
+				\If{$p \prec_{nds} q$}{
+					parents $\longleftarrow$ parents $\cup$ $\{p\}$\;
+				}
+				\ElseIf{$q \prec_{nds} p$}{
+					parents $\longleftarrow$ parents $\cup$ $\{q\}$\;
+				}
+			}
+		
+			\KwRet parents
+		}
+
+		\caption{Selection operator}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	There are several ways of deciding which individuals from the last generation we are going to use to create offspring. One of the most common is the \textit{Binary Tournament Selection} described here. The size of the parent pool is fixed to half the population in this instance, but it can be whatever we think is suitable.
