@@ -19,7 +19,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwOut{final population}
 			population $\longleftarrow$ Initialize(population size, max features)\;
 			evaluation $\longleftarrow$ Evaluate(population, data)\;
-			population $\longleftarrow$ Sort(population, evaluation)\;
+			population $\longleftarrow$ NDSort(population, evaluation)\;
 
 			\For{$gen = 0$ \KwTo $max$ $generations$}{
 
@@ -27,7 +27,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				offspring $\longleftarrow$ CreateOffspring(parents)\;
 				shared population $\longleftarrow$ population $\cup$ offspring\;
 				evaluation $\longleftarrow$ Evaluate(shared population, data)\;
-				shared population $\longleftarrow$ Sort(shared population, evaluation)\;
+				shared population $\longleftarrow$ NDSort(shared population, evaluation)\;
 				population $\longleftarrow$ Replace(shared population, population size)\;
 			}
 
@@ -105,23 +105,29 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 \newpage
 
-	The next operation is one of the keys of \acs{NSGA-II}: the non-dominated sorting. Let us first understand the reasoning behind it before explaining how it is carried out.
+	The next operation is one of the keys of \acs{NSGA-II}: the non-dominated sorting. Let us first see the reasoning behind it before explaining how it is carried out.
 
 	Diversity of solutions in the Pareto fronts is one main issue that \acs{NSGA-II} tries to address. It is clear that pertaining to a better Pareto front makes an individual rank higher; however, when comparing two individuals from the same front, we may want to choose that which is most distant to its neighbors. This is because similar solutions tend to score similarly in all aspects, but we need them to be as different as possible in order to explore the space better.
 
-	This way, individuals with significant quality will naturally be in the top positions, but at the same time we make sure that differences are favored too. For clarity, we will break down the process into two steps, explained with the help of the original paper (\cite{deb2002fast}).
+	This way, individuals with significant quality will naturally be in the top positions, but at the same time we make sure that differences are favored too. For clarity, we will break down the process into two steps, explained with the help of the original paper (\cite{deb2002fast}). Also, we will use some auxiliar functions to abstract behavior not relevant to our understanding of the concept.
 
 	\vspace{0.3cm}
 
 	\begin{algorithm}[H]
 
-		\Fn{Sort}{
+		\Fn{NDSort}{
 
 			\KwIn{population, evaluation}
 			\KwOut{population}
 			
 			fronts $\longleftarrow$ ComputeFronts(evaluation)\;
 			fronts $\longleftarrow$ ComputeDistances(fronts, evaluation)\;
+			population $\longleftarrow$ $\emptyset$\;
+
+			\For{$F_i$ \textbf{in} \textit{fronts}}{
+
+				population $\longleftarrow$ population $\cup$ $F_i$\;
+			}
 
 			\KwRet population
 		}
@@ -242,7 +248,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 						$F_{ik}$.distance $=$ $F_{ik}$.distance + (objective[k+1]-objective[k-1]) / range\;
 					}
 				}
-
+				$F_i$ $\longleftarrow$ SortByDistance($F_i$) \tcc*[r]{Descending order}
 			}
 
 			\KwRet{fronts}
