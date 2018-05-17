@@ -19,7 +19,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwOut{final population}
 			population $\longleftarrow$ Initialize(population size, max features)\;
 			evaluation $\longleftarrow$ Evaluate(population, data)\;
-			sorting $\longleftarrow$ Sort(evaluation)\;
+			population $\longleftarrow$ Sort(population, evaluation)\;
 
 			\For{$gen = 0$ \KwTo $max$ $generations$}{
 
@@ -27,8 +27,8 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				offspring $\longleftarrow$ CreateOffspring(parents)\;
 				shared population $\longleftarrow$ population $\cup$ offspring\;
 				evaluation $\longleftarrow$ Evaluate(shared population, data)\;
-				sorting $\longleftarrow$ Sort(evaluation)\;
-				population $\longleftarrow$ Replace(shared population, sorting)\;
+				shared population $\longleftarrow$ Sort(shared population, evaluation)\;
+				population $\longleftarrow$ Replace(shared population, population size)\;
 			}
 
 			\KwRet population
@@ -117,13 +117,13 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 		\Fn{Sort}{
 
-			\KwIn{evaluation}
-			\KwOut{sorting scores}
+			\KwIn{population, evaluation}
+			\KwOut{population}
 			
 			fronts $\longleftarrow$ ComputeFronts(evaluation)\;
-			sorting scores $\longleftarrow$ ComputeDistances(fronts, evaluation)\;
+			fronts $\longleftarrow$ ComputeDistances(fronts, evaluation)\;
 
-			\KwRet sorting scores
+			\KwRet population
 		}
 
 		\caption{Non-dominated sort steps}
@@ -150,6 +150,8 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\end{itemize}
 
+	Remember that \texttt{evaluation} contains a row for every individual and that its elements are the different fitness scores; this means that we can think of an individual in terms of its associated row in this structure.
+
 \newpage
 
 	The pseudocode is as follows:
@@ -166,7 +168,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\For{$p$ $\in$ $evaluation$}{
 
 				$S_p$ $\longleftarrow$ $\emptyset$\;
-				$n_p$ $=$ $0$\;
+				$n_p = 0$\;
 
 				\For{$q$ $\in$ $evaluation$}{
 
@@ -186,18 +188,18 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			i $=$ 1\;
 			\While{$F_i$ $\neq$ $\emptyset$}{
 
-				Q $=$ $\emptyset$ \tcc*[r]{Members of the next front}
+				Q $\longleftarrow$ $\emptyset$ \tcc*[r]{Members of the next front}
 				\For{$p$ $\in$ $F_i$}{
 
 					\For{$q$ $\in$ $S_p$}{
 
-						$n_q$ = $n_q$ - 1\;
+						$n_q = n_q$ - 1\;
 						\If{$n_q$ \textbf{is} $0$}{
 							Q $\longleftarrow$ Q $\cup$ $\{q\}$\;
 						}
 					}
 				}
-				i = i + 1\;
+				i $=$ i + 1\;
 				$F_i$ $\longleftarrow$ Q\;
 			}
 
@@ -208,9 +210,44 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\end{algorithm}
 
-	\vspace{0,3cm}
+	\vspace{0.3cm}
 
-	Remember that \texttt{evaluation} contains a row for every individual and that its elements are the different fitness scores; this means that we can think of an individual in terms of its associated row in this structure.
+	The second step will tell us how far each individual is from its neighbors---within its own front---on average. For simplicity, we assume that every one of them ($F_{ij}$) has an attribute \textit{distance} for this purpose.
 
+	\vspace{0.3cm}
 
+	\begin{algorithm}[H]
 
+		\Fn{ComputeDistances}{
+
+			\KwIn{fronts, evaluation}
+			\KwOut{fronts}
+
+			\For{$F_i$ \textbf{in} \textit{fronts}}{
+
+				n $=$ size($F_i$)\;
+				\For{$j = 0$ \KwTo $n$}{
+					$F_{ij}$.distance $= 0$\; 
+				}
+
+				evaluation\textsubscript{ i} $\longleftarrow$ GetEvaluations(evaluation, $F_i$)\;
+
+				\For{$obj$ \textbf{in} \textit{columns(evaluation\textsubscript{ i})}}{
+
+					objective $\longleftarrow$ Sort(evaluation\textsubscript{ i}[...][obj])\;
+					$F_i$ $\longleftarrow$ SortBy($F_i$, objective)\;
+					$F_{i1}$.distance $=$ $F_{in}$.distance $= \infty$\;
+					range = objective[n] - objective[1]\;
+					\For{$k = 2$ \KwTo $n-1$}{
+						$F_{ik}$.distance $=$ $F_{ik}$.distance + (objective[k+1]-objective[k-1]) / range\;
+					}
+				}
+
+			}
+
+			\KwRet{fronts}
+		}
+
+		\caption{Crowding distance computation}
+
+	\end{algorithm}
