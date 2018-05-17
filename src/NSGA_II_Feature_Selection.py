@@ -65,12 +65,11 @@ def TournamentSelection(population, sort_scores, pool_size):
 	for i in range(selected.shape[0]):
 
 		candidates = choice(sort_scores.shape[0],replace=False,size=2)
-		best_front_pos = candidates[np.argmin(sort_scores[candidates,0])]
 
-		# If both fronts are the same, we can't use "best_front_pos".
 		if sort_scores[candidates[0]][0] != sort_scores[candidates[1]][0]:
+			best_front_pos = candidates[np.argmin(sort_scores[candidates,0])]
 			selected[i] = population[best_front_pos]
-		else:
+		else: # If both fronts are the same, choose the one with the most distance.
 			max_distance_pos = candidates[np.argmax(sort_scores[candidates,1])]
 			selected[i] = population[max_distance_pos]
 
