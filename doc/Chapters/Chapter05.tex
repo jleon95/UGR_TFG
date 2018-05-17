@@ -19,7 +19,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwOut{final population}
 			population $\longleftarrow$ Initialize(population size, max features)\;
 			evaluation $\longleftarrow$ Evaluate(population, data)\;
-			sorting $\longleftarrow$ Sort(population, evaluation)\;
+			sorting $\longleftarrow$ Sort(evaluation)\;
 
 			\For{$gen = 0$ \KwTo $max$ $generations$}{
 
@@ -27,7 +27,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				offspring $\longleftarrow$ CreateOffspring(parents)\;
 				shared population $\longleftarrow$ population $\cup$ offspring\;
 				evaluation $\longleftarrow$ Evaluate(shared population, data)\;
-				sorting $\longleftarrow$ Sort(shared population, evaluation)\;
+				sorting $\longleftarrow$ Sort(evaluation)\;
 				population $\longleftarrow$ Replace(shared population, sorting)\;
 			}
 
@@ -70,7 +70,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	In the actual code, each element of the population is created as a sequence of zeros which is then modified to introduce ones in random positions.
+	In the actual code, each element of the population is created as a sequence of zeros which is then modified to introduce ones in random positions. These two numbers correspond to the intuitive notion of boolean false and true, respectively, telling us whether a given feature is chosen or not.
 
 	After that, and also after each time we create a new population, we have to evaluate the fitness of its individuals. This is accomplished in \texttt{Evaluate}:
 
@@ -82,13 +82,13 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 			\KwIn{population, data}
 			\KwOut{evaluation}
-			evaluation $\longleftarrow$ EmptyMatrix(population size, objective count)
+			evaluation $\longleftarrow$ EmptyMatrix(population size, objective count)\;
 
 			\For{$obj = 0$ \KwTo $objective$ $count$}{
 
 				\For{$ind = 0$ \KwTo $population$ $size$}{
 
-					evaluation[ind][obj] $\longleftarrow$ $F_{obj}$(population[ind], data)
+					evaluation[ind][obj] $\longleftarrow$ $F_{obj}$(population[ind], data)\;
 				}
 			}
 
@@ -102,3 +102,115 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 	\vspace{0.3cm}
 
 	Here we assume that we already have the different $F_i$ at our disposal. Also, not all fitness functions necessarily use the data for their computations---we will discuss this soon---but it is written this way for uniformity.
+
+\newpage
+
+	The next operation is one of the keys of \acs{NSGA-II}: the non-dominated sorting. Let us first understand the reasoning behind it before explaining how it is carried out.
+
+	Diversity of solutions in the Pareto fronts is one main issue that \acs{NSGA-II} tries to address. It is clear that pertaining to a better Pareto front makes an individual rank higher; however, when comparing two individuals from the same front, we may want to choose that which is most distant to its neighbors. This is because similar solutions tend to score similarly in all aspects, but we need them to be as different as possible in order to explore the space better.
+
+	This way, individuals with significant quality will naturally be in the top positions, but at the same time we make sure that differences are favored too. For clarity, we will break down the process into two steps, explained with the help of the original paper (\cite{deb2002fast}).
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{Sort}{
+
+			\KwIn{evaluation}
+			\KwOut{sorting scores}
+			
+			fronts $\longleftarrow$ ComputeFronts(evaluation)\;
+			sorting scores $\longleftarrow$ ComputeDistances(fronts, evaluation)\;
+
+			\KwRet sorting scores
+		}
+
+		\caption{Non-dominated sort steps}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	The front computation step assigns a front to each individual of the population based on its fitness scores. Before delving into the details, let us define a few things:
+
+	\begin{itemize}
+
+		\item
+		$p \prec q$: ``$p$ is not worse than $q$ in any objective and is better in at least one'', for two individuals $p$ and $q$. It is read as ``$p$ dominates $q$''.
+
+		\item
+		$S_p$: the set of individuals dominated by $p$.
+
+		\item
+		$n_p$: the count of individuals that dominate $p$.
+
+		\item
+		$F_i$: the different fronts. A lower $i$ means a better overall quality of the elements.
+
+	\end{itemize}
+
+\newpage
+
+	The pseudocode is as follows:
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{ComputeFronts}{
+
+			\KwIn{evaluation}
+			\KwOut{$F_i$}
+
+			\For{$p$ $\in$ $evaluation$}{
+
+				$S_p$ $\longleftarrow$ $\emptyset$\;
+				$n_p$ $=$ $0$\;
+
+				\For{$q$ $\in$ $evaluation$}{
+
+					\If{$p$ $\prec$ $q$}{
+						$S_p$ $\longleftarrow$ $S_p$ $\cup$ $\{q\}$\;
+					}
+					\ElseIf{$q$ $\prec$ $p$}{
+						$n_p$ $=$ $n_p$ + 1\;
+					}
+				}
+				
+				\If{$n_p$ \textbf{is} $0$}{
+					$F_1$ $\longleftarrow$ $F_1$ $\cup$ $\{p\}$\;
+				}
+			}
+
+			i $=$ 1\;
+			\While{$F_i$ $\neq$ $\emptyset$}{
+
+				Q $=$ $\emptyset$ \tcc*[r]{Members of the next front}
+				\For{$p$ $\in$ $F_i$}{
+
+					\For{$q$ $\in$ $S_p$}{
+
+						$n_q$ = $n_q$ - 1\;
+						\If{$n_q$ \textbf{is} $0$}{
+							Q $\longleftarrow$ Q $\cup$ $\{q\}$\;
+						}
+					}
+				}
+				i = i + 1\;
+				$F_i$ $\longleftarrow$ Q\;
+			}
+
+			\KwRet $F_i$
+		}
+
+		\caption{Front computation}
+
+	\end{algorithm}
+
+	\vspace{0,3cm}
+
+	Remember that \texttt{evaluation} contains a row for every individual and that its elements are the different fitness scores; this means that we can think of an individual in terms of its associated row in this structure.
+
+
+
