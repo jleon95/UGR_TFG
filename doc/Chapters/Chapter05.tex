@@ -329,4 +329,92 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	Some parameters are up to the designer, such as how many offspring are returned, the crossover and mutation probabilities, or the operators. For the latter, some common alternatives are found in the algorithms \ref{alg:singlepointx}, \ref{alg:twopointx}, \ref{alg:uniformx} and \ref{alg:flipbitsm}.
+	Some parameters are up to the designer, such as how many offspring are returned, the crossover and mutation probabilities, or the operators. For the latter, some common alternatives are found in algorithms \ref{alg:singlepointx}, \ref{alg:twopointx}, \ref{alg:uniformx} and \ref{alg:flipbitsm}.
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{SinglePoint}{
+
+			\KwIn{$p_1$, $p_2$}
+			\KwOut{child}
+			child $\longleftarrow$ $p_1$\;
+			pivot $=$ RandomChoose(size($p_1$))\;
+			\For{$i = pivot$ \KwTo \textit{size($p_1$)}}{
+				child[i] $=$ $p_2$[i]\;
+			}
+			\KwRet child\;
+		}
+
+		\caption{Single-point crossover}\label{alg:singlepointx}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{TwoPoint}{
+
+			\KwIn{$p_1$, $p_2$}
+			\KwOut{child}
+			child $\longleftarrow$ $p_1$\;
+			pivot\_1, pivot\_2 $=$ RandomChoose(size($p_1$), 2)\;
+			\For{$i =$ \textit{pivot\_1} \KwTo \textit{pivot\_2}}{
+				child[i] $=$ $p_2$[i]\;
+			}
+			\KwRet child\;
+		}
+
+		\caption{Two-point crossover}\label{alg:twopointx}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{Uniform}{
+
+			\KwIn{$p_1$, $p_2$}
+			\KwOut{child}
+			child $\longleftarrow$ EmptyVector(size($p_1$))\;
+			\For{$i = 0$ \KwTo \textit{size($p_1$)}}{
+				\If{$p_1[i]$ \textbf{equals} $p_2[i]$ \textbf{or} \textit{Random()} $\leq 0.5$}{
+					child[i] = $p_1$[i]\;
+				}
+				\Else{
+					child[i] = $p_2$[i]\;
+				}
+			}
+			\KwRet child\;
+		}
+
+		\caption{Uniform crossover}\label{alg:uniformx}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{FlipBits}{
+
+			\KwIn{individual, swaps}
+			\KwOut{individual}
+
+			positions $\longleftarrow$ RandomChoose(size(individuals), swaps)\;
+			\For{$p$ $\in$ \textit{positions}}{
+				individual[p] $=$ individual[p] + $1$ $\pmod{2}$\;
+			}
+			\KwRet child\;
+		}
+
+		\caption{Flip bits mutation}\label{alg:flipbitsm}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	For visual examples of the above operators, refer to section \ref{sec:genetic_algorithms} of chapter \ref{ch:background}.
