@@ -31,7 +31,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				population $\longleftarrow$ Replace(shared population, population size)\;
 			}
 
-			\KwRet population
+			\KwRet population\;
 		}
 
 		\caption{NSGA-II}
@@ -61,7 +61,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				population $\longleftarrow$ population $\cup$ RandomVector(max features)\;
 			}
 
-			\KwRet population
+			\KwRet population\;
 		}
 
 		\caption{Population initialization}
@@ -92,7 +92,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				}
 			}
 
-			\KwRet evaluation
+			\KwRet evaluation\;
 		}
 
 		\caption{Population evaluation}
@@ -129,7 +129,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				population $\longleftarrow$ population $\cup$ $F_i$\;
 			}
 
-			\KwRet population
+			\KwRet population\;
 		}
 
 		\caption{Non-dominated sort steps}
@@ -169,7 +169,9 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 		\Fn{ComputeFronts}{
 
 			\KwIn{evaluation}
-			\KwOut{$F_i$}
+			\KwOut{fronts}
+
+			fronts $\longleftarrow$ $\{F_1, F_2,...,F_n\}$ \tcc*[r]{All of them empty}
 
 			\For{$p$ $\in$ $evaluation$}{
 
@@ -211,7 +213,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				$F_i$ $\longleftarrow$ Q\;
 			}
 
-			\KwRet $F_i$
+			\KwRet fronts\;
 		}
 
 		\caption{Front computation}
@@ -253,7 +255,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				$F_i$ $\longleftarrow$ SortByDistance($F_i$) \tcc*[r]{Descending order}
 			}
 
-			\KwRet{fronts}
+			\KwRet fronts\;
 		}
 
 		\caption{Crowding distance computation}\label{alg:crowding_distance}
@@ -264,7 +266,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	We are now able to upgrade our $\prec$ operator to take into consideration the crowding distances. Let $p \prec_{nds} q$ be true if $p$.rank $<$ $q$.rank or $p$.rank $=$ $q$.rank and $p$.distance $>$ $q$.distance. We can use it now in our parent selection process:
 
-	\vspace{0.3cm}
+	\vspace{0.29cm}
 
 	\begin{algorithm}[H]
 
@@ -285,7 +287,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 				}
 			}
 		
-			\KwRet parents
+			\KwRet parents\;
 		}
 
 		\caption{Selection operator}
@@ -295,3 +297,36 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 	\vspace{0.3cm}
 
 	There are several ways of deciding which individuals from the last generation we are going to use to create offspring. One of the most common is the \textit{Binary Tournament Selection} described here. The size of the parent pool is fixed to half the population in this instance, but it can be whatever we think is suitable.
+
+	Our next function is in charge of making the offspring:
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{CreateOffspring}{
+
+			\KwIn{parents}
+			\KwOut{offspring}
+			offspring $\longleftarrow$ $\emptyset$\;
+
+			\For{$i = 0$ \KwTo \textit{size(parents)}}{
+				$p_1$, $p_2$ = RandomChoose(parents, 2)\;
+				\If{\textit{Random()} $\leq$ \textit{crossover probability}}{
+					child $\longleftarrow$ Crossover($p_1$,$p_2$)\;
+					\If{\textit{Random()} $\leq$ \textit{mutation probability}}{
+						child $\longleftarrow$ Mutation(child)\;
+					}
+					offspring $\longleftarrow$ offspring $\cup$ $\{$child$\}$\;
+				}
+			}
+			\KwRet offspring
+		}
+
+		\caption{Offspring creation}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	Some parameters are up to the designer, such as how many offspring are returned, the crossover and mutation probabilities, or the operators. For the latter, some common alternatives are found in the algorithms \ref{alg:singlepointx}, \ref{alg:twopointx}, \ref{alg:uniformx} and \ref{alg:flipbitsm}.
