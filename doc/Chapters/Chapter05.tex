@@ -418,3 +418,32 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 	\vspace{0.3cm}
 
 	For visual examples of the above operators, refer to section \ref{sec:genetic_algorithms} of chapter \ref{ch:background}.
+
+\newpage
+
+	The last procedure to address in this section is the population replacement that takes place at the end of every generation. With all the details we have previously taken care of, its implementation is quite straightforward:
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{Replace}{
+
+			\KwIn{population, size}
+			\KwOut{next population}
+			next population $\longleftarrow$ $\emptyset$\;
+
+			\For{$i = 0$ \KwTo \textit{size}}{
+				next population $\longleftarrow$ next population $\cup$ population[i]\;
+			}
+
+			\KwRet next population\;
+		}
+
+		\caption{Population replacement}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	As we can see, since the population is already sorted by front and by crowding distance within the same front, the only thing we have to do is to apply a cutoff to keep the population size stable.
