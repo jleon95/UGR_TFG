@@ -278,7 +278,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 			\For{$i = 0$ \KwTo $size(population)$/2}{
 
-				$p$, $q$ = RandomChoose(population, 2)\;
+				$p$, $q$ = RandomChoice(population, 2)\;
 				\If{$p \prec_{nds} q$}{
 					parents $\longleftarrow$ parents $\cup$ $\{p\}$\;
 				}
@@ -311,7 +311,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			offspring $\longleftarrow$ $\emptyset$\;
 
 			\For{$i = 0$ \KwTo \textit{size(parents)}}{
-				$p_1$, $p_2$ = RandomChoose(parents, 2)\;
+				$p_1$, $p_2$ = RandomChoice(parents, 2)\;
 				\If{\textit{Random()} $\leq$ \textit{crossover probability}}{
 					child $\longleftarrow$ Crossover($p_1$,$p_2$)\;
 					\If{\textit{Random()} $\leq$ \textit{mutation probability}}{
@@ -340,7 +340,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwIn{$p_1$, $p_2$}
 			\KwOut{child}
 			child $\longleftarrow$ $p_1$\;
-			pivot $=$ RandomChoose(size($p_1$))\;
+			pivot $=$ RandomChoice(size($p_1$))\;
 			\For{$i = pivot$ \KwTo \textit{size($p_1$)}}{
 				child[i] $=$ $p_2$[i]\;
 			}
@@ -360,7 +360,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwIn{$p_1$, $p_2$}
 			\KwOut{child}
 			child $\longleftarrow$ $p_1$\;
-			pivot\_1, pivot\_2 $=$ RandomChoose(size($p_1$), 2)\;
+			pivot\_1, pivot\_2 $=$ RandomChoice(size($p_1$), 2)\;
 			\For{$i =$ \textit{pivot\_1} \KwTo \textit{pivot\_2}}{
 				child[i] $=$ $p_2$[i]\;
 			}
@@ -404,7 +404,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwIn{individual, swaps}
 			\KwOut{individual}
 
-			positions $\longleftarrow$ RandomChoose(size(individual), swaps)\;
+			positions $\longleftarrow$ RandomChoice(size(individual), swaps)\;
 			\For{$p$ $\in$ \textit{positions}}{
 				individual[p] $=$ individual[p] + $1$ $\pmod{2}$\;
 			}
