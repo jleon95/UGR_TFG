@@ -80,12 +80,11 @@ def TournamentSelection(population, sort_scores, pool_size):
 	for i in range(selected.shape[0]):
 
 		candidates = choice(sort_scores.shape[0],replace=False,size=2)
-		best_front_pos = candidates[np.argmin(sort_scores[candidates,0])]
 
-		# If both fronts are the same, we can't use "best_front_pos".
 		if sort_scores[candidates[0]][0] != sort_scores[candidates[1]][0]:
+			best_front_pos = candidates[np.argmin(sort_scores[candidates,0])]
 			selected[i] = population[best_front_pos]
-		else:
+		else: # If both fronts are the same, choose the one with the most distance.
 			max_distance_pos = candidates[np.argmax(sort_scores[candidates,1])]
 			selected[i] = population[max_distance_pos]
 
@@ -156,6 +155,29 @@ def ScaleMutation(individual, magnitude = 0.1):
 	return mutated
 
 #-------------------- Offspring generation --------------------
+
+# Using already selected individuals, creates as many offspring as
+# the number of parents * "crossover_prob" (rounded) +
+# the number of parents * "mutation_prob" (rounded) 
+# using the crossover operator contained in "crossover" and the
+# mutation operators contained in "mutations".
+def CreateOffspring(parents, crossover, mutations, crossover_prob = 0.2,
+			mutation_prob = 0.8):
+
+	n_crossovers = round(parents.shape[0] * crossover_prob)
+	n_mutations = round(parents.shape[0] * mutation_prob)
+	offspring = np.empty((n_crossovers+n_mutations,parents.shape[1]),
+					dtype=np.int32)
+	for n in range(n_crossovers):
+		p1, p2 = choice(parents.shape[0],replace=False,size=2)
+		offspring[n] = crossover(parents[p1],parents[p2])
+
+	for n in range(n_crossovers,offspring.shape[0]):
+		p = choice(parents.shape[0])
+		m = choice(len(mutations))
+		offspring[n] = mutations[m](parents[p])
+
+	return offspring
 
 #-------------------- Fitness metrics --------------------
 
