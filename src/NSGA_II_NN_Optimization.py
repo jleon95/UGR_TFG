@@ -10,6 +10,8 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.optimizers import SGD
 from keras.utils import to_categorical
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 #-------------------- Population initialization --------------------
 
@@ -239,7 +241,7 @@ def KappaLoss(individual, data, labels, activation, dropout = 0.0, *_):
 	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
 		input_size=data['train'].shape[1],
 		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
-		layers=individual,activation=activation,dropout=dropout,epochs=50,
+		layers=individual,activation=activation,dropout=dropout,epochs=25,
 		verbose=0)
 	network.fit(data['train'],labels['train'])
 	predictions = network.predict(data['test'])
@@ -255,7 +257,7 @@ def SimpleLoss(individual, data, labels, activation, dropout = 0.0, *_):
 	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
 		input_size=data['train'].shape[1],
 		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
-		layers=individual,activation=activation,dropout=dropout,epochs=50,
+		layers=individual,activation=activation,dropout=dropout,epochs=25,
 		verbose=0)
 	network.fit(data['train'],labels['train'])
 	score = network.score(data['test'],labels['test'])
@@ -272,7 +274,7 @@ def CrossValidationLoss(individual, data, labels, activation,
 	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
 		input_size=data['train'].shape[1],
 		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
-		layers=individual,activation=activation,dropout=dropout,epochs=50,
+		layers=individual,activation=activation,dropout=dropout,epochs=25,
 		verbose=0)
 	scores = cross_val_score(network,data['train'],
 							labels['train'],cv=rounds)
@@ -403,7 +405,7 @@ if __name__ == '__main__':
 
 		population, sort_scores, evaluation = \
 				NNOptimization(data=data,labels=labels,max_hidden=3,
-				objective_funcs=[KappaLoss,SimpleLoss],
+				objective_funcs=[KappaLoss,CrossValidationLoss],
 				activation="elu",pop_size=10,generations=5,seed = 29,
 				crossover_prob = 0.2, crossover_func = SinglePointCrossover, 
 				mutation_prob = 0.8, mutation_funcs = [SingleLayerMutation,ScaleMutation], 
