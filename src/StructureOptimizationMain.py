@@ -1,4 +1,4 @@
-from NSGA_II_NN_Optimization import *
+from NSGA_II_NN_Structure_Optimization import *
 import numpy as np
 
 if __name__ == '__main__':
