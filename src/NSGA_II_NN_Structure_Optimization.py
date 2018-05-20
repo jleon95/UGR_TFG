@@ -160,7 +160,8 @@ def CreateNeuralNetwork(input_size, output_size, layers, activation,
 
 	# Since "layers" has a fixed size equal to the maximum layer count allowed,
 	# networks with less layers have 0s starting at some point in the array.
-	for layer in layers[1:np.argmax(layers == 0)]:
+	valid_layers = np.argmax(layers == 0) or len(layers)
+	for layer in layers[1:valid_layers]:
 
 		if dropout > 0.0:
 			model.add(Dropout(dropout))
