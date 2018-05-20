@@ -52,6 +52,27 @@ def GaussianMutation(individual, std = 0.25):
 
 #-------------------- Offspring generation --------------------
 
+# Using already selected individuals, creates as many offspring as
+# the number of parents * "crossover_prob" (rounded) +
+# the number of parents * "mutation_prob" (rounded) 
+# using the crossover operator contained in "crossover" and the
+# mutation operator contained in "mutation".
+def CreateOffspring(parents, crossover, mutation, crossover_prob = 0.2,
+			mutation_prob = 0.8):
+
+	n_crossovers = round(parents.shape[0] * crossover_prob)
+	n_mutations = round(parents.shape[0] * mutation_prob)
+	offspring = np.empty((n_crossovers+n_mutations,parents.shape[1]))
+	for n in range(n_crossovers):
+		p1, p2 = choice(parents.shape[0],replace=False,size=2)
+		offspring[n] = crossover(parents[p1],parents[p2])
+
+	for n in range(n_crossovers,offspring.shape[0]):
+		p = choice(parents.shape[0])
+		offspring[n] = mutation(parents[p])
+
+	return offspring
+
 #-------------------- Fitness metrics --------------------
 
 #-------------------- NSGA-II Algorithm --------------------
