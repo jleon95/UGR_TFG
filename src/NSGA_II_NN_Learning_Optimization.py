@@ -1,0 +1,40 @@
+from NonDominatedSort import NonDominatedSortScores, IndirectSort
+from NSGA_II_Common_Operators import *
+import numpy as np
+from numpy.random import choice, ranf, randint, standard_normal, uniform
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import cohen_kappa_score, accuracy_score
+from keras.wrappers.scikit_learn import KerasClassifier
+from keras.models import Sequential
+from keras.layers import Dense, Dropout
+from keras.optimizers import SGD
+from keras.utils import to_categorical
+from keras import backend as K
+import warnings
+import gc
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+#-------------------- Population initialization --------------------
+
+# Returns a population of "pop_size" neural network hyperparameter
+# configurations in the form [epochs, learning rate]. 
+# The range of possible epochs is given by [1,"max_epochs"].
+# The range of learning rate values is given by "lr_range".
+def InitializePopulation(pop_size, max_epochs, lr_range):
+
+	pop = np.zeros((pop_size,2))
+	pop[:,0] = choice(max_epochs,size=pop_size)+1
+	pop[:,1] = uniform(*lr_range,size=pop_size)
+	return pop
+
+#-------------------- Crossover operators --------------------
+
+#-------------------- Mutation operators --------------------
+
+#-------------------- Offspring generation --------------------
+
+#-------------------- Fitness metrics --------------------
+
+#-------------------- NSGA-II Algorithm --------------------
