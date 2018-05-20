@@ -1,7 +1,7 @@
 from NonDominatedSort import NonDominatedSortScores, IndirectSort
 from NSGA_II_Common_Operators import *
 import numpy as np
-from numpy.random import choice, ranf, randint, standard_normal, uniform
+from numpy.random import choice, ranf, randint, normal, uniform
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import cohen_kappa_score, accuracy_score
 from keras.wrappers.scikit_learn import KerasClassifier
@@ -38,6 +38,17 @@ def ArithmeticMeanCrossover(parent1, parent2):
 	return (parent1 + parent2) / 2.0
 
 #-------------------- Mutation operators --------------------
+
+# Uses a Gaussian distribution centered in 1 to alter the values
+# of an individual by multiplication.
+def GaussianMutation(individual, std = 0.25):
+
+	mutated = np.copy(individual)
+	coefs = normal(1.0,std,size=len(individual))
+	for i in range(len(individual)):
+		mutated[i] = mutated[i]*coefs[i] if coefs[i] > 0 else mutated[i]
+	return mutated
+
 
 #-------------------- Offspring generation --------------------
 
