@@ -1,0 +1,70 @@
+Fitness metrics: KappaLoss, CrossValidationLoss
+
+Individual 104
+Population size: 15
+Generations: 10
+Seed: 29
+Max hidden layers: 3
+Crossover probability: 0.1
+Mutation probability: 0.9
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[0.19514616 0.15303704]
+[0.17473877 0.15936508]
+[0.1991713  0.14674074]
+[0.18037484 0.13248677]
+[0.18946005 0.12538624]
+[0.1890786 0.1324127]
+[0.18546796 0.13051852]
+[0.18604258 0.13285714]
+[0.17668339 0.13819048]
+[0.18290737 0.14379894]
+[0.18681973 0.14516402]
+
+
+
+Individual 107
+Population size: 15
+Generations: 10
+Seed: 29
+Max hidden layers: 3
+Crossover probability: 0.1
+Mutation probability: 0.9
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[0.3396502  0.33620106]
+[0.29915526 0.31491005]
+[0.29283754 0.32128042]
+[0.34969761 0.29433862]
+[0.30604333 0.31949206]
+[0.33787435 0.28184127]
+[0.3299453  0.29934391]
+[0.28155154 0.29450794]
+[0.32689542 0.28621164]
+[0.2829328  0.30691005]
+[0.2682352  0.29869841]
+
+
+
+Individual 110
+Population size: 15
+Generations: 10
+Seed: 29
+Max hidden layers: 3
+Crossover probability: 0.1
+Mutation probability: 0.9
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[0.2558676  0.19375661]
+[0.2536361  0.19881481]
+[0.25249426 0.19862434]
+[0.23349891 0.19238095]
+[0.25528712 0.18580952]
+[0.23853301 0.19372487]
+[0.23683561 0.19334392]
+[0.24581369 0.19293122]
+[0.25082075 0.19213757]
+[0.237387   0.20034921]
+[0.24186902 0.18955556]
+
+
