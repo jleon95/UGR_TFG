@@ -11,6 +11,9 @@ from keras.optimizers import SGD
 from keras.utils import to_categorical
 from keras import backend as K
 import warnings
+import gc
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 #-------------------- Population initialization --------------------
@@ -196,7 +199,8 @@ def KappaLoss(individual, data, labels, activation, dropout = 0.0, *_):
 		verbose=0)
 	network.fit(data['train'],labels['train'])
 	predictions = network.predict(data['test'])
-	return 1 - cohen_kappa_score(predictions,labels['test'].argmax(1))
+	score = cohen_kappa_score(predictions,labels['test'].argmax(1))
+	return 1 - score
 
 # Assesses the agreement between the test labels and a classifier
 # trained using the layers described by "individual".
@@ -265,6 +269,7 @@ def NNOptimization(data, labels, max_hidden, objective_funcs, activation,
 	assert pop_size >= 10, "You need at least 10 individuals"
 	assert generations >= 5, "You need at least 5 generations"
 	np.random.seed(seed)
+	K.tf.set_random_seed(seed)
 
 	if show_metrics:
 		print("Population size: "+str(pop_size))
@@ -290,6 +295,7 @@ def NNOptimization(data, labels, max_hidden, objective_funcs, activation,
 	population = InitializePopulation(pop_size,data['train'].shape[1],max_hidden)
 	# Initial evaluation using objective_funcs.
 	evaluation = EvaluatePopulation(population,funcs_with_args,n_cores=n_cores)
+	K.clear_session()
 	# Initial non-domination scores [front, crowding_distance].
 	nds_scores = NonDominatedSortScores(evaluation)
 
@@ -308,6 +314,7 @@ def NNOptimization(data, labels, max_hidden, objective_funcs, activation,
 											mutation_prob)
 		# Apply evaluation and non-dominated sort to the joint population.
 		evaluation = EvaluatePopulation(intermediate_pop,funcs_with_args,n_cores=n_cores)
+		K.clear_session()
 		nds_scores = NonDominatedSortScores(evaluation)
 
 		# Sort population and scores based on front and crowding distance,
