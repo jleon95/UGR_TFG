@@ -31,6 +31,12 @@ def InitializePopulation(pop_size, max_epochs, lr_range):
 
 #-------------------- Crossover operators --------------------
 
+# Returns a child whose elements are the arithmetic mean
+# of the ones from its parents.
+def ArithmeticMeanCrossover(parent1, parent2):
+
+	return (parent1 + parent2) / 2.0
+
 #-------------------- Mutation operators --------------------
 
 #-------------------- Offspring generation --------------------
