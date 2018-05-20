@@ -9,6 +9,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.optimizers import SGD
 from keras.utils import to_categorical
+from keras import backend as K
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -149,7 +150,8 @@ def CreateOffspring(parents, crossover, mutations, crossover_prob = 0.2,
 # "dropout": dropout rate, if used (> 0). Recommended (0.2-0.5).
 def CreateNeuralNetwork(input_size, output_size, layers, activation,
 	lr = 0.0, dropout = 0.0):
-
+	
+	K.clear_session()
 	model = Sequential()
 	model.add(Dense(layers[0],activation=activation,input_dim=input_size))
 
