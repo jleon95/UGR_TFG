@@ -50,9 +50,12 @@ def SinglePointCrossover(parent1, parent2):
 
 #-------------------- Mutation operators --------------------
 
+# Currently they have more parameters than they use for code simplicity
+# in CreateOffspring().
+
 # Uses a Gaussian distribution centered in 1 to alter the epochs and
 # learning rate values of an individual by multiplication.
-def GaussianMutation(individual, max_epochs, lr_range, std = 0.25):
+def GaussianMutation(individual, max_epochs, lr_range, dropout_range, std = 0.25):
 
 	mutated = np.copy(individual)
 	coefs = normal(1.0,std,size=len(individual))
@@ -64,7 +67,7 @@ def GaussianMutation(individual, max_epochs, lr_range, std = 0.25):
 
 # Alters the dropout rate of an individual in a controlled way
 # (steps of +- 0.05 points).
-def DropoutMutation(individual, dropout_range):
+def DropoutMutation(individual, max_epochs, lr_range, dropout_range):
 
 	mutated = np.copy(individual)
 	new_value = mutated[2] + choice([-1,1])*0.05
@@ -78,9 +81,9 @@ def DropoutMutation(individual, dropout_range):
 # the number of parents * "crossover_prob" (rounded) +
 # the number of parents * "mutation_prob" (rounded) 
 # using the crossover operator contained in "crossover" and the
-# mutation operator contained in "mutation".
-def CreateOffspring(parents, crossover, mutation, max_epochs, lr_range,
-			crossover_prob = 0.2, mutation_prob = 0.8):
+# mutation operators contained in "mutations".
+def CreateOffspring(parents, crossover, mutations, max_epochs, lr_range,
+			dropout_range, crossover_prob = 0.2, mutation_prob = 0.8):
 
 	n_crossovers = round(parents.shape[0] * crossover_prob)
 	n_mutations = round(parents.shape[0] * mutation_prob)
@@ -91,7 +94,8 @@ def CreateOffspring(parents, crossover, mutation, max_epochs, lr_range,
 
 	for n in range(n_crossovers,offspring.shape[0]):
 		p = choice(parents.shape[0])
-		offspring[n] = mutation(parents[p],max_epochs,lr_range)
+		m = choice(len(mutations))
+		offspring[n] = mutations[m](parents[p],max_epochs,lr_range, dropout_range)
 
 	return offspring
 
@@ -141,66 +145,66 @@ def CreateNeuralNetwork(input_size, output_size, layers, activation,
 	return model
 
 # Assesses the agreement between the test labels and a classifier
-# trained using the epochs and learning rate described by "individual",
-# taking chance into account. A fixed structure, "layers", is used.
+# trained using the epochs, learning rate and dropout rate described
+# by "individual", taking chance into account. A fixed structure,
+# "layers", is used.
 # "data" and "labels" are two dictionaries whose keys 'train' and
 # 'test' contain the corresponding samples or class labels.
 # The returned value is 1 - Kappa coefficient.
-def KappaLoss(individual, data, labels, layers, activation, dropout = 0.0, *_):
+def KappaLoss(individual, data, labels, layers, activation, *_):
 
 	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
 		input_size=data['train'].shape[1],
 		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
 		layers=layers,activation=activation,lr=individual[1],
-		dropout=dropout,epochs=int(individual[0]),verbose=0)
+		dropout=individual[2],epochs=int(individual[0]),verbose=0)
 	network.fit(data['train'],labels['train'])
 	predictions = network.predict(data['test'])
 	score = cohen_kappa_score(predictions,labels['test'].argmax(1))
 	return 1 - score
 
 # Assesses the agreement between the test labels and a classifier
-# trained using the epochs and learning rate described by "individual".
-# A fixed structure, "layers", is used.
+# trained using the epochs, learning rate and dropout rate described
+# by "individual". A fixed structure, "layers", is used.
 # "data" and "labels" are two dictionaries whose keys 'train' and
 # 'test' contain the corresponding samples or class labels.
 # The returned value is 1 - accuracy.
-def SimpleLoss(individual, data, labels, layers, activation, dropout = 0.0, *_):
+def SimpleLoss(individual, data, labels, layers, activation, *_):
 
 	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
 		input_size=data['train'].shape[1],
 		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
 		layers=layers,activation=activation,lr=individual[1],
-		dropout=dropout,epochs=int(individual[0]),verbose=0)
+		dropout=individual[2],epochs=int(individual[0]),verbose=0)
 	network.fit(data['train'],labels['train'])
 	score = network.score(data['test'],labels['test'])
 	return 1 - score
 
-# Returns the k-fold cross-validation accuracy loss using
-# the epochs and learning rate described by "individual",
+# Returns the k-fold cross-validation accuracy loss using the epochs,
+# learning rate and dropout rate described by "individual", using
 # "layers" to build the hidden layers and "rounds" as k.
 # "data" and "labels" are two dictionaries whose keys 'train' and
 # 'test' contain the corresponding samples or class labels.
 # The returned value is 1 - cross-validation accuracy.
-def CrossValidationLoss(individual, data, labels, layers, activation,
-	dropout = 0.0, rounds = 5):
+def CrossValidationLoss(individual, data, labels, layers, activation, rounds = 5):
 
 	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
 		input_size=data['train'].shape[1],
 		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
 		layers=layers,activation=activation,lr=individual[1],
-		dropout=dropout,epochs=int(individual[0]),verbose=0)
+		dropout=individual[2],epochs=int(individual[0]),verbose=0)
 	scores = cross_val_score(network,data['train'],
 							labels['train'],cv=rounds)
 	return 1 - scores.mean()
 
 #-------------------- NSGA-II Algorithm --------------------
 
-#-------------------- NSGA-II Algorithm --------------------
-
 # Main procedure of this module.
 # "data": a dictionary with two matrices of samples x features (train and test).
 # "labels": corresponding class labels for the samples in "data" (same order).
-# "max_hidden": number of hidden layers.
+# "max_epochs": maximum amount of training epochs.
+# "lr_range": range of values for learning rates.
+# "dropout_range": range of values for dropout.
 # "objective_funcs": a list of Python functions for fitness evaluation.
 # "activation": a string with the Keras name of the activation function.
 # "pop_size": the working population size of the genetic algorithm.
@@ -212,10 +216,10 @@ def CrossValidationLoss(individual, data, labels, layers, activation,
 # "mutation_func": mutation method.
 # "pool_fraction": proportion of parent pool size with respect to "pop_size".
 # "n_cores": number of processor cores used in the evaluation step.
-def LearningOptimization(data, labels, max_epochs, lr_range, layers,
-		objective_funcs, activation, pop_size, generations, seed = 29,
+def LearningOptimization(data, labels, max_epochs, lr_range, dropout_range,
+		layers,	objective_funcs, activation, pop_size, generations, seed = 29,
 		crossover_prob = 0.2, crossover_func = ArithmeticMeanCrossover, 
-		mutation_prob = 0.8, mutation_func = GaussianMutation, 
+		mutation_prob = 0.8, mutation_funcs = [GaussianMutation], 
 		pool_fraction = 0.5, n_cores = 1, show_metrics = False):
 
 	assert data['train'].shape[0] > 0, \
@@ -226,6 +230,8 @@ def LearningOptimization(data, labels, max_epochs, lr_range, layers,
 			"You need at least 1 training epoch"
 	assert len(lr_range) == 2 and 0 < lr_range[0] <= lr_range[1], \
 			"You need a valid learning rate range"
+	assert len(dropout_range) == 2 and 0 <= dropout_range[0] <= dropout_range[1], \
+			"You need a valid dropout range"
 	assert len(objective_funcs) > 1, \
 			"You need at least 2 objective functions"
 	assert pop_size >= 10, "You need at least 10 individuals"
@@ -239,6 +245,7 @@ def LearningOptimization(data, labels, max_epochs, lr_range, layers,
 		print("Seed: "+str(seed))
 		print("Max epochs: "+str(max_epochs))
 		print("Learning rate range: "+str(lr_range))
+		print("Dropout range: "+str(dropout_range))
 		print("Structure: "+str(layers))
 		print("Crossover probability: "+str(crossover_prob))
 		print("Mutation probability: "+str(mutation_prob))
@@ -254,9 +261,9 @@ def LearningOptimization(data, labels, max_epochs, lr_range, layers,
 	pool_size = round(pop_size * pool_fraction)
 	offspring_size = round(pool_size*crossover_prob)+round(pool_size*mutation_prob)
 	# Preallocate intermediate population array (for allocation efficiency).
-	intermediate_pop = np.empty((pop_size+offspring_size,2))
+	intermediate_pop = np.empty((pop_size+offspring_size,3))
 	# Initial population.
-	population = InitializePopulation(pop_size,max_epochs,lr_range)
+	population = InitializePopulation(pop_size,max_epochs,lr_range,dropout_range)
 	# Initial evaluation using objective_funcs.
 	evaluation = EvaluatePopulation(population,funcs_with_args,n_cores=n_cores)
 	K.clear_session()
@@ -274,8 +281,9 @@ def LearningOptimization(data, labels, max_epochs, lr_range, layers,
 		# Fill the intermediate population with previous generation + offspring.
 		intermediate_pop[:pop_size,:] = population
 		intermediate_pop[pop_size:,:] = CreateOffspring(parents,crossover_func,
-											mutation_func,max_epochs,lr_range,
-											crossover_prob,mutation_prob)
+											mutation_funcs,max_epochs,lr_range,
+											dropout_range,crossover_prob,
+											mutation_prob)
 		# Apply evaluation and non-dominated sort to the joint population.
 		evaluation = EvaluatePopulation(intermediate_pop,funcs_with_args,n_cores=n_cores)
 		K.clear_session()
@@ -327,9 +335,10 @@ if __name__ == '__main__':
 
 		population, sort_scores, evaluation = \
 				LearningOptimization(data=data,labels=labels,max_epochs=300,
-				lr_range=[0.01,0.3],layers=np.asarray([76]),
+				lr_range=[0.005,0.3],dropout_range=[0.0,0.51],
+				layers=np.asarray([76]),
 				objective_funcs=[KappaLoss,SimpleLoss],
 				activation="elu",pop_size=10,generations=5,seed=29,
 				crossover_prob=0.5, crossover_func=SinglePointCrossover, 
-				mutation_prob=0.5, mutation_func=GaussianMutation, 
+				mutation_prob=0.5, mutation_funcs=[GaussianMutation,DropoutMutation], 
 				pool_fraction=0.5, n_cores=1, show_metrics=True)
