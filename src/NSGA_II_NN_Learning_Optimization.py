@@ -40,6 +40,8 @@ def ArithmeticMeanCrossover(parent1, parent2):
 
 	return (parent1 + parent2) / 2.0
 
+# Returns a child which is a direct mix of its parents, with
+# no numerical alterations.
 def SinglePointCrossover(parent1, parent2):
 
 	offspring = np.copy(parent1)
@@ -48,8 +50,8 @@ def SinglePointCrossover(parent1, parent2):
 
 #-------------------- Mutation operators --------------------
 
-# Uses a Gaussian distribution centered in 1 to alter the values
-# of an individual by multiplication.
+# Uses a Gaussian distribution centered in 1 to alter the epochs and
+# learning rate values of an individual by multiplication.
 def GaussianMutation(individual, max_epochs, lr_range, std = 0.25):
 
 	mutated = np.copy(individual)
@@ -60,6 +62,15 @@ def GaussianMutation(individual, max_epochs, lr_range, std = 0.25):
 									 else mutated[1]
 	return mutated
 
+# Alters the dropout rate of an individual in a controlled way
+# (steps of +- 0.05 points).
+def DropoutMutation(individual, dropout_range):
+
+	mutated = np.copy(individual)
+	new_value = mutated[2] + choice([-1,1])*0.05
+	mutated[2] = new_value if dropout_range[0] <= new_value <= dropout_range[1] \
+						   else mutated[2]
+	return mutated
 
 #-------------------- Offspring generation --------------------
 
