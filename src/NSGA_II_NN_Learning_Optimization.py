@@ -38,6 +38,12 @@ def ArithmeticMeanCrossover(parent1, parent2):
 
 	return (parent1 + parent2) / 2.0
 
+def SinglePointCrossover(parent1, parent2):
+
+	offspring = np.copy(parent1)
+	offspring[1:] = parent2[1:]
+	return offspring
+
 #-------------------- Mutation operators --------------------
 
 # Uses a Gaussian distribution centered in 1 to alter the values
@@ -233,8 +239,9 @@ def LearningOptimization(data, labels, max_epochs, lr_range, layers,
 
 	# Pool size for parent selection.
 	pool_size = round(pop_size * pool_fraction)
+	offspring_size = round(pool_size*crossover_prob)+round(pool_size*mutation_prob)
 	# Preallocate intermediate population array (for allocation efficiency).
-	intermediate_pop = np.empty((pop_size+round(pool_size*(crossover_prob+mutation_prob)),2))
+	intermediate_pop = np.empty((pop_size+offspring_size,2))
 	# Initial population.
 	population = InitializePopulation(pop_size,max_epochs,lr_range)
 	# Initial evaluation using objective_funcs.
@@ -307,9 +314,9 @@ if __name__ == '__main__':
 
 		population, sort_scores, evaluation = \
 				LearningOptimization(data=data,labels=labels,max_epochs=300,
-				lr_range=[0.01,1],layers=np.asarray([76]),
+				lr_range=[0.01,0.3],layers=np.asarray([76]),
 				objective_funcs=[KappaLoss,SimpleLoss],
 				activation="elu",pop_size=10,generations=5,seed=29,
-				crossover_prob=0.2, crossover_func=ArithmeticMeanCrossover, 
-				mutation_prob=0.8, mutation_func=GaussianMutation, 
+				crossover_prob=0.5, crossover_func=SinglePointCrossover, 
+				mutation_prob=0.5, mutation_func=GaussianMutation, 
 				pool_fraction=0.5, n_cores=1, show_metrics=True)
