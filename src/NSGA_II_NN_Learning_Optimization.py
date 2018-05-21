@@ -13,6 +13,7 @@ from keras import backend as K
 import warnings
 import gc
 import os
+import time
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -41,12 +42,14 @@ def ArithmeticMeanCrossover(parent1, parent2):
 
 # Uses a Gaussian distribution centered in 1 to alter the values
 # of an individual by multiplication.
-def GaussianMutation(individual, std = 0.25):
+def GaussianMutation(individual, max_epochs, lr_range, std = 0.25):
 
 	mutated = np.copy(individual)
 	coefs = normal(1.0,std,size=len(individual))
-	for i in range(len(individual)):
-		mutated[i] = mutated[i]*coefs[i] if coefs[i] > 0 else mutated[i]
+	mutated[0] = mutated[0]*coefs[0] if 0 < mutated[0]*coefs[0] <= max_epochs \
+									 else mutated[0]
+	mutated[1] = mutated[1]*coefs[1] if lr_range[0] <= mutated[1]*coefs[1] <= lr_range[1] \
+									 else mutated[1]
 	return mutated
 
 
@@ -57,8 +60,8 @@ def GaussianMutation(individual, std = 0.25):
 # the number of parents * "mutation_prob" (rounded) 
 # using the crossover operator contained in "crossover" and the
 # mutation operator contained in "mutation".
-def CreateOffspring(parents, crossover, mutation, crossover_prob = 0.2,
-			mutation_prob = 0.8):
+def CreateOffspring(parents, crossover, mutation, max_epochs, lr_range,
+			crossover_prob = 0.2, mutation_prob = 0.8):
 
 	n_crossovers = round(parents.shape[0] * crossover_prob)
 	n_mutations = round(parents.shape[0] * mutation_prob)
@@ -69,7 +72,7 @@ def CreateOffspring(parents, crossover, mutation, crossover_prob = 0.2,
 
 	for n in range(n_crossovers,offspring.shape[0]):
 		p = choice(parents.shape[0])
-		offspring[n] = mutation(parents[p])
+		offspring[n] = mutation(parents[p],max_epochs,lr_range)
 
 	return offspring
 
@@ -231,8 +234,7 @@ def LearningOptimization(data, labels, max_epochs, lr_range, layers,
 	# Pool size for parent selection.
 	pool_size = round(pop_size * pool_fraction)
 	# Preallocate intermediate population array (for allocation efficiency).
-	intermediate_pop = np.empty((pop_size+round(pool_size*(crossover_prob+mutation_prob)),
-										2),dtype=np.int32)
+	intermediate_pop = np.empty((pop_size+round(pool_size*(crossover_prob+mutation_prob)),2))
 	# Initial population.
 	population = InitializePopulation(pop_size,max_epochs,lr_range)
 	# Initial evaluation using objective_funcs.
@@ -252,8 +254,8 @@ def LearningOptimization(data, labels, max_epochs, lr_range, layers,
 		# Fill the intermediate population with previous generation + offspring.
 		intermediate_pop[:pop_size,:] = population
 		intermediate_pop[pop_size:,:] = CreateOffspring(parents,crossover_func,
-											mutation_func,crossover_prob,
-											mutation_prob)
+											mutation_func,max_epochs,lr_range,
+											crossover_prob,mutation_prob)
 		# Apply evaluation and non-dominated sort to the joint population.
 		evaluation = EvaluatePopulation(intermediate_pop,funcs_with_args,n_cores=n_cores)
 		K.clear_session()
@@ -306,7 +308,7 @@ if __name__ == '__main__':
 		population, sort_scores, evaluation = \
 				LearningOptimization(data=data,labels=labels,max_epochs=300,
 				lr_range=[0.01,1],layers=np.asarray([76]),
-				objective_funcs=[KappaLoss,CrossValidationLoss],
+				objective_funcs=[KappaLoss,SimpleLoss],
 				activation="elu",pop_size=10,generations=5,seed=29,
 				crossover_prob=0.2, crossover_func=ArithmeticMeanCrossover, 
 				mutation_prob=0.8, mutation_func=GaussianMutation, 
