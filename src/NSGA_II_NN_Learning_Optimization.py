@@ -20,14 +20,16 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 #-------------------- Population initialization --------------------
 
 # Returns a population of "pop_size" neural network hyperparameter
-# configurations in the form [epochs, learning rate]. 
+# configurations in the form [epochs, learning rate, dropout rate]. 
 # The range of possible epochs is given by [1,"max_epochs"].
 # The range of learning rate values is given by "lr_range".
-def InitializePopulation(pop_size, max_epochs, lr_range):
+# The range of dropout values is given by "dropout_range".
+def InitializePopulation(pop_size, max_epochs, lr_range, dropout_range):
 
-	pop = np.zeros((pop_size,2))
+	pop = np.zeros((pop_size,3))
 	pop[:,0] = choice(max_epochs,size=pop_size)+1
 	pop[:,1] = uniform(*lr_range,size=pop_size)
+	pop[:,2] = choice(np.arange(*dropout_range,step=0.05),size=pop_size)
 	return pop
 
 #-------------------- Crossover operators --------------------
