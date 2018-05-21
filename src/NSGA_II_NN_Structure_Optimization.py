@@ -289,9 +289,9 @@ def NNOptimization(data, labels, max_hidden, objective_funcs, activation,
 
 	# Pool size for parent selection.
 	pool_size = round(pop_size * pool_fraction)
+	offspring_size = round(pool_size*crossover_prob)+round(pool_size*mutation_prob)
 	# Preallocate intermediate population array (for allocation efficiency).
-	intermediate_pop = np.empty((pop_size+round(pool_size*(crossover_prob+mutation_prob)),
-										max_hidden),dtype=np.int32)
+	intermediate_pop = np.empty((pop_size+offspring_size,max_hidden),dtype=np.int32)
 	# Initial population.
 	population = InitializePopulation(pop_size,data['train'].shape[1],max_hidden)
 	# Initial evaluation using objective_funcs.
