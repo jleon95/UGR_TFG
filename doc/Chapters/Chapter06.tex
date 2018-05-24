@@ -1,0 +1,6 @@
+\chapter{Neural network optimization}\label{ch:optimization}
+%************************************************ 
+
+The definition of hyperparameter is often fuzzy. In this work, we view hyperparameters as those parameters which are fixed before training a model, because there are no direct rules to infer them from the available data. In fact, we probably would not need them at all if we had enough data, since the samples would tell us everything that is to be known about a given problem. As we will almost never find ourselves in such a favorable situation, there exists a real need to find the right combination of hyperparameters for the circumstances at hand.
+
+One could understand feature selection as a form of hyperparameter optimization, since it is in a way fixing a part of the model---the entry point of the data. It is undoubtedly a key tool when dealing with an absurd quantity of decision variables and, whether it is hyperparameter optimization or not, it already has a section in its own right. From here on, we will focus on tuning aspects specific to neural networks, such as the learning rate, the number of epochs in training or the dropout rate \cite{srivastava2014dropout}.
