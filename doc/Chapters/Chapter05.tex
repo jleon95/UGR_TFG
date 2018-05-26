@@ -34,7 +34,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet population\;
 		}
 
-		\caption{NSGA-II}
+		\caption{NSGA-II}\label{alg:nsga}
 
 	\end{algorithm}
 
@@ -95,7 +95,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet evaluation\;
 		}
 
-		\caption{Population evaluation}
+		\caption{Population evaluation}\label{alg:evaluation}
 
 	\end{algorithm}
 
@@ -132,7 +132,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet population\;
 		}
 
-		\caption{Non-dominated sort steps}
+		\caption{Non-dominated sort steps}\label{alg:nds}
 
 	\end{algorithm}
 
@@ -216,13 +216,13 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet fronts\;
 		}
 
-		\caption{Front computation}
+		\caption{Front computation}\label{alg:fronts}
 
 	\end{algorithm}
 
 	\vspace{0.3cm}
 
-	The second step (algorithm \ref{alg:crowding_distance}) will tell us how far each individual is from its neighbors---within its own front---on average.
+	The second step (Algorithm \ref{alg:crowding_distance}) will tell us how far each individual is from its neighbors---within its own front---on average.
 
 	\vspace{0.3cm}
 
@@ -290,7 +290,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet parents\;
 		}
 
-		\caption{Selection operator}
+		\caption{Selection operator}\label{alg:selection}
 
 	\end{algorithm}
 
@@ -329,7 +329,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	Some parameters are up to the designer, such as how many offspring are returned, the crossover and mutation probabilities, or the operators. For the latter, some common alternatives are found in algorithms \ref{alg:singlepointx}, \ref{alg:twopointx}, \ref{alg:uniformx} and \ref{alg:flipbitsm}.
+	Some parameters are up to the designer, such as how many offspring are returned, the crossover and mutation probabilities, or the operators. For the latter, some common alternatives are found in Algorithms \ref{alg:singlepointx}, \ref{alg:twopointx}, \ref{alg:uniformx} and \ref{alg:flipbitsm}.
 
 	\vspace{0.3cm}
 
@@ -440,7 +440,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet next population\;
 		}
 
-		\caption{Population replacement}
+		\caption{Population replacement}\label{alg:replacement}
 
 	\end{algorithm}
 

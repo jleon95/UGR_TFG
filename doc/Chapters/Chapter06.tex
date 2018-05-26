@@ -12,3 +12,7 @@ When the above method becomes too resource-intensive, random search \cite{bergst
 Finally, if we look at quality-guided searches, we find classic algorithms such as \textit{simulated annealing} \cite{pai2005support}, \textit{particle swarm optimization} \cite{lin2008particle} or, again, genetic algorithms \cite{leung2003tuning}.
 
 For scope constraints we will make use of genetic algorithms as our main optimization technique, carrying on our \acs{NSGA-II} implementation from the feature selection phase. In general, it is computationally more expensive than random search---future work could tackle the problem from this point of view---, but in turn it has the genetic operators to leverage.
+
+In the following two sections we will describe two separate optimizations: first, we will find an approximate structure (hidden layers and their sizes); then, we will tune the learning and dropout rates and the number of training epochs. The reason for this is that their nature is different---the former deals with a variable number of parameters that define a whole, whereas the latter comprises exactly three parameters that are not conceptually linked together. Besides, joining these two parts would entail an overly convoluted search process.
+
+Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framework (Algorithm \ref{alg:nsga}), as well as the components explained in Algorithms \ref{alg:evaluation}, \ref{alg:nds}, \ref{alg:fronts}, \ref{alg:crowding_distance}, \ref{alg:selection} and \ref{alg:replacement}.
