@@ -19,11 +19,11 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 
 \section{Structure optimization}
 
-	We define the structure of a neural network as its configuration of layers and units per layer. To find out which combination is more appropriate, we will input a desired maximum number of layers---fixing the other parameters so that comparisons are fair---and the genetic algorithm will give us a rough estimation of what works best with the data.
+	We define the structure of a neural network as its configuration of layers and units per layer. To find out which combination is more appropriate, we will input a maximum number of layers---fixing the other parameters so that comparisons are fair---and the genetic algorithm will give us its rough estimation of what works best.
 
 	The only change with respect to Algorithm \ref{alg:nsga} is that it will receive the input size and the maximum number of hidden layers instead of the maximum number of features.
 
-	The population initialization will create a heterogeneous set of neural network structures which share one trait: they are widest in the middle layer and narrower towards the first and last layers.
+	The population initialization will create a heterogeneous set of neural network structures which share one trait: they are widest in the middle layer and narrower towards the first and last layers. From this point on, the evolution has freedom to converge to other shapes.
 
 	\vspace{0.2cm}
 
@@ -84,7 +84,7 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 				offspring $\longleftarrow$ offspring $\cup$ $\{$child$\}$\;
 				
 			}
-			\KwRet offspring
+			\KwRet offspring\;
 		}
 
 		\caption{Offspring creation in structure optimization}
@@ -93,8 +93,84 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 
 	\vspace{0.3cm}
 
-	Notice that the size of the offspring population is now determined by the sum of the two probabilities. The mutation will typically occur more often, thus making the algorithm resemble a random search with guiding criteria.
+	Notice that the size of the offspring population is now determined by the sum of the two probabilities. The mutation will typically occur more often, thus making the algorithm resemble a random search with guiding criteria.	Also, to improve the exploration we could have different types of mutation and alternate between them at random.
 
-	Also, in order to improve the exploration, we could have different mutation operators and alternate between them at random.
+	In Algorithms \ref{alg:layerx}, \ref{alg:layerm} and \ref{alg:scalem} we can see the possibilities at our disposal at the time of writing.
+
+	The first one, \textit{Midpoint crossover}, takes the ascending half of one parent and joins it with the descending half of the other parent.
+
+	The second one is the \textit{Single Layer mutation}, which alters the number of units of a given layer and compensates the change by distributing the opposite operation among the other layers. It uses a magnitude modifier and a value from a normal distribution. This makes it a shape mutation rather than a size mutation.
+
+	The third one consists in scaling the whole network evenly by adding or subtracting a certain number of neurons at every layer---hence its name, \textit{Uniform Scaling mutation}.
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]\label{alg:layerx}
+
+		\Fn{MidPoint}{
+
+			\KwIn{$p_1$, $p_2$}
+			\KwOut{child}
+			m = FindMiddleLayer($p_1$)\;
+			n = FindMiddleLayer($p_2$)\;
+			child $\longleftarrow$ $\emptyset$\;
+			\For{$i = 0$ \KwTo $m$}{
+				child[i] $=$ $p_1$[i]\;
+			}
+			\For{$i = 0$ \KwTo \textit{size($p_2$)} $-$ $n$}{
+				child[m+i] $=$ $p_2$[n+i]\;
+			}
+			\KwRet child\;
+		}
+
+		\caption{Midpoint crossover}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]\label{alg:layerm}
+
+		\Fn{SingleLayer}{
+
+			\KwIn{individual, magnitude}
+			\KwOut{individual}
+
+			layer $=$ RandomChoice(size(individual),$1$)\;
+			change $=$ individual[layer] * magnitude * RandomNormal()\;
+			compensation $=$ change/(size(individual)-$1$)\;
+			individual[layer] $=$ individual[layer] + change\; 
+			\For{$i = 0$ \KwTo \textit{size(individual)}}{
+				\If{$i$ $\neq$ $layer$}{
+					individual[i] $=$ individual[i] $-$ compensation\;
+				}
+			}
+			\KwRet individual\;
+		}
+
+		\caption{Single Layer mutation}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]\label{alg:scalem}
+
+		\Fn{UniformScale}{
+
+			\KwIn{individual, magnitude}
+			\KwOut{individual}
+
+			sign $=$ $1$ \textbf{if} Random() $\leq$ $0.5$ \textbf{else} $-1$\;
+			change $=$ Sum(individual) * magnitude / size(individual)\;
+			\For{$i = 0$ \KwTo \textit{size(individual)}}{
+				individual[i] $=$ individual[i] + change * sign\;
+			}
+			\KwRet individual\;
+		}
+
+		\caption{Uniform Scaling mutation}
+
+	\end{algorithm}
 
 \section{Training optimization}
