@@ -57,4 +57,44 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 
 	\end{algorithm}
 
+	\vspace{0.3cm}
+
+	The initialization also has to consider the case where one or more layers in the second half reach a null or negative unit count. The correction will depend on the particular implementation.
+
+	Another procedure that undergoes slight modifications is the offspring creation. Given that structures are highly cohesive wholes, the crossover is not as useful and so the mutation takes a step forward in relevance: it is now independent from a successful crossover taking place, and contributes directly to the offspring pool (compare with Algorithm \ref{alg:offspring_fs}):
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]
+
+		\Fn{CreateOffspring}{
+
+			\KwIn{parents}
+			\KwOut{offspring}
+			offspring $\longleftarrow$ $\emptyset$\;
+			\For{$i = 0$ \KwTo \textit{size(parents)}}{
+				\If{\textit{Random()} $\leq$ \textit{crossover probability}}{
+					$p_1$, $p_2$ = RandomChoice(parents, $2$)\;
+					child $\longleftarrow$ Crossover($p_1$,$p_2$)\;
+				}
+				\ElseIf{\textit{Random()} $\leq$ \textit{mutation probability}}{
+					$p$ = RandomChoice(parents, $1$)\;
+					child $\longleftarrow$ Mutation(p)\;
+				}
+				offspring $\longleftarrow$ offspring $\cup$ $\{$child$\}$\;
+				
+			}
+			\KwRet offspring
+		}
+
+		\caption{Offspring creation in structure optimization}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	Notice that the size of the offspring population is now determined by the sum of the two probabilities. The mutation will typically occur more often, thus making the algorithm resemble a random search with guiding criteria.
+
+	Also, in order to improve the exploration, we could have different mutation operators and alternate between them at random.
+
 \section{Training optimization}
