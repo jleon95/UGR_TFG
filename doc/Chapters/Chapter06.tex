@@ -174,3 +174,20 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 	\end{algorithm}
 
 \section{Training optimization}
+
+	Now that we presumably have an idea of what sort of structure our neural network needs, it is time to take a further step to make the most of it. Since in structure optimization the remaining hyperparameters are chosen to speed up training times, it is unlikely that they already have the best values for full performance.
+
+	Let us take a closer look at the hyperparameters of this section:
+
+	\begin{itemize}
+
+		\item
+		Learning rate: it dictates the fraction of the measured error that is used to correct the network (thus being between 0 and 1). A small one makes the training slower but more reliable, and a high one does the opposite. It is fundamental to find a value that allows a fast training without skipping over promising error minima.
+
+		\item
+		Number of epochs: it determines how many weight readjustments are performed before the training stops. Too few cause underfitting, while too many can produce overfitting.
+
+		\item
+		Dropout rate: it is a technique that disables a portion of the neurons (randomly selected) at each training epoch. As a result, it is a regularization method because the different sub-models that try to learn from the data have less predictive power. We need to tune it so that the final neural network is neither too powerful nor too simple for the task.
+
+	\end{itemize} 
