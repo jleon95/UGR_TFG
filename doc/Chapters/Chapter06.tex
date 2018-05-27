@@ -15,4 +15,46 @@ For scope constraints we will make use of genetic algorithms as our main optimiz
 
 In the following two sections we will describe two separate optimizations: first, we will find an approximate structure (hidden layers and their sizes); then, we will tune the learning and dropout rates and the number of training epochs. The reason for this is that their nature is different---the former deals with a variable number of parameters that define a whole, whereas the latter comprises exactly three parameters that are not conceptually linked together. Besides, joining these two parts would entail an overly convoluted search process.
 
-Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framework (Algorithm \ref{alg:nsga}), as well as the components explained in Algorithms \ref{alg:evaluation}, \ref{alg:nds}, \ref{alg:fronts}, \ref{alg:crowding_distance}, \ref{alg:selection} and \ref{alg:replacement}.
+Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framework (Algorithm \ref{alg:nsga}), as well as Algorithms \ref{alg:evaluation}, \ref{alg:nds}, \ref{alg:fronts}, \ref{alg:crowding_distance}, \ref{alg:selection} and \ref{alg:replacement}.
+
+\section{Structure optimization}
+
+	We define the structure of a neural network as its configuration of layers and units per layer. To find out which combination is more appropriate, we will input a desired maximum number of layers---fixing the other parameters so that comparisons are fair---and the genetic algorithm will give us a rough estimation of what works best with the data.
+
+	The only change with respect to Algorithm \ref{alg:nsga} is that it will receive the input size and the maximum number of hidden layers instead of the maximum number of features.
+
+	The population initialization will create a heterogeneous set of neural network structures which share one trait: they are widest in the middle layer and narrower towards the first and last layers.
+
+	\vspace{0.2cm}
+
+	\begin{algorithm}
+
+		\Fn{Initialize}{
+
+			\KwIn{population size, input size, max hidden}
+			\KwOut{population}
+			population $\longleftarrow$ $\emptyset$\;
+			sizes $\longleftarrow$ RandomChoice($1$, max hidden, population size)\;
+			\For{$i = 0$ \KwTo $population$ $size$}{
+				ind $\longleftarrow$ EmptyVector(sizes[i])\;
+				ind[$0$] $=$ RandomChoice(input size, $1.75$*input size, $1$)\;
+				\If{$sizes[i] > 1$}{
+					middle $=$ sizes[i]/$2$ + $1$\;
+					\For{$j = 1$ \KwTo $middle$}{
+						ind[j] $=$ ind[j-$1$] + RandomChoice(ind[j-$1$], $1$)\;
+					}
+					\For{$j = middle$ \KwTo $sizes[i]$}{
+						ind[j] $=$ ind[j-$1$] - RandomChoice(ind[j-$1$], $1$)\;
+					}
+				}
+				population $\longleftarrow$ population $\cup$ $\{$ind$\}$\;
+			}
+
+			\KwRet population\;
+		}
+
+		\caption{Initialization of a population of structures}
+
+	\end{algorithm}
+
+\section{Training optimization}
