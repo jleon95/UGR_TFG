@@ -84,8 +84,8 @@ def SingleLayerMutation(individual, magnitude = 0.3):
 	valid_layers = np.argmax(mutated == 0) or len(mutated)
 	layer = choice(valid_layers)
 	change = int(mutated[layer] * magnitude * standard_normal())
-	mutated[:valid_layers] -= int(change//valid_layers)
-	mutated[layer] += change + np.sign(change) * int(change//valid_layers)
+	mutated[:valid_layers] -= int(change//(valid_layers-1))
+	mutated[layer] += change
 	# If there are invalid layer sizes (<= 0), avoid a crash by
 	# making them the mean of the valid elements.
 	if len(mutated[:valid_layers][mutated[:valid_layers] <= 0]) > 0:
