@@ -11,7 +11,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:nsga}
 
 		\Proc{NSGA-II}{
 
@@ -34,7 +34,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet population\;
 		}
 
-		\caption{NSGA-II}\label{alg:nsga}
+		\caption{NSGA-II}
 
 	\end{algorithm}
 
@@ -76,7 +76,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:evaluation}
 
 		\Fn{Evaluate}{
 
@@ -95,7 +95,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet evaluation\;
 		}
 
-		\caption{Population evaluation}\label{alg:evaluation}
+		\caption{Population evaluation}
 
 	\end{algorithm}
 
@@ -113,7 +113,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:nds}
 
 		\Fn{NDSort}{
 
@@ -132,7 +132,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet population\;
 		}
 
-		\caption{Non-dominated sort steps}\label{alg:nds}
+		\caption{Non-dominated sort steps}
 
 	\end{algorithm}
 
@@ -164,7 +164,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:fronts}
 
 		\Fn{ComputeFronts}{
 
@@ -216,7 +216,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet fronts\;
 		}
 
-		\caption{Front computation}\label{alg:fronts}
+		\caption{Front computation}
 
 	\end{algorithm}
 
@@ -226,7 +226,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:crowding_distance}
 
 		\Fn{ComputeDistances}{
 
@@ -258,7 +258,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet fronts\;
 		}
 
-		\caption{Crowding distance computation}\label{alg:crowding_distance}
+		\caption{Crowding distance computation}
 
 	\end{algorithm}
 
@@ -268,7 +268,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.29cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:selection}
 
 		\Fn{Selection}{
 
@@ -290,7 +290,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet parents\;
 		}
 
-		\caption{Selection operator}\label{alg:selection}
+		\caption{Selection operator}
 
 	\end{algorithm}
 
@@ -302,7 +302,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:offspring_fs}
 
 		\Fn{CreateOffspring}{
 
@@ -323,7 +323,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet offspring
 		}
 
-		\caption{Offspring creation}\label{alg:offspring_fs}
+		\caption{Offspring creation}
 
 	\end{algorithm}
 
@@ -333,7 +333,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:singlepointx}
 
 		\Fn{SinglePoint}{
 
@@ -347,13 +347,13 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet child\;
 		}
 
-		\caption{Single-point crossover}\label{alg:singlepointx}
+		\caption{Single-point crossover}
 
 	\end{algorithm}
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:twopointx}
 
 		\Fn{TwoPoint}{
 
@@ -367,13 +367,13 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet child\;
 		}
 
-		\caption{Two-point crossover}\label{alg:twopointx}
+		\caption{Two-point crossover}
 
 	\end{algorithm}
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:uniformx}
 
 		\Fn{Uniform}{
 
@@ -391,13 +391,13 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet child\;
 		}
 
-		\caption{Uniform crossover}\label{alg:uniformx}
+		\caption{Uniform crossover}
 
 	\end{algorithm}
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:flipbitsm}
 
 		\Fn{FlipBits}{
 
@@ -411,7 +411,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet child\;
 		}
 
-		\caption{Flip bits mutation}\label{alg:flipbitsm}
+		\caption{Flip bits mutation}
 
 	\end{algorithm}
 
@@ -425,7 +425,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:replacement}
 
 		\Fn{Replace}{
 
@@ -440,7 +440,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 			\KwRet next population\;
 		}
 
-		\caption{Population replacement}\label{alg:replacement}
+		\caption{Population replacement}
 
 	\end{algorithm}
 
