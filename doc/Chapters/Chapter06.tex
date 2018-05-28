@@ -17,7 +17,7 @@ In the following two sections we will describe two separate optimizations: first
 
 Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framework (Algorithm \ref{alg:nsga}), as well as Algorithms \ref{alg:evaluation}, \ref{alg:nds}, \ref{alg:fronts}, \ref{alg:crowding_distance}, \ref{alg:selection} and \ref{alg:replacement}.
 
-\section{Structure optimization}
+\section{Structure optimization}\label{sec:structure_optimization}
 
 	We define the structure of a neural network as its configuration of layers and units per layer. To find out which combination is more appropriate, we will input a maximum number of layers---fixing the other parameters so that comparisons are fair---and the genetic algorithm will give us its rough estimation of what works best.
 
@@ -25,9 +25,9 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 
 	The population initialization will create a heterogeneous set of neural network structures which share one trait: they are widest in the middle layer and narrower towards the first and last layers. From this point on, the evolution has freedom to converge to other shapes.
 
-	\vspace{0.2cm}
+	\vspace{0.3cm}
 
-	\begin{algorithm}
+	\begin{algorithm}[H]
 
 		\Fn{Initialize}{
 
@@ -173,7 +173,7 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 
 	\end{algorithm}
 
-\section{Training optimization}
+\section{Training optimization}\label{sec:training_optimization}
 
 	Now that we presumably have an idea of what sort of structure our neural network needs, it is time to take a further step to make the most of it. Since in structure optimization the remaining hyperparameters are chosen to speed up training times, it is unlikely that they already have the best values for full performance.
 
@@ -216,7 +216,7 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 			\KwRet population\;
 		}
 
-		\caption{Initialization in learning optimization}
+		\caption{Initialization in training optimization}
 
 	\end{algorithm}
 
@@ -261,7 +261,7 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 			\KwRet child\;
 		}
 
-		\caption{Single-point crossover in learning optimization}
+		\caption{Single-point crossover in training optimization}
 
 	\end{algorithm}
 
@@ -302,3 +302,5 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 	\end{algorithm}
 
 	\vspace{0.3cm}
+
+	We have reviewed the key points of how the structure optimization (section \ref{sec:structure_optimization}) and training optimization (section \ref{sec:training_optimization}) algorithms work. In the next part, we will apply these concepts and extract some conclusion.

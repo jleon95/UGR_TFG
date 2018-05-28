@@ -3,7 +3,9 @@
 
 Like we mentioned before, the chosen approach for the feature selection step is a genetic algorithm. With a few modifications specific to our problem, the basic structure will be that of \acs{NSGA-II}.
 
-We previously hinted in chapter \ref{ch:background} at a binary representation when dealing with this kind of task. It not only facilitates the overall implementation, but---as we already said---it also brings with it some easy yet effective operators.
+In chapter \ref{ch:background} we hinted at a binary representation to solve this task. It not only facilitates the overall implementation, but---as we already said---it also brings with it some easy yet effective operators.
+
+At the end of this chapter we will have the knowledge to take on feature selection for cases where the total amount of predictors is not absurdly high. Every relevant operation will be explained so that equivalent outcomes can be achieved.
 
 \section{Feature selection procedure}
 
@@ -42,11 +44,9 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	Notice that it returns the whole population from the last generation. Ideally, we want to take its first Pareto front and choose whatever solution we deem more appropriate for our needs.
 
-	We can proceed to go now into more detail about the different functions that make up the body of the algorithm.
-
 \newpage
 
-	At the beginning, there is a randomized initialization of the population, so as to have something to start with:
+	We can proceed to go now into more detail about the different functions that make up the algorithm.	At the beginning, there is a randomized initialization of the population, so as to have something to start with:
 
 	\vspace{0.3cm}
 
@@ -72,7 +72,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	In the actual code, each element of the population is created as a sequence of zeros which is then modified to introduce ones in random positions. These two numbers correspond to the intuitive notion of boolean false and true, respectively, telling us whether a given feature is chosen or not.
 
-	After that, and also after each time we create a new population, we have to evaluate the fitness of its individuals. This is accomplished in \texttt{Evaluate}:
+	After that, and also every time we create a new population, we have to evaluate the fitness of its individuals. This is accomplished in \texttt{Evaluate}:
 
 	\vspace{0.3cm}
 
@@ -101,7 +101,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	\vspace{0.3cm}
 
-	Here we assume that we already have the different $F_i$ at our disposal. Also, not all fitness functions necessarily use the data for their computations---we will discuss this soon---but it is written this way for uniformity.
+	Here we assume that we already have the different $F_i$ at our disposal. Also, not all fitness functions necessarily use the data for their computations---we will discuss this at the end of the chapter---but it is written this way for uniformity.
 
 \newpage
 
@@ -448,7 +448,7 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 	As we can see, since the population is already sorted by front and by crowding distance within the same front, the only thing we have to do is to apply a cutoff to keep the population size stable.
 
-	There is, nevertheless, a topic we have not covered with all the pseudocode of this chapter: the fitness or objective functions. In accordance with the design of the algorithm, they are based on minimization rather than maximization. They are the following:
+	There is, nevertheless, a topic we have not covered with all the pseudocode of this chapter: the fitness or objective functions. In accordance with the design of the algorithm, they are based on minimization rather than maximization. They will measure the success of all our algorithms from now on, and they are the following:
 
 	\begin{itemize}
 
@@ -468,5 +468,6 @@ We previously hinted in chapter \ref{ch:background} at a binary representation w
 
 		Where $p_0$ is equivalent to the test set error, and $p_c$ is the sum of the probabilities of random agreement for all possible classes.
 
-
 	\end{itemize}
+
+	Having now outlined the feature selection process, in the next chapter we will devise a similar path to undertake the optimization of a neural network.
