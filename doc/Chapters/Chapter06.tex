@@ -208,9 +208,9 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 			\KwOut{population}
 			population $\longleftarrow$ $\emptyset$\;
 			\For{$i = 0$ \KwTo $population$ $size$}{
-				ind.lr = Random(lr range)\;
-				ind.dropout = Random(dropout range)\;
-				ind.epochs = RandomChoice(1, max epochs, 1)\;
+				ind.lr $=$ Random(lr range)\;
+				ind.dropout $=$ Random(dropout range)\;
+				ind.epochs $=$ RandomChoice(1, max epochs, 1)\;
 				population $\longleftarrow$ population $\cup$ $\{$ind$\}$\;
 			}
 			\KwRet population\;
@@ -219,3 +219,86 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 		\caption{Initialization in learning optimization}
 
 	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	Because the elements of each individual are independent numbers, the genetic operators are also straightforward. For example, one could perform a simple arithmetic mean:
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]\label{alg:arithmeticx}
+
+		\Fn{Arithmetic}{
+
+			\KwIn{$p_1$, $p_2$}
+			\KwOut{child}
+			child.lr $=$ ($p_1$.lr + $p_2$.lr) / $2$\;
+			child.dropout $=$ ($p_1$.dropout + $p_2$.dropout) / $2$\;
+			child.epochs $=$ ($p_1$.epochs + $p_2$.epochs) / $2$\;
+			\KwRet child\;
+		}
+
+		\caption{Arithmetic crossover}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	If we view an individual as an array of values, we can also use $n$-point crossovers. Algorithm \ref{alg:lo_singlepointx} describes a fixed Single-point crossover in which the child inherits the epochs from the first parent and the learning and dropout rates from the second parent. One could choose them in any order or make it randomized.
+
+	Mutations can make use of a normal distribution with our own center and standard deviation to introduce a variation in all values (Algorithm \ref{alg:gaussianm}) or in just one of them. They can also target the dropout rate in isolation (Algorithm \ref{alg:dropoutm}), given that it is more a technique rather than an intrinsic part of neural network training.
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]\label{alg:lo_singlepointx}
+
+		\Fn{SinglePoint}{
+			\KwIn{$p_1$, $p_2$}
+			\KwOut{child}
+			child.lr $=$ $p_2$.lr\;
+			child.dropout $=$ $p_2$.dropout\;
+			child.epochs $=$ $p_1$.epochs\;
+			\KwRet child\;
+		}
+
+		\caption{Single-point crossover in learning optimization}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]\label{alg:gaussianm}
+
+		\Fn{Gaussian}{
+
+			\KwIn{ind, center, std}
+			\KwOut{ind}
+			ind.lr $=$ ind.lr * RandomNormal(center, std)\;
+			ind.dropout $=$ ind.dropout * RandomNormal(center, std)\;
+			ind.epochs $=$ ind.epochs * RandomNormal(center, std)\;
+			\KwRet ind\;
+		}
+
+		\caption{Gaussian mutation}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]\label{alg:dropoutm}
+
+		\Fn{Dropout}{
+
+			\KwIn{ind, magnitude}
+			\KwOut{ind}
+			sign $=$ $1$ \textbf{if} Random() $\leq$ $0.5$ \textbf{else} $-1$\;
+			change $=$ sign * magnitude\;
+			ind.dropout $=$ ind.dropout + change\;
+			\KwRet ind\;
+		}
+
+		\caption{Dropout mutation}
+
+	\end{algorithm}
+
+	\vspace{0.3cm}
