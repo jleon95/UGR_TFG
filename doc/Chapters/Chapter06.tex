@@ -1,5 +1,5 @@
 \chapter{Neural network optimization}\label{ch:optimization}
-%************************************************ 
+%************************************************
 
 The definition of hyperparameter is often fuzzy. In this work, we view hyperparameters as those parameters which are fixed before training a model, because there are no direct rules to infer them from the available data. In fact, we probably would not need them at all if we had enough data, since the samples would tell us everything that is to be known about a given problem. As we will almost never find ourselves in such a favorable situation, there exists a real need to find the right combination of hyperparameters for the circumstances at hand.
 
@@ -65,7 +65,7 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 
 	\vspace{0.3cm}
 
-	\begin{algorithm}[H]
+	\begin{algorithm}[H]\label{alg:offspring_nn}
 
 		\Fn{CreateOffspring}{
 
@@ -82,7 +82,7 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 					child $\longleftarrow$ Mutation(p)\;
 				}
 				offspring $\longleftarrow$ offspring $\cup$ $\{$child$\}$\;
-				
+
 			}
 			\KwRet offspring\;
 		}
@@ -139,7 +139,7 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 			layer $=$ RandomChoice(size(individual),$1$)\;
 			change $=$ individual[layer] * magnitude * RandomNormal()\;
 			compensation $=$ change/(size(individual)-$1$)\;
-			individual[layer] $=$ individual[layer] + change\; 
+			individual[layer] $=$ individual[layer] + change\;
 			\For{$i = 0$ \KwTo \textit{size(individual)}}{
 				\If{$i$ $\neq$ $layer$}{
 					individual[i] $=$ individual[i] $-$ compensation\;
@@ -190,4 +190,32 @@ Now, let us begin without further delay. We will reuse the \acs{NSGA-II} framewo
 		\item
 		Dropout rate: it is a technique that disables a portion of the neurons (randomly selected) at each training epoch. As a result, it is a regularization method because the different sub-models that try to learn from the data have less predictive power. We need to tune it so that the final neural network is neither too powerful nor too simple for the task.
 
-	\end{itemize} 
+	\end{itemize}
+
+	An individual in this algorithm will have a value for each of these three fields; for clarity, we will call them \texttt{ind.lr}, \texttt{ind.epochs} and \texttt{ind.dropout}, respectively.
+
+	Like we did in last section, we will use Algorithms, \ref{alg:evaluation}, \ref{alg:nds}, \ref{alg:fronts}, \ref{alg:crowding_distance}, \ref{alg:selection} and \ref{alg:replacement}. Additionally, we want mutations to happen independently from crossovers, so we can use Algorithm \ref{alg:offspring_nn} too. The NSGA-II framework (Algorithm \ref{alg:nsga}) is modified to receive the maximum number of epochs and the ranges for the other two hyperparameters.
+
+	The initialization in this case is fairly trivial, as seen in Algorithm \ref{alg:lo_initialization}.
+
+	\vspace{0.3cm}
+
+	\begin{algorithm}[H]\label{alg:lo_initialization}
+
+		\Fn{Initialize}{
+
+			\KwIn{population size, max epochs, lr range, dropout range}
+			\KwOut{population}
+			population $\longleftarrow$ $\emptyset$\;
+			\For{$i = 0$ \KwTo $population$ $size$}{
+				ind.lr = Random(lr range)\;
+				ind.dropout = Random(dropout range)\;
+				ind.epochs = RandomChoice(1, max epochs, 1)\;
+				population $\longleftarrow$ population $\cup$ $\{$ind$\}$\;
+			}
+			\KwRet population\;
+		}
+
+		\caption{Initialization in learning optimization}
+
+	\end{algorithm}
