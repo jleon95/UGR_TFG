@@ -20,7 +20,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 #-------------------- Population initialization --------------------
 
 # Returns a population of "pop_size" neural network hyperparameter
-# configurations in the form [epochs, learning rate, dropout rate]. 
+# configurations in the form [epochs, learning rate, dropout rate].
 # The range of possible epochs is given by [1,"max_epochs"].
 # The range of learning rate values is given by "lr_range".
 # The range of dropout values is given by "dropout_range".
@@ -59,7 +59,7 @@ def GaussianMutation(individual, max_epochs, lr_range, dropout_range, std = 0.25
 
 	mutated = np.copy(individual)
 	coefs = normal(1.0,std,size=len(individual))
-	mutated[0] = mutated[0]*coefs[0] if 0 < mutated[0]*coefs[0] <= max_epochs \
+	mutated[0] = mutated[0]*coefs[0] if 1 <= mutated[0]*coefs[0] <= max_epochs \
 									 else mutated[0]
 	mutated[1] = mutated[1]*coefs[1] if lr_range[0] <= mutated[1]*coefs[1] <= lr_range[1] \
 									 else mutated[1]
@@ -79,7 +79,7 @@ def DropoutMutation(individual, max_epochs, lr_range, dropout_range):
 
 # Using already selected individuals, creates as many offspring as
 # the number of parents * "crossover_prob" (rounded) +
-# the number of parents * "mutation_prob" (rounded) 
+# the number of parents * "mutation_prob" (rounded)
 # using the crossover operator contained in "crossover" and the
 # mutation operators contained in "mutations".
 def CreateOffspring(parents, crossover, mutations, max_epochs, lr_range,
@@ -118,7 +118,7 @@ def CreateOffspring(parents, crossover, mutations, max_epochs, lr_range,
 # "dropout": dropout rate, if used (> 0). Recommended (0.2-0.5).
 def CreateNeuralNetwork(input_size, output_size, layers, activation,
 	lr = 0.0, dropout = 0.0):
-	
+
 	K.clear_session()
 	model = Sequential()
 	model.add(Dense(layers[0],activation=activation,input_dim=input_size))
@@ -153,7 +153,7 @@ def CreateNeuralNetwork(input_size, output_size, layers, activation,
 # The returned value is 1 - Kappa coefficient.
 def KappaLoss(individual, data, labels, layers, activation, *_):
 
-	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
+	network = KerasClassifier(build_fn=CreateNeuralNetwork,
 		input_size=data['train'].shape[1],
 		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
 		layers=layers,activation=activation,lr=individual[1],
@@ -171,7 +171,7 @@ def KappaLoss(individual, data, labels, layers, activation, *_):
 # The returned value is 1 - accuracy.
 def SimpleLoss(individual, data, labels, layers, activation, *_):
 
-	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
+	network = KerasClassifier(build_fn=CreateNeuralNetwork,
 		input_size=data['train'].shape[1],
 		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
 		layers=layers,activation=activation,lr=individual[1],
@@ -188,7 +188,7 @@ def SimpleLoss(individual, data, labels, layers, activation, *_):
 # The returned value is 1 - cross-validation accuracy.
 def CrossValidationLoss(individual, data, labels, layers, activation, rounds = 5):
 
-	network = KerasClassifier(build_fn=CreateNeuralNetwork, 
+	network = KerasClassifier(build_fn=CreateNeuralNetwork,
 		input_size=data['train'].shape[1],
 		output_size=2 if len(labels['train'].shape) < 2 else labels['train'].shape[1],
 		layers=layers,activation=activation,lr=individual[1],
@@ -218,8 +218,8 @@ def CrossValidationLoss(individual, data, labels, layers, activation, rounds = 5
 # "n_cores": number of processor cores used in the evaluation step.
 def LearningOptimization(data, labels, max_epochs, lr_range, dropout_range,
 		layers,	objective_funcs, activation, pop_size, generations, seed = 29,
-		crossover_prob = 0.2, crossover_func = ArithmeticMeanCrossover, 
-		mutation_prob = 0.8, mutation_funcs = [GaussianMutation], 
+		crossover_prob = 0.2, crossover_func = ArithmeticMeanCrossover,
+		mutation_prob = 0.8, mutation_funcs = [GaussianMutation],
 		pool_fraction = 0.5, n_cores = 1, show_metrics = False):
 
 	assert data['train'].shape[0] > 0, \
@@ -297,12 +297,12 @@ def LearningOptimization(data, labels, max_epochs, lr_range, dropout_range,
 
 		if show_metrics:
 			print(np.mean(evaluation[nds_indices][:pop_size],axis=0))
-	
+
 	return population, nds_scores, evaluation[nds_indices][:pop_size,:]
 
 
 if __name__ == '__main__':
-	
+
 	# Pathnames assume that the script is called from parent directory
 	# and not from 'src' (data not included in the repository).
 
@@ -339,6 +339,6 @@ if __name__ == '__main__':
 				layers=np.asarray([76]),
 				objective_funcs=[KappaLoss,SimpleLoss],
 				activation="elu",pop_size=10,generations=5,seed=29,
-				crossover_prob=0.5, crossover_func=SinglePointCrossover, 
-				mutation_prob=0.5, mutation_funcs=[GaussianMutation,DropoutMutation], 
+				crossover_prob=0.5, crossover_func=SinglePointCrossover,
+				mutation_prob=0.5, mutation_funcs=[GaussianMutation,DropoutMutation],
 				pool_fraction=0.5, n_cores=1, show_metrics=True)
