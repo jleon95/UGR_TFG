@@ -1,15 +1,19 @@
 \chapter{Context}\label{ch:context}
 %************************************************
 
-\section{Brain-Computer Interfaces}
+In the famous movie \textit{The Matrix}, humans are plugged into the evil matrix through a port in the back of their skulls. In the 1995 Japanese animated movie \textit{Ghost in the Shell}, a number of characters also sport a similar device (this time voluntarily) in order to perform several tasks, a remarkable one being diving into virtual reality.
 
-	In the famous movie \textit{The Matrix}, humans are plugged into the evil matrix through a port in the back of their skulls. In the 1995 Japanese animated movie \textit{Ghost in the Shell}, a number of characters also sport a similar device (this time voluntarily) in order to perform several tasks, a remarkable one being diving into virtual reality.
+While there is no telling when that level of technology will become everyday for us, numerous promising advances already point to its realization. This work aims to study a part of the state-of-the-art in this respect: machines learning to understand us.
 
-	These and many other variations of this sci-fi concept fall into the term \ac{BCI}. \acs{BCI}s function as communication channels that do not rely on peripheral nerves or muscles \cite{bcidef}; put in a practical way, they can allow for a compensation or even augmentation of human abilities.
+In this first chapter we provide a brief context. In sections \ref{sec:intro_bci} and \ref{sec:intro_eeg} we talk about two of the closest related fields. The main techniques we will be using are introduced in sections \ref{sec:intro_nn} and \ref{sec:intro_ea}. In subsequent chapters, the whole mechanism will be pieced together to finally reach some conclusions.
 
-	While not as futuristic as in fiction, the prospects of current \acs{BCI} technology range from convenient to humanitarian---from brain-operated typewriters to medical diagnosis or advanced systems that aid paralyzed patients in their daily lives.
+\section{Brain-Computer Interfaces}\label{sec:intro_bci}
 
-\section{Electroencephalography}
+	Many variations of the contraptions we mentioned at the start fall into the term \ac{BCI}. \acs{BCI}s function as communication channels that do not rely on peripheral nerves or muscles \cite{bcidef}; put in a practical way, they can allow for a compensation or even augmentation of human abilities.
+
+	While not as futuristic as in fiction, the near future prospects of \acs{BCI} technology range from convenient to humanitarian---from brain-operated communication channels \cite{guger2009many} to medical diagnosis or advanced systems which aid paralyzed patients in their daily lives \footnote{\href{http://www.wired.co.uk/article/braingate}{A chip in your brain can control a robotic arm. Welcome to BrainGate.} [Accessed 29-05-2018]}.
+
+\section{Electroencephalography}\label{sec:intro_eeg}
 
 	As the name Brain-Computer Interface suggests, we need a tool in order to link our brain to a computer. It can be of one of three kinds:
 
@@ -26,7 +30,7 @@
 
 	In particular, the dataset employed in the experiments of this document was obtained with \acs{EEG}. This paradigm utilizes a set of electrodes placed on the scalp to record electrical activity from the brain; those readings are later useful for medical diagnosis or diverse engineering purposes (ours being one of them).
 
-\section{Artificial neural networks}
+\section{Artificial neural networks}\label{sec:intro_nn}
 
 	\ac{ANN} have existed for many decades as a theoretical model. However, it was not until a few years ago, with the significant increases in computational power, that we started to grasp some of their true potential.
 
@@ -38,7 +42,7 @@
 
 	As far as we are concerned, this means that \acs{ANN}s draw inspiration from nature to build a model capable of prediction from inputs, given sufficient training. And, as we will see in subsequent chapters, the key is precisely the training phase. It is the most arduous task in order to get desired outcomes, for it requires tuning a number of parameters.
 
-\section{Evolutionary algorithms}
+\section{Evolutionary algorithms}\label{sec:intro_ea}
 
 	Again influenced by nature, \ac{EA} try to mimic the phenomenon that takes place in communities over extended periods of time: with the passing of generations, better adapted individuals prevail over less fit ones; this process makes for an intuitive---and highly effective---optimization technique.
 
@@ -46,8 +50,15 @@
 
 \section{Putting everything together}
 
-	The matter at hand is one of classification of samples into one of three categories. The samples consist of data extracted using \acs{EEG}, a kind of \acs{BCI}, that represent an imagined movement of certain limbs.
+	The matter at hand is one of classification of samples into one of three categories. The samples consist of data extracted using \acs{EEG}, a kind of \acs{BCI}, that represent an imagined movement of certain limbs. We will see this in chapter \ref{ch:dataset}.
 
-	Once we have the data, the next stage is the classification. It will be performed by some kind of \acs{ANN}, which will need to be trained on some samples. Since getting the right configuration at the first attempt is unlikely, we will explore the possibilities a bit more with the help of \acs{EA}s. The focus of the present work involves precisely this training step.
+	Once we have the data, the next stage is the classification. This is achieved first through a feature selection phase (chapter \ref{ch:featureselection}); next, we will explore a few forms of optimization for neural networks (described in chapter \ref{ch:optimization}). After performing several experiments, we will gather the information and draw some conclusions on how to build the best model according to our capabilities and resources.
 
-	The final touch would be to integrate all the work into a functioning product, but that task does not belong much in this academic setting.
+	The last touch would be to integrate hardware and software into a functioning product, which is of course easier said than done. That task is outside the scope of this academic setting.
+
+	Let us now proceed to explain in chapter \ref{ch:background} a variety of general concepts that are required to fully understand the technical side of this work.
+
+
+	 %It will be performed by some kind of \acs{ANN}, which will need to be trained on some samples. Since getting the right configuration at the first attempt is unlikely, we will explore the possibilities a bit more with the help of \acs{EA}s. The focus of the present work involves precisely this training step.
+
+	%The final touch would be to integrate all the work into a functioning product, but that task does not belong much in this academic setting.
