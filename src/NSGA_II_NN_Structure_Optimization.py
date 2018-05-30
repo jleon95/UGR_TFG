@@ -84,7 +84,7 @@ def SingleLayerMutation(individual, magnitude = 0.3):
 	valid_layers = np.argmax(mutated == 0) or len(mutated)
 	layer = choice(valid_layers)
 	change = int(mutated[layer] * magnitude * standard_normal())
-	mutated[:valid_layers] -= int(change//(valid_layers-1))
+	mutated[:valid_layers] -= int(change//(valid_layers))
 	mutated[layer] += change
 	# If there are invalid layer sizes (<= 0), avoid a crash by
 	# making them the mean of the valid elements.
@@ -253,7 +253,7 @@ def CrossValidationLoss(individual, data, labels, activation,
 # "mutation_func": mutation method.
 # "pool_fraction": proportion of parent pool size with respect to "pop_size".
 # "n_cores": number of processor cores used in the evaluation step.
-def NNOptimization(data, labels, max_hidden, objective_funcs, activation,
+def StructureOptimization(data, labels, max_hidden, objective_funcs, activation,
 		pop_size, generations, seed = 29,
 		crossover_prob = 0.2, crossover_func = SinglePointCrossover, 
 		mutation_prob = 0.8, mutation_funcs = [SingleLayerMutation], 
@@ -363,7 +363,7 @@ if __name__ == '__main__':
 		labels['test'] = to_categorical(labels['test'])
 
 		population, sort_scores, evaluation = \
-				NNOptimization(data=data,labels=labels,max_hidden=3,
+				StructureOptimization(data=data,labels=labels,max_hidden=3,
 				objective_funcs=[KappaLoss,CrossValidationLoss],
 				activation="elu",pop_size=10,generations=5,seed = 29,
 				crossover_prob = 0.2, crossover_func = SinglePointCrossover, 
