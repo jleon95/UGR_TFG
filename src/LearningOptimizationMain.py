@@ -30,8 +30,6 @@ if __name__ == '__main__':
 
 		data['train'] = data['train'][:,features]
 		data['test'] = data['test'][:,features]
-		labels['train'] -= 1
-		labels['test'] -= 1
 		labels['train'] = to_categorical(labels['train'])
 		labels['test'] = to_categorical(labels['test'])
 
