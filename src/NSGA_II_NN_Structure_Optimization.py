@@ -156,6 +156,8 @@ def CreateNeuralNetwork(input_size, output_size, layers, activation,
 	
 	K.clear_session()
 	model = Sequential()
+	if dropout > 0.0:
+			model.add(Dropout(dropout,input_shape=(input_size,)))
 	model.add(Dense(layers[0],activation=activation,input_dim=input_size))
 
 	# Since "layers" has a fixed size equal to the maximum layer count allowed,
