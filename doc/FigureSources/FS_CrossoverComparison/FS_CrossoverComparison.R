@@ -10,7 +10,7 @@ twopoint_104 = read.table("twopoint_crossover_104", col.names = c("Kappa", "CV")
 twopoint_107 = read.table("twopoint_crossover_107", col.names = c("Kappa", "CV"))
 twopoint_110 = read.table("twopoint_crossover_110", col.names = c("Kappa", "CV"))
 
-generations = seq(0, 200)
+generations = seq(0, dim(uniform_104)[1]-1)
 
 # Kappa and CV comparison for subject 104
 plot(x = generations, y = uniform_104$Kappa, type = "l", main = "104: Crossover comparison (Kappa)",
