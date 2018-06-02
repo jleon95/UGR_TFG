@@ -1,6 +1,3 @@
-/usr/lib64/python3.4/importlib/_bootstrap.py:321: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
-  return f(*args, **kwds)
-Using TensorFlow backend.
 Fitness metrics: KappaLoss, Simplicity
 
 Individual 104
