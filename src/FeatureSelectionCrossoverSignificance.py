@@ -35,7 +35,7 @@ if __name__ == '__main__':
 					n_cores=-1,show_metrics=False)
 
 			best_kappa = evaluation[np.argmin(evaluation[:,0]),0]
-			crossover_array = np.load("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i)
+			crossover_array = np.load("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i+".npy")
 			crossover_array[j,0] = best_kappa
 			np.save("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i,crossover_array)
 			print("\n\n")
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 					n_cores=-1,show_metrics=False)
 
 			best_kappa = evaluation[np.argmin(evaluation[:,0]),0]
-			crossover_array = np.load("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i)
+			crossover_array = np.load("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i+".npy")
 			crossover_array[j,1] = best_kappa
 			np.save("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i,crossover_array)
 			print("\n\n")
@@ -73,7 +73,7 @@ if __name__ == '__main__':
 					n_cores=-1,show_metrics=False)
 
 			best_kappa = evaluation[np.argmin(evaluation[:,0]),0]
-			crossover_array = np.load("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i)
+			crossover_array = np.load("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i+".npy")
 			crossover_array[j,2] = best_kappa
 			np.save("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i,crossover_array)
 			print("\n\n")
