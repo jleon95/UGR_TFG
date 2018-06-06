@@ -38,7 +38,7 @@ if __name__ == '__main__':
 			crossover_array = np.load("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i+".npy")
 			crossover_array[j,0] = best_kappa
 			np.save("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i,crossover_array)
-			print("\n\n")
+			print(crossover_array)
 
 	# Single-point crossover
 	for j in range(len(seeds)):
@@ -57,7 +57,7 @@ if __name__ == '__main__':
 			crossover_array = np.load("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i+".npy")
 			crossover_array[j,1] = best_kappa
 			np.save("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i,crossover_array)
-			print("\n\n")
+			print(crossover_array)
 
 	# Two-point crossover
 	for j in range(len(seeds)):
@@ -76,4 +76,4 @@ if __name__ == '__main__':
 			crossover_array = np.load("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i+".npy")
 			crossover_array[j,2] = best_kappa
 			np.save("../results/feature_selection/significance_tests/crossover_operators/crossover_best_kappa_"+i,crossover_array)
-			print("\n\n")
+			print(crossover_array)
