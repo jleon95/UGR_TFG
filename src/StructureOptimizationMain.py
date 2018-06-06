@@ -1,3 +1,7 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#	By Javier León Palomares, University of Granada, 2018   #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 from NSGA_II_NN_Structure_Optimization import *
 import numpy as np
 

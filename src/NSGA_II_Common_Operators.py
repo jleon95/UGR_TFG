@@ -1,3 +1,7 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#	By Javier León Palomares, University of Granada, 2018   #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 import multiprocessing
 import numpy as np
 from numpy.random import choice

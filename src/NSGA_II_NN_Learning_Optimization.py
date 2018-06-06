@@ -1,3 +1,7 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#	By Javier León Palomares, University of Granada, 2018   #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 from NonDominatedSort import NonDominatedSortScores, IndirectSort
 from NSGA_II_Common_Operators import *
 import numpy as np

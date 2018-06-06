@@ -1,3 +1,7 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#	By Javier León Palomares, University of Granada, 2018   #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 import numpy as np
 
 def InitializeFirstFront(objective_scores):

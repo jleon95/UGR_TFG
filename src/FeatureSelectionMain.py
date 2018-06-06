@@ -1,3 +1,7 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#	By Javier León Palomares, University of Granada, 2018   #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 from NSGA_II_Feature_Selection import *
 import numpy as np
 
@@ -27,10 +31,10 @@ if __name__ == '__main__':
 		population, sort_scores, evaluation = \
 				FeatureSelection(data=data,labels=labels,max_features=40,
 				objective_funcs=[KappaLoss,CrossValidationLoss],
-				pop_size=20,generations=20,seed=29,crossover_prob=0.9,
-				crossover_func=UniformCrossover,mutation_prob=0.8,
+				pop_size=70,generations=70,seed=29,crossover_prob=0.9,
+				crossover_func=UniformCrossover,mutation_prob=1.0,
 				mutation_func=FlipBitsMutation,pool_fraction=0.5,
-				n_cores=1,show_metrics=True)
+				n_cores=3,show_metrics=True)
 
 		np.save("../results/feature_selection_population_"+filenames[i],population)
 		np.save("../results/feature_selection_sort_scores_"+filenames[i],sort_scores)
