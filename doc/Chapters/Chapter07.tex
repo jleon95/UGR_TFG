@@ -88,10 +88,47 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 		\end{itemize}
 
-
+\newpage
 
 \section{Feature selection}\label{sec:res_fs}
 
-\section{Structure optimization}\label{sec:res_so}
+	Determining the right configuration for the genetic algorithm---or rather, even one that is good enough---is no trivial task. Early experimentation seemed to point to a high crossover probability, but especially to a high mutation probability (ultimately set to 1). We will elaborate on that soon.
 
-\section{Learning optimization}\label{sec:res_lo}
+	Let us start by comparing three different crossover operators: \textit{Uniform}, \textit{Single-point} and \textit{Two-point}. We will work with a population of 300 individuals and 150 generations. We will set a 0.9 crossover probability after which a mutation will always ensue. A maximum of 50 active features will be allowed in each individual. The fitness criteria will take into account the Kappa value (for test accuracy) and a 5-fold cross-validation (for generalization assessment) measured for Logistic Regression.
+
+	We will do an initial test run on each subject (104, 107 and 110). 
+
+	Figure \ref{gfx:fs_crossover_kappa} displays the evolution of the mean fitness error for all crossover operators in all three subjects.
+
+    \begin{figure}[h]
+
+        \begin{center}
+
+        	\setlength{\fboxrule}{0pt}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_Crossover_Kappa_104.png}
+				\end{varwidth}
+			}
+			\fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_Crossover_Kappa_107.png}
+				\end{varwidth}
+			}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_Crossover_Kappa_110.png}
+				\end{varwidth}
+			}
+
+		\end{center}
+		\caption[Kappa loss comparison for different crossovers]{Comparison of Kappa loss evolution over time with different crossover operators.}\label{gfx:fs_crossover_kappa}
+
+	\end{figure}
+
+%\section{Structure optimization}\label{sec:res_so}
+
+%\section{Learning optimization}\label{sec:res_lo}
