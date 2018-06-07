@@ -1,9 +1,36 @@
 \chapter{Experimental results}\label{ch:experiments}
 %************************************************ 
 
-In this chapter, we start by detailing in section \ref{sec:technologies} the choice of technologies in order to obtain experimental results. After that, these results will be discussed in order of application in sections \ref{sec:res_fs} (feature selection), \ref{sec:res_so} (structure optimization) and \ref{sec:res_lo} (learning optimization). By the end, we will have empirical evidence to point us in promising directions, which we will subsequently talk about in the form of conclusions and future work.
+In this chapter, we start by detailing in section \ref{sec:technologies} the choice of technologies in order to obtain experimental results. After that, these results will be discussed in order of application in sections \ref{sec:res_fs} (feature selection), \ref{sec:res_so} (structure optimization) and \ref{sec:res_lo} (learning optimization). By the end, we will have empirical evidence to point us in promising directions, which we will subsequently address when we talk about conclusions and future work.
 
 \section{Software and hardware}\label{sec:technologies}
+
+	\subsection{Software}
+
+		The first decision to make is which programming language to use. \texttt{Python} is the choice for the following reasons:
+
+		\begin{itemize}
+
+			\item
+			Previous experience with the language in web and machine learning applications.
+
+			\item
+			Popularity of the language, which is a good indicator of community support. According to the \textit{StackOverflow} 2018 Survey \footnote{\href{https://insights.stackoverflow.com/survey/2018/\#technology-programming-scripting-and-markup-languages}{\textit{StackOverflow} 2018 Survey: Most popular technologies}}, it is one of the most popular languages, and more so if we compare it with those commonly associated with machine learning in the last few years.
+
+			\item
+			Popularity of its machine learning and deep learning frameworks. Well-established frameworks include \texttt{Scikit-learn} \footnote{\href{https://github.com/scikit-learn/scikit-learn}{\texttt{Scikit-learn} GitHub repository}}, \\ \texttt{Caffe} \footnote{\href{https://github.com/BVLC/caffe}{\texttt{Caffe} GitHub repository}}, \texttt{TensorFlow} \footnote{\href{https://github.com/tensorflow/tensorflow}{\texttt{TensorFlow} GitHub repository}} and \texttt{Theano} \footnote{\href{https://github.com/Theano/Theano}{\texttt{Theano} GitHub repository}}. The last two of them also function as backends for the high-level neural networks API \texttt{Keras} \footnote{\href{https://github.com/keras-team/keras}{\texttt{Keras} GitHub repository}}. If we look at the number of stars in their \textit{GitHub} repositories, we can see that they are widely acknowledged by the community.
+
+		\end{itemize}
+
+\newpage
+
+		The next step is choosing the tools to support our work. Since one of the goals of this project was to learn about optimization techniques, the genetic algorithm has been implemented from scratch, although there are alternatives like \texttt{DEAP} \footnote{\href{https://github.com/DEAP/deap}{\texttt{DEAP} GitHub repository}} if one wishes to avoid the additional development effort.
+
+		Data operations become faster and easier with \texttt{Numpy} \footnote{\href{https://github.com/numpy/numpy}{\texttt{Numpy} GitHub repository}}. This will allow us to manage populations in genetic algorithms, as well as perform basic operations in a vectorized way whenever we need them. It is also fully compatible with the other libraries.
+
+		Building machine learning models from scratch too is understandably out of the question. For this reason, we will rely on \texttt{Scikit-learn} for general machine learning algorithms and metrics, and on \texttt{Keras}---with its default \texttt{TensorFlow} backend---for neural networks.
+
+		Lastly, many charts will be generated using \texttt{R}  \footnote{\href{https://www.r-project.org/}{\texttt{R} Project website}}, which provides simple and powerful functionality for this task.
 
 \section{Feature selection}\label{sec:res_fs}
 
