@@ -98,7 +98,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	We will do an initial test run on each subject (104, 107 and 110). 
 
-	Figure \ref{gfx:fs_crossover_kappa} displays the evolution of the mean fitness error for all crossover operators in all three subjects.
+	Figure \ref{gfx:fs_crossover_kappa} displays the evolution of the mean Kappa error for all crossover operators in all three subjects.
 
     \begin{figure}[h]
 
@@ -128,6 +128,43 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 		\caption[Kappa loss comparison for different crossovers]{Comparison of Kappa loss evolution over time with different crossover operators.}\label{gfx:fs_crossover_kappa}
 
 	\end{figure}
+
+	We can identify appreciable differences between the three curves: the blue one (uniform crossover) shows consistently better results than the other two, and the red one (single-point crossover) appears to be the worst.
+
+\newpage
+
+	Let us move on now to the same type of chart but with the cross-validation error (Figure \ref{gfx:fs_crossover_cv}). Again, the uniform crossover operator achieves the top performance across all individuals and the single-point crossover operator often lags behind.
+
+	\begin{figure}[h]
+
+        \begin{center}
+
+        	\setlength{\fboxrule}{0pt}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_Crossover_CV_104.png}
+				\end{varwidth}
+			}
+			\fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_Crossover_CV_107.png}
+				\end{varwidth}
+			}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_Crossover_CV_110.png}
+				\end{varwidth}
+			}
+
+		\end{center}
+		\caption[CV loss comparison for different crossovers]{Comparison of cross-validation loss evolution over time with different crossover operators.}\label{gfx:fs_crossover_cv}
+
+	\end{figure}
+
+	We seem to be spotting a trend that depends on the crossover operator. However, is it wise to extrapolate from only one test run? The answer is no: the running times allow us to repeat the experiment several times and find out whether their differences are statistically significant.
 
 %\section{Structure optimization}\label{sec:res_so}
 
