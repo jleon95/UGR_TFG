@@ -19,7 +19,7 @@ plot(x = generations, y = uniform_104$Kappa, type = "l", main = "104: Crossover 
     ylim = c(0,1), lwd = 2, col = "blue")
 lines(x = generations, y = singlepoint_104$Kappa, lwd = 2, col = "red")
 lines(x = generations, y = twopoint_104$Kappa, lwd = 2, col = "green")
-legend(110, 0.98, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
+legend(85, 1, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
       col = c("blue","red","green"), lty = 1, lwd = 2, cex = 0.9)
 
 plot(x = generations, y = uniform_104$CV, type = "l", main = "104: Crossover comparison (CV)",
@@ -28,7 +28,7 @@ plot(x = generations, y = uniform_104$CV, type = "l", main = "104: Crossover com
      ylim = c(0,1), lwd = 2, col = "blue")
 lines(x = generations, y = singlepoint_104$CV, lwd = 2, col = "red")
 lines(x = generations, y = twopoint_104$CV, lwd = 2, col = "green")
-legend(110, 0.98, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
+legend(85, 1, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
        col = c("blue","red","green"), lty = 1, lwd = 2, cex = 0.9)
 
 # Kappa and CV comparison for subject 107
@@ -38,7 +38,7 @@ plot(x = generations, y = uniform_107$Kappa, type = "l", main = "107: Crossover 
      ylim = c(0,1), lwd = 2, col = "blue")
 lines(x = generations, y = singlepoint_107$Kappa, lwd = 2, col = "red")
 lines(x = generations, y = twopoint_107$Kappa, lwd = 2, col = "green")
-legend(110, 0.98, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
+legend(85, 1, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
        col = c("blue","red","green"), lty = 1, lwd = 2, cex = 0.9)
 
 plot(x = generations, y = uniform_107$CV, type = "l", main = "107: Crossover comparison (CV)",
@@ -47,7 +47,7 @@ plot(x = generations, y = uniform_107$CV, type = "l", main = "107: Crossover com
      ylim = c(0,1), lwd = 2, col = "blue")
 lines(x = generations, y = singlepoint_107$CV, lwd = 2, col = "red")
 lines(x = generations, y = twopoint_107$CV, lwd = 2, col = "green")
-legend(110, 0.98, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
+legend(85, 1, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
        col = c("blue","red","green"), lty = 1, lwd = 2, cex = 0.9)
 
 # Kappa and CV comparison for subject 110
@@ -57,7 +57,7 @@ plot(x = generations, y = uniform_110$Kappa, type = "l", main = "110: Crossover 
      ylim = c(0,1), lwd = 2, col = "blue")
 lines(x = generations, y = singlepoint_110$Kappa, lwd = 2, col = "red")
 lines(x = generations, y = twopoint_110$Kappa, lwd = 2, col = "green")
-legend(110, 0.98, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
+legend(85, 1, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
        col = c("blue","red","green"), lty = 1, lwd = 2, cex = 0.9)
 
 plot(x = generations, y = uniform_110$CV, type = "l", main = "110: Crossover comparison (CV)",
@@ -66,5 +66,5 @@ plot(x = generations, y = uniform_110$CV, type = "l", main = "110: Crossover com
      ylim = c(0,1), lwd = 2, col = "blue")
 lines(x = generations, y = singlepoint_110$CV, lwd = 2, col = "red")
 lines(x = generations, y = twopoint_110$CV, lwd = 2, col = "green")
-legend(110, 0.98, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
+legend(85, 1, legend = c("Uniform crossover","Single-point crossover","Two-point crossover"),
        col = c("blue","red","green"), lty = 1, lwd = 2, cex = 0.9)
