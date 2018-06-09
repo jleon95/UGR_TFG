@@ -173,6 +173,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 	\begin{table}[h]
 
         \centering
+        \setlength\arrayrulewidth{0.8pt}
 
         \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.1in} |  >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} |}
 
@@ -192,6 +193,84 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
         \caption{Comparison of average Kappa values for the three subjects and the three crossover operators.}\label{table:crossover_kappa}
 
     \end{table}
+
+    The average performance of each operator seems to be what we expected. Additionally, the uniform crossover appears to produce slightly more stable results, judging from the standard deviation. Next, and not making assumptions about normality, we will perform a \textit{Kruskal-Wallis} test to see if their differences are worth considering. The \textit{p-values} are displayed in Tables \ref{table:crossover_kruskal_104}, \ref{table:crossover_kruskal_107} and \ref{table:crossover_kruskal_110}, with values below $0.05$ representing meaningful differences ($95\%$ confidence interval).
+
+    \vspace{0.0cm}
+
+	\begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+
+            \hline
+            \rowcolor{RoyalBlue}
+            \textbf{104} & \textbf{Single-point} & \textbf{Two-point} \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{Uniform} & $p = 0.000027$ & $p = 0.000835$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{Single-point} & \cellcolor{lightgray} & \textcolor{red}{$p = 0.056282$} \\
+            \hline
+
+        \end{tabular}
+
+        \caption{Comparison of p-values for the crossover operators (subject 104).}\label{table:crossover_kruskal_104}
+
+    \end{table}
+
+    \begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+
+            \hline
+            \rowcolor{RoyalBlue}
+            \textbf{107} & \textbf{Single-point} & \textbf{Two-point} \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{Uniform} & $p = 0.000023$ & $p = 0.000104$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{Single-point} & \cellcolor{lightgray} & \textcolor{red}{$p = 0.678133$} \\
+            \hline
+
+        \end{tabular}
+
+        \caption{Comparison of p-values for the crossover operators (subject 107).}\label{table:crossover_kruskal_107}
+
+    \end{table}
+
+    \begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+
+            \hline
+            \rowcolor{RoyalBlue}
+            \textbf{110} & \textbf{Single-point} & \textbf{Two-point} \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{Uniform} & $p = 0.000454$ & $p = 0.006561$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{Single-point} & \cellcolor{lightgray} & \textcolor{red}{$p = 0.299489$} \\
+            \hline
+
+        \end{tabular}
+
+        \caption{Comparison of p-values for the crossover operators (subject 110).}\label{table:crossover_kruskal_110}
+
+    \end{table}
+
+    As we can see, the single-point and two-point crossovers show no statistically significant differences in their recorded results.
+
+    The computational impact of either operator is negligible against the much more intensive fitness evaluations, so there is no reason not to consider the uniform crossover as our pick from now on. The last thing to do before moving on is attempt to explain why this happens. 
+
+    On one hand, $n$-point crossovers merge large blocks from both parents; this leads to a not-so-optimal information transfer when trying to pick a handful of features from a pool of 3600.
+
+    On the other hand, the uniform crossover is often said to be very disruptive, due to randomly choosing elements for which the parents do not agree. However, when only a small portion $k$ of features is active at a time, the disruption is at most $2k$ elements (the rest are inactive features); on top of that, features in which both parents agree are always kept. This makes the uniform crossover excel at \textit{exploitation} while also helping in \textit{exploration}. Together with frequent mutations, this is probably the key of the performance gain of the algorithm.
 
 %\section{Structure optimization}\label{sec:res_so}
 
