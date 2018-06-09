@@ -166,6 +166,33 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	We seem to be spotting a trend that depends on the crossover operator. However, is it wise to extrapolate from only one test run? The answer is no: the running times allow us to repeat the experiment several times and find out whether their differences are statistically significant.
 
+	As a compromise between quantity of samples and time expended, we will analyze 15 samples per crossover operator using their Kappa values. Table \ref{table:crossover_kappa} shows the resulting values for all possible combinations:
+
+	\vspace{0.3cm}
+
+	\begin{table}[h]
+
+        \centering
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.1in} |  >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} |}
+
+            \hline
+            \rowcolor{RoyalBlue}
+            \textbf{Subject} & \textbf{Uniform} & \textbf{Single-point} & \textbf{Two-point} \\
+            \hline
+            \textbf{104} & $0.06534 \pm 0.0074$ & $0.08619 \pm 0.0102$ & $0.07941 \pm 0.0119$ \\
+            \hline
+            \textbf{107} & $0.15202 \pm 0.0132$ & $0.18004 \pm 0.0137$ & $0.17725 \pm 0.0150$ \\
+            \hline
+            \textbf{110} & $0.14829 \pm 0.0138$ & $0.17131 \pm 0.0158$ & $0.16569 \pm 0.0187$ \\
+            \hline
+
+        \end{tabular}
+
+        \caption{Comparison of average Kappa values for the three subjects and the three crossover operators.}\label{table:crossover_kappa}
+
+    \end{table}
+
 %\section{Structure optimization}\label{sec:res_so}
 
 %\section{Learning optimization}\label{sec:res_lo}
