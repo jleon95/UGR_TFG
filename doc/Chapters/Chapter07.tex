@@ -307,7 +307,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	\end{figure}
 
-	There is one definite conclusion we can draw: the number of generations is preventing the emergence of better individuals. The curves follow similar paths until they are progressively stopped by the generation limit. If we take a look at Figure \ref{gfx:fs_popgen_cv}, the same phenomenon is taking place for cross-validation loss, which is not surprising at all.
+	There is one definite conclusion we can draw: the number of generations is preventing the emergence of better individuals. The curves follow similar paths until they are progressively stopped by the generation limit. If we take a look at Figure \ref{gfx:fs_popgen_cv}, the same phenomenon is taking place for cross-validation loss, which does not suprise us.
 
 \newpage
 
@@ -341,6 +341,36 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 	\end{figure}
 
 	It is clear that we need a relevant analysis like that of crossover operators. We will keep the number of individuals intact to grant more diversity, but we have to confirm the importance of extending the evolutionary process. For all this, another 15 algorithm runs for each alternative will be used to make statistical claims.
+
+	First, let us put the average performances alongside one another in Table \ref{table:popgen_kappa}:
+
+	\vspace{0.3cm}
+
+	\begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.1in} |  >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} |}
+
+            \hline
+            \rowcolor{RoyalBlue}
+            \textbf{Subject} & \textbf{300-150} & \textbf{500-100} & \textbf{800-200} \\
+            \hline
+            \textbf{104} & $0.06534 \pm 0.0074$ & $0.06310 \pm 0.0077$ & $0.05127 \pm 0.0067$ \\
+            \hline
+            \textbf{107} & $0.15202 \pm 0.0132$ & $0.16830 \pm 0.0145$ & $0.12122 \pm 0.0126$ \\
+            \hline
+            \textbf{110} & $0.14829 \pm 0.0138$ & $0.15448 \pm 0.0069$ & $0.13369 \pm 0.0083$ \\
+            \hline
+
+        \end{tabular}
+
+        \caption{Comparison of average Kappa error values for the three subjects and the three configurations.}\label{table:popgen_kappa}
+
+    \end{table}
+
+    We see that taking the population size up to 800 and the generations up to 200 yields finer average results. It is also noticeable that a bigger population appears to matter less when the number of generations is not accordingly increased.
 
 %\section{Structure optimization}\label{sec:res_so}
 
