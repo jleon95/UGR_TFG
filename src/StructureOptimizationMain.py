@@ -22,9 +22,9 @@ if __name__ == '__main__':
 				   'test': np.load("../data/labels_test_110.npy")}]
 
 
-	features_list = [np.load("../data/example_features_104.npy"),
-					 np.load("../data/example_features_107.npy"),
-					 np.load("../data/example_features_110.npy")]
+	features_list = [np.load("../data/features/features_800i_200g_9c_10m_50f_K_CV_LogReg_104.npy"),
+					 np.load("../data/features/features_800i_200g_9c_10m_50f_K_CV_LogReg_107.npy"),
+					 np.load("../data/features/features_800i_200g_9c_10m_50f_K_CV_LogReg_110.npy")]
 
 	filenames = ["104", "107", "110"]
 
@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
 		print("Individual "+i)
 		population, sort_scores, evaluation = \
-				StructureOptimization(data=data,labels=labels,max_hidden=3,
+				StructureOptimization(data=data,labels=labels,max_hidden=2,
 				objective_funcs=[KappaLoss,Simplicity],
 				activation="elu",pop_size=15,generations=10,seed=29,
 				crossover_prob=0.1,crossover_func=SinglePointCrossover, 
