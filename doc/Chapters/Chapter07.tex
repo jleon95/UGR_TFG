@@ -166,7 +166,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	We seem to be spotting a trend that depends on the crossover operator. However, is it wise to extrapolate from only one test run? The answer is no: the running times allow us to repeat the experiment several times and find out whether their differences are statistically significant.
 
-	As a compromise between quantity of samples and time expended, we will analyze 15 samples per crossover operator using their Kappa values. Table \ref{table:crossover_kappa} shows the resulting values for all possible combinations:
+	As a compromise between quantity of samples and time expended, we will analyze 15 samples per crossover operator using their Kappa error values. Table \ref{table:crossover_kappa} shows the resulting values for all possible combinations:
 
 	\vspace{0.3cm}
 
@@ -190,7 +190,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
         \end{tabular}
 
-        \caption{Comparison of average Kappa values for the three subjects and the three crossover operators.}\label{table:crossover_kappa}
+        \caption{Comparison of average Kappa error values for the three subjects and the three crossover operators.}\label{table:crossover_kappa}
 
     \end{table}
 
@@ -271,6 +271,76 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
     On one hand, $n$-point crossovers merge large blocks from both parents; this leads to a not-so-optimal information transfer when trying to pick a handful of features from a pool of 3600.
 
     On the other hand, the uniform crossover is often said to be very disruptive, due to randomly choosing elements for which the parents do not agree. However, when only a small portion $k$ of features is active at a time, the disruption is at most $2k$ elements (the rest are inactive features); on top of that, features in which both parents agree are always kept. This makes the uniform crossover excel at \textit{exploitation} while also helping in \textit{exploration}. Together with frequent mutations, this is probably the key of the performance gain of the algorithm.
+
+    Another aspect to look into is the effect of population sizes and number of generations. Bigger populations should introduce greater exploration possibilities, while more generations should allow the genetic algorithm to converge to even better solutions. Nevertheless, an increase in these parameters has a direct influence in computation times, so we will have to check if the improvement is worth the effort.
+
+    We were working with a population size of 300 individuals and a number of generations equal to 150. The first alternative we propose is a tradeoff between a bigger population and less generations: 500 and 100. The second alternative is an increase in both: 800 individuals and 200 generations. Like we did before, we will start by observing what happens in a single run. In Figure \ref{gfx:fs_popgen_kappa} we can take a look at the behavior of the genetic algorithm in terms of Kappa loss.
+
+    \vspace{0.3cm}
+
+    \begin{figure}[h]
+
+        \begin{center}
+
+        	\setlength{\fboxrule}{0pt}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_IndGens_Kappa_104.png}
+				\end{varwidth}
+			}
+			\fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_IndGens_Kappa_107.png}
+				\end{varwidth}
+			}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_IndGens_Kappa_110.png}
+				\end{varwidth}
+			}
+
+		\end{center}
+		\caption[Kappa loss comparison for different populations and generations]{Comparison of Kappa loss evolution over time with different configurations of population and generations.}\label{gfx:fs_popgen_kappa}
+
+	\end{figure}
+
+	There is one definite conclusion we can draw: the number of generations is preventing the emergence of better individuals. The curves follow similar paths until they are progressively stopped by the generation limit. If we take a look at Figure \ref{gfx:fs_popgen_cv}, the same phenomenon is taking place for cross-validation loss, which is not surprising at all.
+
+\newpage
+
+	\begin{figure}[bth]
+
+        \begin{center}
+
+        	\setlength{\fboxrule}{0pt}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_IndGens_CV_104.png}
+				\end{varwidth}
+			}
+			\fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_IndGens_CV_107.png}
+				\end{varwidth}
+			}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_IndGens_CV_110.png}
+				\end{varwidth}
+			}
+
+		\end{center}
+		\caption[Cross-validation loss comparison for different populations and generations]{Comparison of cross-validation loss evolution over time with different configurations of population and generations.}\label{gfx:fs_popgen_cv}
+
+	\end{figure}
+
+	It is clear that we need a relevant analysis like that of crossover operators. We will keep the number of individuals intact to grant more diversity, but we have to confirm the importance of extending the evolutionary process. For all this, another 15 algorithm runs for each alternative will be used to make statistical claims.
 
 %\section{Structure optimization}\label{sec:res_so}
 
