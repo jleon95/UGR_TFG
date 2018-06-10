@@ -19,11 +19,11 @@ def ParseMetrics(metrics_file, output_prefix):
 		with open(output_prefix+number,"w") as output:
 
 			j = i+9
-			values = re.findall("\d.\d+",lines[j])
+			values = re.findall("\d+.\d+",lines[j])
 
 			while values:
 
 				output.write(" ".join(values)+"\n")
 				j += 1
-				values = re.findall("\d.\d+",lines[j])
+				values = re.findall("\d+.\d+",lines[j])
 
