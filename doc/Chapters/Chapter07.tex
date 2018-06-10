@@ -196,8 +196,6 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
     The average performance of each operator seems to be what we expected. Additionally, the uniform crossover appears to produce slightly more stable results, judging from the standard deviation. Next, and not making assumptions about normality, we will perform a \textit{Kruskal-Wallis} test to see if their differences are worth considering. The \textit{p-values} are displayed in Tables \ref{table:crossover_kruskal_104}, \ref{table:crossover_kruskal_107} and \ref{table:crossover_kruskal_110}, with values below $0.05$ representing meaningful differences ($95\%$ confidence interval).
 
-    \vspace{0.0cm}
-
 	\begin{table}[h]
 
         \centering
@@ -307,7 +305,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	\end{figure}
 
-	There is one definite conclusion we can draw: the number of generations is preventing the emergence of better individuals. The curves follow similar paths until they are progressively stopped by the generation limit. If we take a look at Figure \ref{gfx:fs_popgen_cv}, the same phenomenon is taking place for cross-validation loss, which does not suprise us.
+	There is one definite conclusion we can draw: the number of generations is preventing the emergence of better individuals. The curves follow similar paths until they are progressively stopped by the generation limit. If we take a look at Figure \ref{gfx:fs_popgen_cv}, the same phenomenon is taking place for cross-validation loss, which does not surprise us.
 
 \newpage
 
@@ -371,6 +369,82 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
     \end{table}
 
     We see that taking the population size up to 800 and the generations up to 200 yields finer average results. It is also noticeable that a bigger population appears to matter less when the number of generations is not accordingly increased.
+
+\newpage
+
+    Tables \ref{table:popgen_kruskal_104}, \ref{table:popgen_kruskal_107} and \ref{table:popgen_kruskal_110} show the Kruskal-Wallis p-values for every pair of combinations. Again, we work with a $95\%$ confidence interval, which means that values below $0.05$ point to statistically significant differences.
+
+    \vspace{0.3cm}
+
+    \begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+
+            \hline
+            \rowcolor{RoyalBlue}
+            \textbf{104} & \textbf{300-150} & \textbf{500-100} \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{800-200} & $p = 0.000144$ & $p = 0.000301$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{300-150} & \cellcolor{lightgray} & \textcolor{red}{$p = 0.884484$} \\
+            \hline
+
+        \end{tabular}
+
+        \caption{Comparison of p-values for the evolutionary configurations (subject 104).}\label{table:popgen_kruskal_104}
+
+    \end{table}
+
+    \begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+
+        	\hline
+            \rowcolor{RoyalBlue}
+            \textbf{107} & \textbf{300-150} & \textbf{500-100} \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{800-200} & $p = 0.000016$ & $p = 0.000005$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{300-150} & \cellcolor{lightgray} & $p = 0.002441$ \\
+            \hline
+
+        \end{tabular}
+
+        \caption{Comparison of p-values for the evolutionary configurations (subject 107).}\label{table:popgen_kruskal_107}
+
+    \end{table}
+
+    \begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+
+            \hline
+            \rowcolor{RoyalBlue}
+            \textbf{110} & \textbf{300-150} & \textbf{500-100} \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{800-200} & $p = 0.003392$ & $p = 0.000005$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{300-150} & \cellcolor{lightgray} & $p = 0.034037$ \\
+            \hline
+
+        \end{tabular}
+
+        \caption{Comparison of p-values for the evolutionary configurations (subject 110).}\label{table:popgen_kruskal_110}
+
+    \end{table}
+
+    The first thing we notice is that the combination 800-200 is consistently different from the other two. The differences between 300-150 and 500-100 is not so clear at times (see individual 104), but we could say that in a general case the approach with more generations can arrive at better solutions.
+
+    We find ourselves in a quandary between prioritizing computation times or results. The running times are certainly higher with 800-200, but they are still under 2 or 3 hours, which means we can do a lot in a single day. On the side of quality, an improvement of just a few percentage points at this level can be invaluable. Given all this, we will keep the 800-200 configuration and make it our baseline for our forthcoming comparisons against neural networks.
 
 %\section{Structure optimization}\label{sec:res_so}
 
