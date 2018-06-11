@@ -446,9 +446,9 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
     We find ourselves in a quandary between prioritizing computation times or results. The running times are certainly higher with 800-200, but they are still under 2 or 3 hours, which means we can do a lot in a single day. On the side of quality, an improvement of just a few percentage points at this level can be invaluable. Given all this, we will keep the 800-200 configuration and make it our baseline for our forthcoming comparisons against neural networks.
 
-    To wrap up this section, we can foresee that a substantial number of features will lag the already slow training in neural networks. One way to solve this could involve adding a third fitness function to favor individuals with less features. Let us proceed to briefly evaluate this possibility.
+    Another topic to cover is the choice of fitness metrics. In particular, we can foresee that a substantial number of features will lag the already slow training in neural networks. One way to solve this could involve adding a third fitness function to favor individuals with fewer features. Let us proceed to briefly evaluate this possibility.
 
-    We will use a simple simplicity measure that returns the number of active features of an individual. The goal of the algorithm will be, like with the other two, to minimize it. Sample experiments with and without this simplicity measure can be observed in Figure \ref{gfx:fs_simplicity_kappa}.
+    We will use a straightforward simplicity measure that returns the number of active features of an individual. The goal of the algorithm will be, like with the other two, to minimize it. Sample experiments with and without this simplicity measure can be observed in Figure \ref{gfx:fs_simplicity_kappa}.
 
     \vspace{0.3cm}
 
@@ -483,43 +483,168 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	The reported difference in performance is enormous. There is no need to do any statistical tests to realize that it will keep happening. The explanation is as easy as it gets: the simplicity measure hinders the progress of the other two criteria to the point of ultimately stalling it. In fact, for all we know there might be individuals with just one feature and abysmal accuracy in the first Pareto front.
 
-	In order not to twist the original logic of the algorithm, we will just use the feature cap as a means to keep the number of features under control---more research could be done about where the optimal cap lies.
+	In order not to twist the original logic of the algorithm, we will just use the feature cap as a means to keep the number of features under control---more research could be done about where the optimal cap lies. The other two fitness measures will still be used, since they provide valuable assessment about accuracy on unseen data and generalization capability.
 
 \newpage
 
-	Finally, although by now it should go without saying that feature selection is essential in our problem, Table \ref{table:feature_selection_comparison} puts our best results against classifiers using all 3600 features.
+	To wrap up this section, the last improvement we will introduce is the choice of models for the fitness functions. One could argue that introducing a better model would only confirm that the model is more suitable for the problem and not that it can find better features; however, since it is not possible to formally prove or disprove it, we will give it a go.
+
+	This time, we will be measuring Logistic Regression against \ac{SVM}. Figure \ref{gfx:fs_models_kappa} shows the Kappa loss of a tentative run just to know if the comparison made any sense in the first place.
 
 	\vspace{0.3cm}
 
-    \begin{table}[h]
+    \begin{figure}[bth]
+
+        \begin{center}
+
+        	\setlength{\fboxrule}{0pt}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_Kappa_104.png}
+				\end{varwidth}
+			}
+			\fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_Kappa_107.png}
+				\end{varwidth}
+			}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_Kappa_110.png}
+				\end{varwidth}
+			}
+
+		\end{center}
+		\caption[Kappa loss comparison with Logistic Regression and \acs{SVM}]{Comparison of Kappa loss evolution over time with Logistic Regression and \acs{SVM}.}\label{gfx:fs_models_kappa}
+
+	\end{figure}
+
+	From what we see, it is not clear which model to select. \acs{SVM} tends to converge more steadily, while the evolution of Logistic Regression tends to be steeper at the beginning. Neither one of them finish with clear advantage respect to the other, though.
+
+	Perhaps the evolution of the cross-validation loss can help us assess their distinctive qualities. Figure \ref{gfx:fs_models_cv} contains the analogous plot. In it, we can observe how towards the right end of the curve the \acs{SVM}-driven experiment surpasses the other one in average performance. This is a sign that \acs{SVM}s could have an edge on Logistic Regressions for this dataset.
+
+\newpage
+
+	\begin{figure}[bth]
+
+        \begin{center}
+
+        	\setlength{\fboxrule}{0pt}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_104.png}
+				\end{varwidth}
+			}
+			\fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_107.png}
+				\end{varwidth}
+			}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_110.png}
+				\end{varwidth}
+			}
+
+		\end{center}
+		\caption[Cross-validation loss comparison with Logistic Regression and \acs{SVM}]{Comparison of cross-validation loss evolution over time with Logistic Regression and \acs{SVM}.}\label{gfx:fs_models_cv}
+
+	\end{figure}
+
+	Like we have already done twice, it is natural to record several experiments to confirm or dismiss what we have just seen. Making use of the best algorithm configurations found until now, Logistic Regression and \acs{SVM} will be tested against each other by averaging their best Kappa loss from 15 runs. Table \ref{table:models_kappa} holds the numbers.
+
+	\vspace{0.3cm}
+
+	\begin{table}[h]
 
         \centering
         \setlength\arrayrulewidth{0.8pt}
 
-        \begin{tabular}{| >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} |}
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} |}
 
-			\hline
-			\rowcolor{RoyalBlue}
-			 & \multicolumn{2}{|c|}{\textbf{Feature selection}} & \multicolumn{2}{|c|}{\textbf{No feature selection}} \\
-			\hline
+            \hline
             \rowcolor{RoyalBlue}
-            \textbf{Subject} & \textbf{Log Reg} & \textbf{SVM} & \textbf{Log Reg} & \textbf{SVM} \\
+            \textbf{Subject} & \textbf{SVM} & \textbf{LogReg} \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{104} & $0.042246$ & $0.067654$ & $0.279954$ & $0.305215$ \\
+            \textbf{104} & $ \pm $ & $0.05127 \pm 0.0067$ \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{107} & $0.101059$ & $0.134644$ & $0.327885$ & $0.328009$ \\
+            \textbf{107} & $ \pm $ & $0.12122 \pm 0.0126$ \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{110} & $0.117981$ & $0.143276$ & $0.404468$ & $0.404545$ \\
+            \textbf{110} & $ \pm $ & $0.13369 \pm 0.0083$ \\
             \hline
 
         \end{tabular}
 
-        \caption{Kappa loss of feature selection versus no feature selection.}\label{table:feature_selection_comparison}
+        \caption{Comparison of average Kappa error values for the three subjects and the two models in question.}\label{table:models_kappa}
 
     \end{table}
+
+    It is quite apparent that \acs{SVM}s provide yet another push in classification quality---it is also expected that cross-validation measures follow the same pattern, given that they triggered this comparison.
+
+    In the next page we can find Table \ref{table:models_kruskal}, which contains the p-values for the Kruskal-Wallis test for statistically significant differences.
+
+\newpage
+
+     \begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+
+        	\hline
+        	\rowcolor{RoyalBlue}
+        	\multicolumn{3}{| >{\centering\arraybackslash}m{3.054in} |}{\textbf{Logistic Regression against SVM}} \\
+            \hline
+            \rowcolor{RoyalBlue}
+            \textbf{104} & \textbf{107} & \textbf{110} \\
+            \hline
+            $p = $ & $p = $ & $p = $ \\
+            \hline
+
+        \end{tabular}
+
+        \caption{Comparison of p-values for Logistic Regression and \acs{SVM} in all individuals.}\label{table:models_kruskal}
+
+    \end{table}
+
+	% Finally, although by now it should go without saying that feature selection is essential in our problem, Table \ref{table:feature_selection_comparison} puts our best results against classifiers using all 3600 features.
+
+	% \vspace{0.3cm}
+
+ %    \begin{table}[h]
+
+ %        \centering
+ %        \setlength\arrayrulewidth{0.8pt}
+
+ %        \begin{tabular}{| >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} |}
+
+	% 		\hline
+	% 		\rowcolor{RoyalBlue}
+	% 		 & \multicolumn{2}{|c|}{\textbf{Feature selection}} & \multicolumn{2}{|c|}{\textbf{No feature selection}} \\
+	% 		\hline
+ %            \rowcolor{RoyalBlue}
+ %            \textbf{Subject} & \textbf{Log Reg} & \textbf{SVM} & \textbf{Log Reg} & \textbf{SVM} \\
+ %            \hline
+ %            \cellcolor{RoyalBlue}\textbf{104} & $0.042246$ & $0.067654$ & $0.279954$ & $0.305215$ \\
+ %            \hline
+ %            \cellcolor{RoyalBlue}\textbf{107} & $0.101059$ & $0.134644$ & $0.327885$ & $0.328009$ \\
+ %            \hline
+ %            \cellcolor{RoyalBlue}\textbf{110} & $0.117981$ & $0.143276$ & $0.404468$ & $0.404545$ \\
+ %            \hline
+
+ %        \end{tabular}
+
+ %        \caption{Kappa loss of feature selection versus no feature selection.}\label{table:feature_selection_comparison}
+
+ %    \end{table}
 
 %\section{Structure optimization}\label{sec:res_so}
 
 %\section{Learning optimization}\label{sec:res_lo}
-
-%\multicolumn{3}{|c|}{OneTwoThree} \\
