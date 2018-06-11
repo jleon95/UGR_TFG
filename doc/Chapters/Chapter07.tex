@@ -175,7 +175,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
         \centering
         \setlength\arrayrulewidth{0.8pt}
 
-        \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.1in} |  >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} |}
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} |}
 
             \hline
             \rowcolor{RoyalBlue}
@@ -201,7 +201,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
         \centering
         \setlength\arrayrulewidth{0.8pt}
 
-        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
 
             \hline
             \rowcolor{RoyalBlue}
@@ -223,7 +223,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
         \centering
         \setlength\arrayrulewidth{0.8pt}
 
-        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
 
             \hline
             \rowcolor{RoyalBlue}
@@ -245,7 +245,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
         \centering
         \setlength\arrayrulewidth{0.8pt}
 
-        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
 
             \hline
             \rowcolor{RoyalBlue}
@@ -349,7 +349,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
         \centering
         \setlength\arrayrulewidth{0.8pt}
 
-        \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.1in} |  >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} |}
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} |}
 
             \hline
             \rowcolor{RoyalBlue}
@@ -381,7 +381,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
         \centering
         \setlength\arrayrulewidth{0.8pt}
 
-        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
 
             \hline
             \rowcolor{RoyalBlue}
@@ -403,7 +403,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
         \centering
         \setlength\arrayrulewidth{0.8pt}
 
-        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
 
         	\hline
             \rowcolor{RoyalBlue}
@@ -442,9 +442,48 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
     \end{table}
 
-    The first thing we notice is that the combination 800-200 is consistently different from the other two. The differences between 300-150 and 500-100 is not so clear at times (see individual 104), but we could say that in a general case the approach with more generations can arrive at better solutions.
+    The first thing we notice is that the combination 800-200 is consistently different from the other two. The differences between 300-150 and 500-100 are not so clear at times (see individual 104), but we could say that in a general case the approach with more generations can arrive at better solutions.
 
     We find ourselves in a quandary between prioritizing computation times or results. The running times are certainly higher with 800-200, but they are still under 2 or 3 hours, which means we can do a lot in a single day. On the side of quality, an improvement of just a few percentage points at this level can be invaluable. Given all this, we will keep the 800-200 configuration and make it our baseline for our forthcoming comparisons against neural networks.
+
+    To wrap up this section, we can foresee that a substantial number of features will lag the already slow training in neural networks. One way to solve this could involve adding a third fitness function to favor individuals with less features. Let us proceed to briefly evaluate this possibility.
+
+    We will use a simple simplicity measure that returns the number of active features of an individual. The goal of the algorithm will be, like with the other two, to minimize it. Sample experiments with and without this simplicity measure can be observed in Figure \ref{gfx:fs_simplicity_kappa}.
+
+    \vspace{0.3cm}
+
+    \begin{figure}[bth]
+
+        \begin{center}
+
+        	\setlength{\fboxrule}{0pt}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_Simplicity_Kappa_104.png}
+				\end{varwidth}
+			}
+			\fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_Simplicity_Kappa_107.png}
+				\end{varwidth}
+			}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/FS_Simplicity_Kappa_110.png}
+				\end{varwidth}
+			}
+
+		\end{center}
+		\caption[Kappa loss comparison with and without simplicity]{Comparison of Kappa loss evolution over time with and without the simplicity measure. A similar phenomenon occurs with the cross-validation loss.}\label{gfx:fs_simplicity_kappa}
+
+	\end{figure}
+
+	The reported difference in performance is enormous. There is no need to do any statistical tests to realize that it will keep happening. The explanation is as easy as it gets: the simplicity measure hinders the progress of the other two criteria to the point of ultimately stalling it. In fact, for all we know there might be individuals with just one feature and abysmal accuracy in the first Pareto front.
+
+	In order not to twist the original logic of the algorithm, we will just use the feature cap as a means to keep the number of features under control---more research could be done about where the optimal cap lies.
 
 %\section{Structure optimization}\label{sec:res_so}
 
