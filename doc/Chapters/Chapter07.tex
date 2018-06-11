@@ -557,7 +557,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	\end{figure}
 
-	Like we have already done twice, it is natural to record several experiments to confirm or dismiss what we have just seen. Making use of the best algorithm configurations found until now, Logistic Regression and \acs{SVM} will be tested against each other by averaging their best Kappa loss from 15 runs. Table \ref{table:models_kappa} holds the numbers.
+	Like we have already done twice, it is natural to record several experiments to confirm or dismiss what we have just seen. Making use of the best algorithm configurations found until now, Logistic Regression and \acs{SVM} (with $C = 0.1$) will be tested against each other by averaging their best Kappa loss from 15 runs. Table \ref{table:models_kappa} holds the numbers.
 
 	\vspace{0.3cm}
 
@@ -614,36 +614,42 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
     \end{table}
 
-	% Finally, although by now it should go without saying that feature selection is essential in our problem, Table \ref{table:feature_selection_comparison} puts our best results against classifiers using all 3600 features.
+    Again, the test shows that there is a relevant accuracy boost when using \acs{SVM} instead of Logistic Regression. It is also true that this change has taken a toll on the running time of the algorithm. 
 
-	% \vspace{0.3cm}
+    Nevertheless---and following the same logic as when we increased population sizes and number of generations---, the improvements in quality of the solutions are crucial at this level. Since we can still run a couple dozen experiments a day, we can safely sacrifice efficiency in favor of further gains.
 
- %    \begin{table}[h]
+	We have finally completed our set of feature selection enhancements. Although by now it should go without saying that feature selection is essential in our problem, Table \ref{table:feature_selection_comparison} puts our best results (in terms of Kappa loss) against classifiers using all 3600 features.
 
- %        \centering
- %        \setlength\arrayrulewidth{0.8pt}
+	\vspace{0.3cm}
 
- %        \begin{tabular}{| >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} |}
+    \begin{table}[h]
 
-	% 		\hline
-	% 		\rowcolor{RoyalBlue}
-	% 		 & \multicolumn{2}{|c|}{\textbf{Feature selection}} & \multicolumn{2}{|c|}{\textbf{No feature selection}} \\
-	% 		\hline
- %            \rowcolor{RoyalBlue}
- %            \textbf{Subject} & \textbf{Log Reg} & \textbf{SVM} & \textbf{Log Reg} & \textbf{SVM} \\
- %            \hline
- %            \cellcolor{RoyalBlue}\textbf{104} & $0.042246$ & $0.067654$ & $0.279954$ & $0.305215$ \\
- %            \hline
- %            \cellcolor{RoyalBlue}\textbf{107} & $0.101059$ & $0.134644$ & $0.327885$ & $0.328009$ \\
- %            \hline
- %            \cellcolor{RoyalBlue}\textbf{110} & $0.117981$ & $0.143276$ & $0.404468$ & $0.404545$ \\
- %            \hline
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
 
- %        \end{tabular}
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{0.7in} |}
 
- %        \caption{Kappa loss of feature selection versus no feature selection.}\label{table:feature_selection_comparison}
+			\hline
+			\rowcolor{RoyalBlue}
+			 & \multicolumn{2}{|c|}{\textbf{Feature selection}} & \multicolumn{2}{|c|}{\textbf{No feature selection}} \\
+			\hline
+            \rowcolor{RoyalBlue}
+            \textbf{Subject} & \textbf{Log Reg} & \textbf{SVM} & \textbf{Log Reg} & \textbf{SVM} \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{104} & $0.042246$ & $0.033780$ & $0.279954$ & $0.305215$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{107} & $0.101059$ & $0.084232$ & $0.327885$ & $0.328009$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{110} & $0.117981$ & $0.109533$ & $0.404468$ & $0.404545$ \\
+            \hline
 
- %    \end{table}
+        \end{tabular}
+
+        \caption{Kappa loss of feature selection versus no feature selection.}\label{table:feature_selection_comparison}
+
+    \end{table}
+
+    Notice that we list both Logistic Regression and \acs{SVM} to introduce a bit more information: even though the former behaves better with no feature selection, it ultimately fails to equal the latter after both are optimized under the same conditions.
 
 %\section{Structure optimization}\label{sec:res_so}
 
