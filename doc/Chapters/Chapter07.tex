@@ -572,11 +572,11 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
             \rowcolor{RoyalBlue}
             \textbf{Subject} & \textbf{SVM} & \textbf{LogReg} \\
             \hline
-            \textbf{104} & $ \pm $ & $0.05127 \pm 0.0067$ \\
+            \textbf{104} & $0.05127 \pm 0.0103$ & $0.05128 \pm 0.0067$ \\
             \hline
-            \textbf{107} & $ \pm $ & $0.12122 \pm 0.0126$ \\
+            \textbf{107} & $0.09546 \pm 0.0093$ & $0.12122 \pm 0.0126$ \\
             \hline
-            \textbf{110} & $ \pm $ & $0.13369 \pm 0.0083$ \\
+            \textbf{110} & $0.11796 \pm 0.0095$ & $0.13369 \pm 0.0083$ \\
             \hline
 
         \end{tabular}
@@ -605,18 +605,18 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
             \rowcolor{RoyalBlue}
             \textbf{104} & \textbf{107} & \textbf{110} \\
             \hline
-            $p = $ & $p = $ & $p = $ \\
+            \textcolor{red}{$p = 0.917098$} & $p = 0.000025$ & $p = 0.000060$ \\
             \hline
 
         \end{tabular}
 
-        \caption{Comparison of p-values for Logistic Regression and \acs{SVM} in all individuals.}\label{table:models_kruskal}
+        \caption{Comparison of p-values for Logistic Regression and \acs{SVM} in all test subjects.}\label{table:models_kruskal}
 
     \end{table}
 
-    Again, the test shows that there is a relevant accuracy boost when using \acs{SVM} instead of Logistic Regression. It is also true that this change has taken a toll on the running time of the algorithm. 
+    Again, the test shows that there is often a relevant accuracy boost when using \acs{SVM} instead of Logistic Regression (in subject 104 we might have reached the full potential). Although we do not show them here, the cross-validation differences are noticeable too.
 
-    Nevertheless---and following the same logic as when we increased population sizes and number of generations---, the improvements in quality of the solutions are crucial at this level. Since we can still run a couple dozen experiments a day, we can safely sacrifice efficiency in favor of further gains.
+    It is also true that this change has taken a toll on the running time of the algorithm. Nevertheless---and following the same logic as when we increased population sizes and number of generations---, the improvements in quality of the solutions are crucial at this level. Since we can still run a couple dozen experiments a day, we can safely sacrifice efficiency in favor of further gains.
 
 	We have finally completed our review of feature selection enhancements. Although by now it should go without saying that feature selection is essential in our problem, Table \ref{table:feature_selection_comparison} puts our best results so far (in terms of Kappa loss) against classifiers using all 3600 features.
 
@@ -636,7 +636,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
             \rowcolor{RoyalBlue}
             \textbf{Subject} & \textbf{Log Reg} & \textbf{SVM} & \textbf{Log Reg} & \textbf{SVM} \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{104} & $0.042246$ & $0.033780$ & $0.279954$ & $0.305215$ \\
+            \cellcolor{RoyalBlue}\textbf{104} & $0.042246$ & $0.033781$ & $0.279954$ & $0.305215$ \\
             \hline
             \cellcolor{RoyalBlue}\textbf{107} & $0.101059$ & $0.075823$ & $0.327885$ & $0.328009$ \\
             \hline
@@ -645,7 +645,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
         \end{tabular}
 
-        \caption{Kappa loss of feature selection versus no feature selection.}\label{table:feature_selection_comparison}
+        \caption{Best Kappa loss scores of feature selection versus no feature selection.}\label{table:feature_selection_comparison}
 
     \end{table}
 
@@ -685,7 +685,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	It is possible to identify a pattern that divides them into two groups: the first three are discrete numbers that are adjusted once we have defined a model structure; the fourth is precisely that structure. Therefore, intuitively we may find a structure first and then use it to work out the best combination of the remaining hyperparameters.
 
-	Assuming what we have just said, we need to determine how to optimize the structure while also looking for ways to speed up the process. For this, we will bring up the experimental results of last section. The high accuracies of linear models suggest that our resulting neural networks should not be very complex, because if we couple that with our small training sets they will most likely suffer from overfitting.
+	Assuming what we have just said, we need to determine how to optimize the structure while also looking for ways to speed up the process. For this, we will bring up the experimental results of last section. The high accuracies of linear models suggest that our neural networks should not be very complex, because if we couple that with our small training sets they will most likely suffer from overfitting.
 
 \newpage
 
