@@ -638,9 +638,9 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
             \hline
             \cellcolor{RoyalBlue}\textbf{104} & $0.042246$ & $0.033780$ & $0.279954$ & $0.305215$ \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{107} & $0.101059$ & $0.084232$ & $0.327885$ & $0.328009$ \\
+            \cellcolor{RoyalBlue}\textbf{107} & $0.101059$ & $0.075823$ & $0.327885$ & $0.328009$ \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{110} & $0.117981$ & $0.109533$ & $0.404468$ & $0.404545$ \\
+            \cellcolor{RoyalBlue}\textbf{110} & $0.117981$ & $0.101107$ & $0.404468$ & $0.404545$ \\
             \hline
 
         \end{tabular}
@@ -683,6 +683,28 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	\end{itemize}
 
-	It is possible to identify a pattern that divides them into two groups: the first three are discrete numbers that are adjusted once we have defined a model structure; the fourth is precisely that structure. Therefore, we might intuitively find a structure first and then use it to work out the best combination of the remaining hyperparameters.
+	It is possible to identify a pattern that divides them into two groups: the first three are discrete numbers that are adjusted once we have defined a model structure; the fourth is precisely that structure. Therefore, intuitively we may find a structure first and then use it to work out the best combination of the remaining hyperparameters.
+
+	Assuming what we have just said, we need to determine how to optimize the structure while also looking for ways to speed up the process. For this, we will bring up the experimental results of last section. The high accuracies of linear models suggest that our resulting neural networks should not be very complex, because if we couple that with our small training sets they will most likely suffer from overfitting.
+
+\newpage
+
+	Now, let us see how we can turn this in our favor. Suppose a population of 50 individuals and 20 generations, with the objective functions being again the Kappa loss and the 5-fold cross-validation. The amount of neural network trainings for each function is given by:
+
+	\begin{itemize}
+
+		\item
+		Kappa: $50 \times 20 = 1000$ trainings.
+
+		\item
+		5-fold cross-validation: $5 \times 50 \times 20 = 5000$ trainings.
+
+	\end{itemize}
+
+	Which, summed up, give a total of $6000$ trainings.
+
+	Let us discuss the importance of each fitness measure in the process. The Kappa value uses the test set to give an estimate of how well the model will behave with unseen data. The cross-validation accuracy, however, assesses the generalization capability of the model (without using new data), which is directly tied to a low overfitting. Then, if we swap in a simplicity measure for the cross-validation function, we are still pushing in the same direction.
+
+	The proposed simplicity measure is the sum of all the neurons of the given structure (note that the time it takes to compute it is negligible). This way, we can factor out $5000$ of the $6000$ evaluations; in a more general statement, we are reducing the computational load in five sixths---or approximately $83\%$.
 
 %\section{Learning optimization}\label{sec:res_lo}
