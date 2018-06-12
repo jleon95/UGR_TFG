@@ -618,7 +618,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
     Nevertheless---and following the same logic as when we increased population sizes and number of generations---, the improvements in quality of the solutions are crucial at this level. Since we can still run a couple dozen experiments a day, we can safely sacrifice efficiency in favor of further gains.
 
-	We have finally completed our set of feature selection enhancements. Although by now it should go without saying that feature selection is essential in our problem, Table \ref{table:feature_selection_comparison} puts our best results (in terms of Kappa loss) against classifiers using all 3600 features.
+	We have finally completed our review of feature selection enhancements. Although by now it should go without saying that feature selection is essential in our problem, Table \ref{table:feature_selection_comparison} puts our best results so far (in terms of Kappa loss) against classifiers using all 3600 features.
 
 	\vspace{0.3cm}
 
@@ -651,6 +651,38 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
     Notice that we list both Logistic Regression and \acs{SVM} to introduce a bit more information: even though the former behaves better with no feature selection, it ultimately fails to equal the latter after both are optimized under the same conditions.
 
-%\section{Structure optimization}\label{sec:res_so}
+    These results constitute the baseline for the next two sections, which will be dedicated to the optimization of neural networks using the best features we have been able to obtain.
+
+    Since the accuracy is already unexpectedly good, our efforts will be focused on discerning whether there is still room for improvement with the use of more advanced models (such as neural networks) or the remaining gap is just an intrinsic limitation of the data. We will also discuss the pros and cons of applying neural networks to this specific dataset.
+
+\newpage
+
+\section{Structure optimization}\label{sec:res_so}
+
+	This section covers the first step of the proposed neural network optimization workflow: the search for a good structure.
+
+	Before we start, it should be noted that, as opposed to feature selection---where time is not much of a concern---, from now on the experiments will be severely limited by the training process of neural networks. The decrease in population sizes and number of generations will be drastic (15 to 20 times less), but the running times will still be one order of magnitude higher. This is one of the reasons why we have put so much effort into finding the right features.
+
+	Having said that, let us begin by explaining the motivation for a two-step optimization. When we try to optimize several parameters at the same time, the combined search space is as big as the product of the sizes of the individual search spaces; this is often quite a lot, and the genetic algorithm has to work with accordingly bigger populations and evolution periods to make up for it. In an attempt to take away a part of this complexity, we can concede a (hopefully) small decrease in potential quality and try to optimize one (or a few) of those parameters in isolation.
+
+	If we agree to the aforementioned logic, the first point in question is how to split the process in a way that the disruption to the overall optimization is minimized. Let us take a look at what parameters---hyperparameters--- we will be dealing with:
+
+	\begin{itemize}
+
+		\item
+		Learning rate.
+
+		\item
+		Number of training epochs.
+
+		\item
+		Dropout rate.
+
+		\item
+		Structure (number of layers and units per layer).
+
+	\end{itemize}
+
+	It is possible to identify a pattern that divides them into two groups: the first three are discrete numbers that are adjusted once we have defined a model structure; the fourth is precisely that structure. Therefore, we might intuitively find a structure first and then use it to work out the best combination of the remaining hyperparameters.
 
 %\section{Learning optimization}\label{sec:res_lo}
