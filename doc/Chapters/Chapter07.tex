@@ -444,7 +444,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
     The first thing we notice is that the combination 800-200 is consistently different from the other two. The differences between 300-150 and 500-100 are not so clear at times (see individual 104), but we could say that in a general case the approach with more generations can arrive at better solutions.
 
-    We find ourselves in a quandary between prioritizing computation times or results. The running times are certainly higher with 800-200, but they are still under 2 or 3 hours, which means we can do a lot in a single day. On the side of quality, an improvement of just a few percentage points at this level can be invaluable. Given all this, we will keep the 800-200 configuration and make it our baseline for our forthcoming comparisons against neural networks.
+    We find ourselves in a quandary between prioritizing computation times or results. The running times are certainly higher with 800-200, but they are still under an hour for a single subject, which means we can do a lot in a full day. On the side of quality, an improvement of just a few percentage points at this level can be invaluable. Given all this, we will keep the 800-200 configuration and make it our baseline for our forthcoming comparisons against neural networks.
 
     Another topic to cover is the choice of fitness metrics. In particular, we can foresee that a substantial number of features will lag the already slow training in neural networks. One way to solve this could involve adding a third fitness function to favor individuals with fewer features. Let us proceed to briefly evaluate this possibility.
 
@@ -616,7 +616,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
     Again, the test shows that there is often a relevant accuracy boost when using \acs{SVM} instead of Logistic Regression (in subject 104 we might have reached the full potential). Although we do not show them here, the cross-validation differences are noticeable too.
 
-    It is also true that this change has taken a toll on the running time of the algorithm. Nevertheless---and following the same logic as when we increased population sizes and number of generations---, the improvements in quality of the solutions are crucial at this level. Since we can still run a couple dozen experiments a day, we can safely sacrifice efficiency in favor of further gains.
+    It is also true that this change has taken a toll on the running time of the algorithm. Nevertheless---and following the same logic as when we increased population sizes and number of generations---, the improvements in quality of the solutions are crucial at this level. Since we can still run a couple dozen experiments a day (counting the three test subjects), we can safely sacrifice efficiency in favor of further gains.
 
 	We have finally completed our review of feature selection enhancements. Although by now it should go without saying that feature selection is essential in our problem, Table \ref{table:feature_selection_comparison} puts our best results so far (in terms of Kappa loss) against classifiers using all 3600 features.
 
@@ -661,7 +661,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	This section covers the first step of the proposed neural network optimization workflow: the search for a good structure.
 
-	Before we start, it should be noted that, as opposed to feature selection---where time is not much of a concern---, from now on the experiments will be severely limited by the training process of neural networks. The decrease in population sizes and number of generations will be drastic (15 to 20 times less), but the running times will still be one order of magnitude higher. This is one of the reasons why we have put so much effort into finding the right features.
+	Before we start, it should be noted that, as opposed to feature selection---where time is not much of a concern---, from now on the experiments will be severely limited by the training process of neural networks. The decrease in population sizes and number of generations will be drastic (15 to 20 times less), but the running times will still be one order of magnitude higher if we can not find any workarounds. This is one of the reasons why we have put so much effort into finding the right features.
 
 	Having said that, let us begin by explaining the motivation for a two-step optimization. When we try to optimize several parameters at the same time, the combined search space is as big as the product of the sizes of the individual search spaces; this is often quite a lot, and the genetic algorithm has to work with accordingly bigger populations and evolution periods to make up for it. In an attempt to take away a part of this complexity, we can concede a (hopefully) small decrease in potential quality and try to optimize one (or a few) of those parameters in isolation.
 
@@ -703,76 +703,82 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	Which, summed up, yield a total of $6000$ trainings.
 
-	Let us discuss the importance of each fitness measure in the process. The Kappa value uses the test set to give an estimate of how well the model will behave with unseen data. The cross-validation accuracy, however, assesses the generalization capability of the model (without using new data), which is directly tied to a low overfitting. Then, if we swap in a simplicity measure for the cross-validation function, we are still pushing in the same direction.
+	Let us discuss the importance of each fitness measure in the process. The Kappa value uses the test set to give an estimate of how well the model will behave with unseen data. The cross-validation accuracy, however, assesses the generalization capability of the model (without using new data), which is directly tied to a low overfitting. Then, if we swap in a simplicity measure for the cross-validation function, we are still pushing in the same direction to an extent.
 
 	The proposed simplicity measure is the sum of all the neurons of the given structure (note that the time it takes to compute it is negligible). This way, we can factor out $5000$ of the $6000$ evaluations or approximately $83\%$; in a more general statement, we are reducing the computational load of the fitness evaluation in a fraction very close to $\frac{k}{k+1}$, where $k$ is the number of cross-validation folds.
 
-	Again, we have to keep in mind that this is only a fast alternative to improve the efficiency of this first optimization step---which is not the most important one. Also, it is derived from our previous results in this specific problem and, while there are experiments telling us that the speedup is worth the absence of cross-validation, further testing would be required. Such testing is unfeasible in this work due to the large amounts of time needed for neural network training.
+	Again, we have to keep in mind that this is only a fast alternative to improve the efficiency of this first optimization step---which is not the most important one. Also, it is derived from our previous results in this specific problem and, while there are experiments telling us that the speedup is worth the absence of cross-validation, further comparative testing would be required. Such testing is unfeasible in this work due to the large amounts of time needed for cross-validation.
 
-	Despite not being able to statistically analyze this proposal, we can still show some promising results before applying it to the best features we have: Figure \ref{gfx:cv_vs_simplicity} shows the evolution of a sample Kappa-CV run against a sample Kappa-Simplicity run; the first one had 30 individuals and 20 generations, while the second one had 50 individuals (thus taking advantage of the speedup to have a bigger population). Table \ref{table:best_cv_vs_simplicity} compares their top scores.
+	However, despite not being able to statistically analyze their differences, a single visual comparison contains a lot of information. Figure \ref{gfx:cv_vs_simplicity} shows the evolution of a sample Kappa-CV run against a sample Kappa-Simplicity run; the first one had 30 individuals and 20 generations, while the second one had 50 individuals (thus taking advantage of the speedup to have a bigger population). 
 
-	\vspace{0.3cm}
+	%However, at 30-40 minutes per subject, we can afford to repeat simplicity-driven experiments several times to know what we can expect. Table \ref{table:average_kappa_simplicity} shows the average Kappa loss of the best individuals, while Table \ref{table:best_kappa_simplicity} displays the peak performance. The structures that achieved these top results are the input for the second stage of neural network optimization.
 
-	\begin{table}[h]
+	
 
-        \centering
-        \setlength\arrayrulewidth{0.8pt}
+	%Table \ref{table:best_cv_vs_simplicity} compares their top scores.
 
-        \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.2in} | >{\centering\arraybackslash}m{1.2in} |}
+	% \vspace{0.3cm}
 
-            \hline
-            \rowcolor{RoyalBlue}
-            \textbf{Subject} & \textbf{Cross-validation} & \textbf{Simplicity} \\
-            \hline
-            \textbf{104} & $0.09289$ & $0.08456$ \\
-            \hline
-            \textbf{107} & $0.16840$ & $0.19395$ \\
-            \hline
-            \textbf{110} & $0.15169$ & $0.17690$ \\
-            \hline
+	% \begin{table}[h]
 
-        \end{tabular}
+ %        \centering
+ %        \setlength\arrayrulewidth{0.8pt}
 
-        \caption[Best Kappa values using cross-validation and simplicity]{Comparison of top Kappa error values for the three subjects and the two metrics in question.}\label{table:best_cv_vs_simplicity}
+ %        \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.2in} | >{\centering\arraybackslash}m{1.2in} |}
 
-    \end{table}
+ %            \hline
+ %            \rowcolor{RoyalBlue}
+ %            \textbf{Subject} & \textbf{Cross-validation} & \textbf{Simplicity} \\
+ %            \hline
+ %            \textbf{104} & $0.09289$ & $0.08456$ \\
+ %            \hline
+ %            \textbf{107} & $0.16840$ & $0.19395$ \\
+ %            \hline
+ %            \textbf{110} & $0.15169$ & $0.17690$ \\
+ %            \hline
 
-\newpage
+ %        \end{tabular}
 
-	As we can see in the table, the run employing simplicity trails behind a bit in peak performance but it manages to snatch the first place for subject 104.
+ %        \caption[Best Kappa values using cross-validation and simplicity]{Comparison of top Kappa error values for the three subjects and the two metrics in question.}\label{table:best_cv_vs_simplicity}
 
-	If we look at the charts now, we see that simplicity still has a tendency to slow down the accuracy progress, but its impact is not as pronounced as in feature selection, where it just went against the current. Another topic to investigate would be how to integrate simplicity so that it does not have as much pulling power as the other objective.
+ %    \end{table}
 
-	\vspace{0.3cm}
+%\newpage
 
-	\begin{figure}[bth]
+	%As we can see in the table, the run employing simplicity trails behind a bit in peak performance but it manages to snatch the first place for subject 104. Knowing that it finished much quicker (1000 evaluations versus 3600), we can say that the tradeoff is more than fair.
 
-        \begin{center}
+	%If we look at the charts now, we see that simplicity still has a tendency to slow down the accuracy progress, but its impact is not as pronounced as in feature selection, where it just went against the current. Another topic to investigate would be how to integrate simplicity so that it does not have as much pulling power as the other objective.
 
-        	\setlength{\fboxrule}{0pt}
-            \fbox{
-				\begin{varwidth}{\textwidth}
-					\centering
-					\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_104.png}
-				\end{varwidth}
-			}
-			\fbox{
-				\begin{varwidth}{\textwidth}
-					\centering
-					\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_107.png}
-				\end{varwidth}
-			}
-            \fbox{
-				\begin{varwidth}{\textwidth}
-					\centering
-					\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_110.png}
-				\end{varwidth}
-			}
+	% \vspace{0.3cm}
 
-		\end{center}
-		\caption[Evolution comparison with cross-validation and simplicity]{Comparison of the evolution of mean Kappa loss over time with cross-validation and with simplicity.}\label{gfx:cv_vs_simplicity}
+	% \begin{figure}[bth]
 
-	\end{figure}
+ %        \begin{center}
+
+ %        	\setlength{\fboxrule}{0pt}
+ %            \fbox{
+	% 			\begin{varwidth}{\textwidth}
+	% 				\centering
+	% 				\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_104.png}
+	% 			\end{varwidth}
+	% 		}
+	% 		\fbox{
+	% 			\begin{varwidth}{\textwidth}
+	% 				\centering
+	% 				\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_107.png}
+	% 			\end{varwidth}
+	% 		}
+ %            \fbox{
+	% 			\begin{varwidth}{\textwidth}
+	% 				\centering
+	% 				\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_110.png}
+	% 			\end{varwidth}
+	% 		}
+
+	% 	\end{center}
+	% 	\caption[Evolution comparison with cross-validation and simplicity]{Comparison of the evolution of mean Kappa loss over time with cross-validation and with simplicity.}\label{gfx:cv_vs_simplicity}
+
+	% \end{figure}
 
 	
 
