@@ -28,6 +28,13 @@ if __name__ == '__main__':
 
 	filenames = ["104", "107", "110"]
 
+	for data, labels in zip(data_list,labels_list):
+
+		data['train'] = data['train'][:,features]
+		data['test'] = data['test'][:,features]
+		labels['train'] = to_categorical(labels['train'])
+		labels['test'] = to_categorical(labels['test'])
+
 	seeds = [29,28,20,11,26,30,23,7,42,111]
 
 	print("Fitness metrics: KappaLoss, Simplicity\n")
@@ -35,11 +42,6 @@ if __name__ == '__main__':
 	for j in range(len(seeds)):
 
 		for i, data, labels, features in zip(filenames,data_list,labels_list,features_list):
-
-			data['train'] = data['train'][:,features]
-			data['test'] = data['test'][:,features]
-			labels['train'] = to_categorical(labels['train'])
-			labels['test'] = to_categorical(labels['test'])
 
 			print("Individual "+i)
 			population, sort_scores, evaluation = \
