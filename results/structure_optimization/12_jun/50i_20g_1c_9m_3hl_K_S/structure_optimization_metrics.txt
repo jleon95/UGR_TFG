@@ -1,0 +1,104 @@
+/usr/lib64/python3.4/importlib/_bootstrap.py:321: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Fitness metrics: KappaLoss, Simplicity
+
+Individual 104
+Population size: 50
+Generations: 20
+Seed: 29
+Max hidden layers: 3
+Crossover probability: 0.1
+Mutation probability: 0.9
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[  0.22313149 150.06      ]
+[  0.14501015 116.4       ]
+[ 0.15131522 77.18      ]
+[ 0.14579651 66.16      ]
+[ 0.15734551 65.6       ]
+[ 0.15214484 60.1       ]
+[ 0.1534619 57.78     ]
+[ 0.1603705 55.74     ]
+[ 0.1375638 53.34     ]
+[ 0.15055193 51.36      ]
+[ 0.14321382 49.7       ]
+[ 0.15087728 48.4       ]
+[ 0.14692024 46.9       ]
+[ 0.14182611 45.84      ]
+[ 0.15262857 43.3       ]
+[ 0.15636959 40.56      ]
+[ 0.1582707 39.52     ]
+[ 0.15592791 38.26      ]
+[ 0.15270811 37.66      ]
+[ 0.16242416 34.82      ]
+[ 0.17121114 33.44      ]
+
+
+
+Individual 107
+Population size: 50
+Generations: 20
+Seed: 29
+Max hidden layers: 3
+Crossover probability: 0.1
+Mutation probability: 0.9
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[  0.39560473 138.6       ]
+[ 0.32143902 98.16      ]
+[ 0.31584972 84.18      ]
+[ 0.32922894 74.46      ]
+[ 0.32358118 60.96      ]
+[ 0.31738023 58.46      ]
+[ 0.31913414 59.18      ]
+[ 0.32118361 51.06      ]
+[ 0.31446929 46.98      ]
+[ 0.31067954 43.56      ]
+[ 0.32475524 41.02      ]
+[ 0.31884775 40.5       ]
+[ 0.31935565 41.2       ]
+[ 0.32463937 38.86      ]
+[ 0.33104256 37.72      ]
+[ 0.33179472 36.66      ]
+[ 0.34306941 35.96      ]
+[ 0.33883544 33.52      ]
+[ 0.33145709 31.44      ]
+[ 0.33254568 30.5       ]
+[ 0.35627723 29.9       ]
+
+
+
+Individual 110
+Population size: 50
+Generations: 20
+Seed: 29
+Max hidden layers: 3
+Crossover probability: 0.1
+Mutation probability: 0.9
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[  0.34572043 150.06      ]
+[  0.26255667 114.18      ]
+[ 0.26322611 87.82      ]
+[ 0.27769043 73.12      ]
+[ 0.26527225 68.78      ]
+[ 0.27399528 61.94      ]
+[ 0.27670698 56.        ]
+[ 0.27952975 53.08      ]
+[ 0.27031505 51.26      ]
+[ 0.27061069 49.56      ]
+[ 0.27684472 48.08      ]
+[ 0.28173099 45.82      ]
+[ 0.26778261 44.84      ]
+[ 0.28576644 42.62      ]
+[ 0.28192477 39.9       ]
+[ 0.27113676 37.76      ]
+[ 0.28107535 36.9       ]
+[ 0.28440888 35.54      ]
+[ 0.28692679 33.84      ]
+[ 0.28170758 32.5       ]
+[ 0.28558446 30.8       ]
+
+
+
