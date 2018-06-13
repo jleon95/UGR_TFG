@@ -1,0 +1,89 @@
+/usr/lib64/python3.4/importlib/_bootstrap.py:321: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Fitness metrics: KappaLoss, Simplicity
+
+Individual 104
+Population size: 60
+Generations: 15
+Seed: 29
+Max hidden layers: 4
+Crossover probability: 0.1
+Mutation probability: 0.9
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[  0.22401837 205.13333333]
+[  0.17175235 153.48333333]
+[  0.15627451 116.23333333]
+[ 0.15848299 83.48333333]
+[ 0.15195493 58.91666667]
+[ 0.13974495 59.88333333]
+[ 0.14376125 57.76666667]
+[ 0.14658968 53.56666667]
+[ 0.14666567 51.21666667]
+[ 0.14889928 47.6       ]
+[ 0.15099587 46.43333333]
+[ 0.14186367 45.85      ]
+[ 0.14896628 45.16666667]
+[ 0.1512063 44.2      ]
+[ 0.13881136 41.        ]
+[ 0.15702737 39.88333333]
+
+
+
+Individual 107
+Population size: 60
+Generations: 15
+Seed: 29
+Max hidden layers: 4
+Crossover probability: 0.1
+Mutation probability: 0.9
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[  0.36247647 186.4       ]
+[  0.29958619 147.43333333]
+[  0.29098941 123.1       ]
+[ 0.31692715 98.91666667]
+[ 0.32096888 81.66666667]
+[ 0.30243708 84.08333333]
+[ 0.32015846 73.7       ]
+[ 0.31149961 68.06666667]
+[ 0.32608816 56.9       ]
+[ 0.31953086 64.03333333]
+[ 0.31697841 55.83333333]
+[ 0.32160474 53.38333333]
+[ 0.32313708 52.13333333]
+[ 0.33109231 43.11666667]
+[ 0.33549821 41.36666667]
+[ 0.32396496 39.76666667]
+
+
+
+Individual 110
+Population size: 60
+Generations: 15
+Seed: 29
+Max hidden layers: 4
+Crossover probability: 0.1
+Mutation probability: 0.9
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[  0.33475172 205.13333333]
+[  0.26974672 154.85      ]
+[  0.25992453 136.13333333]
+[  0.25476845 114.15      ]
+[  0.26651535 107.95      ]
+[ 0.27187565 84.63333333]
+[ 0.27028904 67.08333333]
+[ 0.26792296 67.15      ]
+[ 0.26569118 72.46666667]
+[ 0.27284145 61.45      ]
+[ 0.27662548 54.75      ]
+[ 0.2735304  53.53333333]
+[ 0.28687511 52.78333333]
+[ 0.26315218 71.2       ]
+[ 0.2843652  63.78333333]
+[ 0.28688942 43.38333333]
+
+
+
