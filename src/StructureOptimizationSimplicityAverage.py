@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
 	filenames = ["104", "107", "110"]
 
-	for data, labels in zip(data_list,labels_list):
+	for data, labels, features in zip(data_list,labels_list,features_list):
 
 		data['train'] = data['train'][:,features]
 		data['test'] = data['test'][:,features]
