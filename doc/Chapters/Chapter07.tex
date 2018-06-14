@@ -818,6 +818,21 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
     \end{figure}
 
-    In this section, we have applied our previous knowledge to obtain neural network structures in a short time. With them as a foundation, \textit{learning optimization}---as we will denote the last step---will be crucial in deciding if the whole process is able to produce competitive enough models.
+    In this section we have applied our previous knowledge to obtain neural network structures in short timespans. With them as a foundation, \textit{learning optimization}---as we will call the last step---will be crucial in deciding if the whole process is able to produce competitive enough models.
 
 \section{Learning optimization}\label{sec:res_lo}
+
+	This arduous search process finds its conclusion in the optimization of the hyperparameters we left aside in last section: learning rate, dropout rate and number of training epochs. Let us begin by reviewing them:
+
+	\begin{itemize}
+
+		\item
+		Learning rate: when samples are processed through a neural network during training, we can trace what made the network's output differ from the true label; additionally, the error can be quantified from the weights of the connections. The learning rate is the fraction of the error used to correct those weights. Therefore, its values are in the range $(0,1]$.
+
+		\item
+		Dropout rate: dropout is a technique introduced recently \cite{srivastava2014dropout} that consists in disabling a certain number of randomly chosen units during each training step. This serves as a regularization method, because the final model is like an ensemble of weaker neural networks that represent the sets of units that remained active at each step. It can range between $0$ and $1$, but the authors recommend trying from $0.2$ to $0.5$.
+
+		\item
+		Number of epochs: an epoch is an iteration over the entire dataset, meaning that in one epoch there can be multiple weight updates depending on how many samples are used to calculate the error. It ranges from $1$ to as many as needed.
+
+	\end{itemize}
