@@ -1,0 +1,33 @@
+/usr/lib64/python3.4/importlib/_bootstrap.py:321: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Fitness metrics: KappaLoss, Simplicity
+
+Individual 110
+Population size: 60
+Generations: 15
+Seed: 29
+Max hidden layers: 4
+Crossover probability: 0.1
+Mutation probability: 0.9
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[  0.33475172 205.13333333]
+[  0.26974672 154.85      ]
+[  0.25992453 136.13333333]
+[  0.25476845 114.15      ]
+[  0.26651535 107.95      ]
+[ 0.27187565 84.63333333]
+[ 0.27028904 67.08333333]
+[ 0.26792296 67.15      ]
+[ 0.26569118 72.46666667]
+[ 0.27284145 61.45      ]
+[ 0.27662548 54.75      ]
+[ 0.2735304  53.53333333]
+[ 0.28687511 52.78333333]
+[ 0.26315218 71.2       ]
+[ 0.2843652  63.78333333]
+[ 0.28688942 43.38333333]
+
+
+
