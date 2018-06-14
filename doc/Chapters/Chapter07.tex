@@ -661,7 +661,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	This section covers the first step of the proposed neural network optimization workflow: the search for a good structure.
 
-	Before we start, it should be noted that, as opposed to feature selection---where time is not much of a concern---, from now on the experiments will be severely limited by the training process of neural networks. The decrease in population sizes and number of generations will be drastic (15 to 20 times less), but the running times will still be one order of magnitude higher if we can not find any workarounds. This is one of the reasons why we have put so much effort into finding the right features.
+	Before we start, it should be noted that, as opposed to feature selection---where time is not much of a concern---, from now on the experiments will be severely limited by the training process of neural networks. The decrease in population sizes and number of generations will be drastic (15 to 20 times less), but the running times will still be one order of magnitude higher if we cannot find any workarounds. This is one of the reasons why we have put so much effort into finding the right features.
 
 	Having said that, let us begin by explaining the motivation for a two-step optimization. When we try to optimize several parameters at the same time, the combined search space is as big as the product of the sizes of the individual search spaces; this is often quite a lot, and the genetic algorithm has to work with accordingly bigger populations and evolution periods to make up for it. In an attempt to take away a part of this complexity, we can concede a (hopefully) small decrease in potential quality and try to optimize one (or a few) of those parameters in isolation.
 
@@ -742,7 +742,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 			}
 
 		\end{center}
-		\caption[Evolution comparison with cross-validation and simplicity]{Comparison of mean Kappa loss evolution for both metrics. Note that the vertical axis now has the range $[0,0.5]$, as opposed to the previous $[0,1]$ used in feature selection.}\label{gfx:cv_vs_simplicity}
+		\caption[Evolution comparison with cross-validation and simplicity]{Comparison of mean Kappa loss evolution for both metrics. Notice that the vertical axis now has the range $[0,0.5]$, as opposed to the previous $[0,1]$ used in feature selection.}\label{gfx:cv_vs_simplicity}
 
 	\end{figure}
 
@@ -806,13 +806,18 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
     \end{table}
 
-	
-    %The structures that achieved these top results are the input for the second optimization stage.
+    Figure \ref{gfx:best_simplicity_evolution} supports the hypothesis that the pair Kappa-Simplicity is able to improve from an initial, unoptimized population. It is manifest that the average Kappa loss again converges soon, but we cannot risk losing an eventual peak in performance by diminishing the generation count excessively---early average convergence does not prevent top individuals from appearing.
 
-%\newpage
+    \vspace{0.2cm}
 
-	%A
+	\begin{figure}[bth]
 
-	%If we look at the charts now, we see that simplicity still has a tendency to slow down the accuracy progress, but its impact is not as pronounced as in feature selection, where it just went against the current. Another topic to investigate would be how to integrate simplicity so that it does not have as much pulling power as the other objective.
+        \myfloatalign
+        \includegraphics[width=0.9\textwidth]{gfx/SO_SimplicityEvolution.png}
+        \caption{Evolution of the three experiments that produced the best peak accuracies.}\label{gfx:best_simplicity_evolution}
 
-%\section{Learning optimization}\label{sec:res_lo}
+    \end{figure}
+
+    In this section, we have applied our previous knowledge to obtain neural network structures in a short time. With them as a foundation, \textit{learning optimization}---as we will denote the last step---will be crucial in deciding if the whole process is able to produce competitive enough models.
+
+\section{Learning optimization}\label{sec:res_lo}
