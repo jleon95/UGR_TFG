@@ -20,11 +20,11 @@ generations_20 = seq(0, dim(simplicity_104)[1]-1)
 plot(x = generations_20, y = simplicity_104$Kappa, type = "l", main = "104: simplicity use (Kappa)",
      xlab = "Generations", ylab = "1 - Mean Kappa value",
      xlim = c(generations_20[1], generations_20[length(generations_20)]), 
-     ylim = c(0,1), lwd = 2, col = "red")
+     ylim = c(0,0.5), lwd = 2, col = "red")
 lines(x = generations_20, y = cv_104$Kappa, lwd = 2, col = "blue")
 points(min_simplicity_104-1, simplicity_104$Kappa[min_simplicity_104], pch = 20)
 points(min_cv_104-1, cv_104$Kappa[min_cv_104], pch = 20)
-legend(12, 0.96, 
+legend(12, 0.48, 
        legend = c("Simplicity","Cross-validation"),
        col = c("red","blue"), lty = 1, lwd = 2, cex = 0.9)
 
@@ -32,11 +32,11 @@ legend(12, 0.96,
 plot(x = generations_20, y = simplicity_107$Kappa, type = "l", main = "107: simplicity use (Kappa)",
      xlab = "Generations", ylab = "1 - Mean Kappa value",
      xlim = c(generations_20[1], generations_20[length(generations_20)]), 
-     ylim = c(0,1), lwd = 2, col = "red")
+     ylim = c(0,0.5), lwd = 2, col = "red")
 lines(x = generations_20, y = cv_107$Kappa, lwd = 2, col = "blue")
 points(min_simplicity_107-1, simplicity_107$Kappa[min_simplicity_107], pch = 20)
 points(min_cv_107-1, cv_107$Kappa[min_cv_107], pch = 20)
-legend(12, 0.96, 
+legend(12, 0.48, 
        legend = c("Simplicity","Cross-validation"),
        col = c("red","blue"), lty = 1, lwd = 2, cex = 0.9)
 
@@ -44,10 +44,10 @@ legend(12, 0.96,
 plot(x = generations_20, y = simplicity_110$Kappa, type = "l", main = "110: simplicity use (Kappa)",
      xlab = "Generations", ylab = "1 - Mean Kappa value",
      xlim = c(generations_20[1], generations_20[length(generations_20)]), 
-     ylim = c(0,1), lwd = 2, col = "red")
+     ylim = c(0,0.5), lwd = 2, col = "red")
 lines(x = generations_20, y = cv_110$Kappa, lwd = 2, col = "blue")
 points(min_simplicity_110-1, simplicity_110$Kappa[min_simplicity_110], pch = 20)
 points(min_cv_110-1, cv_110$Kappa[min_cv_110], pch = 20)
-legend(12, 0.96, 
+legend(12, 0.48, 
        legend = c("Simplicity","Cross-validation"),
        col = c("red","blue"), lty = 1, lwd = 2, cex = 0.9)
