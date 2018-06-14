@@ -709,77 +709,110 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	Again, we have to keep in mind that this is only a fast alternative to improve the efficiency of this first optimization step---which is not the most important one. Also, it is derived from our previous results in this specific problem and, while there are experiments telling us that the speedup is worth the absence of cross-validation, further comparative testing would be required. Such testing is unfeasible in this work due to the large amounts of time needed for cross-validation.
 
-	However, despite not being able to statistically analyze their differences, a single visual comparison contains a lot of information. Figure \ref{gfx:cv_vs_simplicity} shows the evolution of a sample Kappa-CV run against a sample Kappa-Simplicity run; the first one had 30 individuals and 20 generations, while the second one had 50 individuals (thus taking advantage of the speedup to have a bigger population). 
+	However, despite not being able to statistically analyze their differences, a single visual comparison contains a lot of information. Figure \ref{gfx:cv_vs_simplicity} shows the evolution of a sample Kappa-CV run against a sample Kappa-Simplicity run; the first one had 30 individuals and 20 generations, while the second one had 50 individuals (thus taking advantage of the speedup to have a bigger population).
 
-	%However, at 30-40 minutes per subject, we can afford to repeat simplicity-driven experiments several times to know what we can expect. Table \ref{table:average_kappa_simplicity} shows the average Kappa loss of the best individuals, while Table \ref{table:best_kappa_simplicity} displays the peak performance. The structures that achieved these top results are the input for the second stage of neural network optimization.
+	The first thing we notice is that the algorithm does not produce as significant a quality boost as in feature selection. Instead, it starts at an already decent point and tries to make improvements by evaluating new structures. Because it is only one of several hyperparameters to tune, it is not unusual to observe little average performance gains in both alternatives. Still, if we take a look at peak accuracy, Table \ref{table:best_cv_vs_simplicity} shows that these preliminary results are promising.
+
+	Another aspect we can analyze is the time they take to reach their best average. Without making too many assumptions, it seems that the simplicity measure makes that time shorter, while with cross-validation we still find improvements later on. This suggests that we could add more individuals in exchange for less generations.
+
+\newpage
+
+	\begin{figure}[bth]
+
+        \begin{center}
+
+        	\setlength{\fboxrule}{0pt}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/SO_Simplicity_Kappa_104.png}
+				\end{varwidth}
+			}
+			\fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/SO_Simplicity_Kappa_107.png}
+				\end{varwidth}
+			}
+            \fbox{
+				\begin{varwidth}{\textwidth}
+					\centering
+					\includegraphics[width=0.45\textwidth]{gfx/SO_Simplicity_Kappa_110.png}
+				\end{varwidth}
+			}
+
+		\end{center}
+		\caption[Evolution comparison with cross-validation and simplicity]{Comparison of mean Kappa loss evolution for both metrics. Note that the vertical axis now has the range $[0,0.5]$, as opposed to the previous $[0,1]$ used in feature selection.}\label{gfx:cv_vs_simplicity}
+
+	\end{figure}
+
+	\begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.2in} | >{\centering\arraybackslash}m{1.2in} |}
+
+            \hline
+            \rowcolor{RoyalBlue}
+            \textbf{Subject} & \textbf{Cross-validation} & \textbf{Simplicity} \\
+            \hline
+            \textbf{104} & $0.09289$ & $0.08456$ \\
+            \hline
+            \textbf{107} & $0.16840$ & $0.19395$ \\
+            \hline
+            \textbf{110} & $0.15169$ & $0.17690$ \\
+            \hline
+
+        \end{tabular}
+
+        \caption[Best Kappa values using cross-validation and simplicity]{Comparison of top Kappa error values for both metrics.}\label{table:best_cv_vs_simplicity}
+
+    \end{table}
+
+    As we can see in the table, the run employing simplicity trails behind a bit in peak performance but it manages to snatch the first place for subject 104. Knowing that it took much less time (1000 evaluations versus 3600), we can say that the tradeoff is more than fair.
+
+    After this intuitive exploration, further comparative testing would be required. Such testing is not feasible because cross-validation is computationally too heavy. However, at 30-40 minutes per subject, we can afford to average a number of simplicity-driven experiments. 
+
+    Let us define the parameters first: we will use 60 individuals and 15 generations; the hidden layers will be limited to 4, which will produce a first population of rather complex models to be reduced by simplicity; the crossover (midpoint) and mutation (single layer and uniform scaling) probabilities will be $0.1$ and $0.9$; the neural network fitting epochs will be fixed to 25; finally, we will repeat the combination Kappa-Simplicity.
+
+\newpage
+
+    Table \ref{table:average_peak_kappa_simplicity} shows the mean and peak Kappa loss for the three test subjects:
+
+    \vspace{0.3cm}
+
+    \begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} |}
+
+			\hline
+			\rowcolor{RoyalBlue}
+			 & \textbf{Average} & \textbf{Best} \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{104} & $0.09037 \pm 0.0089$ & $0.07598$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{107} & $0.21734 \pm 0.0328$ & $0.14319$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{110} & $0.20895 \pm 0.0147$ & $0.18543$ \\
+            \hline
+
+        \end{tabular}
+
+        \caption{Average and best Kappa loss scores of ten simplicity-driven test runs.}\label{table:average_peak_kappa_simplicity}
+
+    \end{table}
 
 	
-
-	%Table \ref{table:best_cv_vs_simplicity} compares their top scores.
-
-	% \vspace{0.3cm}
-
-	% \begin{table}[h]
-
- %        \centering
- %        \setlength\arrayrulewidth{0.8pt}
-
- %        \begin{tabular}{| >{\centering\arraybackslash}m{0.5in} | >{\centering\arraybackslash}m{1.2in} | >{\centering\arraybackslash}m{1.2in} |}
-
- %            \hline
- %            \rowcolor{RoyalBlue}
- %            \textbf{Subject} & \textbf{Cross-validation} & \textbf{Simplicity} \\
- %            \hline
- %            \textbf{104} & $0.09289$ & $0.08456$ \\
- %            \hline
- %            \textbf{107} & $0.16840$ & $0.19395$ \\
- %            \hline
- %            \textbf{110} & $0.15169$ & $0.17690$ \\
- %            \hline
-
- %        \end{tabular}
-
- %        \caption[Best Kappa values using cross-validation and simplicity]{Comparison of top Kappa error values for the three subjects and the two metrics in question.}\label{table:best_cv_vs_simplicity}
-
- %    \end{table}
+    %The structures that achieved these top results are the input for the second optimization stage.
 
 %\newpage
 
-	%As we can see in the table, the run employing simplicity trails behind a bit in peak performance but it manages to snatch the first place for subject 104. Knowing that it finished much quicker (1000 evaluations versus 3600), we can say that the tradeoff is more than fair.
+	%A
 
 	%If we look at the charts now, we see that simplicity still has a tendency to slow down the accuracy progress, but its impact is not as pronounced as in feature selection, where it just went against the current. Another topic to investigate would be how to integrate simplicity so that it does not have as much pulling power as the other objective.
-
-	% \vspace{0.3cm}
-
-	% \begin{figure}[bth]
-
- %        \begin{center}
-
- %        	\setlength{\fboxrule}{0pt}
- %            \fbox{
-	% 			\begin{varwidth}{\textwidth}
-	% 				\centering
-	% 				\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_104.png}
-	% 			\end{varwidth}
-	% 		}
-	% 		\fbox{
-	% 			\begin{varwidth}{\textwidth}
-	% 				\centering
-	% 				\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_107.png}
-	% 			\end{varwidth}
-	% 		}
- %            \fbox{
-	% 			\begin{varwidth}{\textwidth}
-	% 				\centering
-	% 				\includegraphics[width=0.45\textwidth]{gfx/FS_ModelComparison_CV_110.png}
-	% 			\end{varwidth}
-	% 		}
-
-	% 	\end{center}
-	% 	\caption[Evolution comparison with cross-validation and simplicity]{Comparison of the evolution of mean Kappa loss over time with cross-validation and with simplicity.}\label{gfx:cv_vs_simplicity}
-
-	% \end{figure}
-
-	
 
 %\section{Learning optimization}\label{sec:res_lo}
