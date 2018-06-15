@@ -705,7 +705,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	Let us discuss the importance of each fitness measure in the process. The Kappa value uses the test set to give an estimate of how well the model will behave with unseen data. The cross-validation accuracy, however, assesses the generalization capability of the model (without using new data), which is directly tied to a low overfitting. Then, if we swap in a simplicity measure for the cross-validation function, we are still pushing in the same direction to an extent.
 
-	The proposed simplicity measure is the sum of all the neurons of the given structure (note that the time it takes to compute it is negligible). This way, we can factor out $5000$ of the $6000$ evaluations or approximately $83\%$; in a more general statement, we are reducing the computational load of the fitness evaluation in a fraction very close to $\frac{k}{k+1}$, where $k$ is the number of cross-validation folds.
+	The proposed simplicity measure is the sum of all the neurons of the given structure (note that the time it takes to compute it is negligible). This way, we can factor out $5000$ of the $6000$ evaluations ($~83\%$); in a more general statement, we are leaving the load of the fitness evaluation at something close to $T_{op} = T_0 -(\frac{k}{k+1})T_0 = (\frac{1}{k+1})T_0$, where $k$ is the number of cross-validation folds.
 
 	Again, we have to keep in mind that this is only a fast alternative to improve the efficiency of this first optimization step---which is not the most important one. Also, it is derived from our previous results in this specific problem and, while there are experiments telling us that the speedup is worth the absence of cross-validation, further comparative testing would be required. Such testing is unfeasible in this work due to the large amounts of time needed for cross-validation.
 
@@ -836,3 +836,39 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 		Number of epochs: an epoch is an iteration over the entire dataset, meaning that in one epoch there can be multiple weight updates depending on how many samples are used to calculate the error. It ranges from $1$ to as many as needed.
 
 	\end{itemize}
+
+	Notice that this time we do not have a clear way to avoid using cross-validation. Furthermore, since in this section we will seek to get the best possible performance out of our neural networks, we cannot afford to use shortcuts in place of direct quality measures. This will probably produce the following effect: the algorithm will show a clear---almost monotonically decreasing---progression from its start point at the cost of a significant loss in speed.
+
+	At the time of the writing, we only had time for two experiments with each test subject. In Figure \ref{gfx:learning_evolution} we display the evolution of one of them for each subject to show that the progression is indeed stable. Table \ref{table:average_best_learning} contains the peak performances; it is plausible (and expected) that the peak results improve as we rerun the algorithm from different starting points.
+
+	% \begin{figure}[bth]
+
+	% 	\myfloatalign
+	% 	\includegraphics[width=0.9\textwidth]{gfx/LO_KappaEvolution.png}
+	% 	\caption[Evolution of the learning optimization algorithm]{Evolution of the learning optimization algorithm for the three test subjects.}\label{gfx:learning_evolution}
+
+	% \end{figure}
+
+	\begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.7in} | >{\centering\arraybackslash}m{1.1in} | >{\centering\arraybackslash}m{1.1in} |}
+
+			\hline
+			\rowcolor{RoyalBlue}
+			 & \textbf{Average} & \textbf{Best} \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{104} & $ \pm $ & $0.05916$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{107} & $ \pm $ & $0.08426$ \\
+            \hline
+            \cellcolor{RoyalBlue}\textbf{110} & $ \pm $ & $ $ \\
+            \hline
+
+        \end{tabular}
+
+        \caption{Average and best Kappa loss scores of two learning optimization test runs.}\label{table:average_best_learning}
+
+    \end{table}
