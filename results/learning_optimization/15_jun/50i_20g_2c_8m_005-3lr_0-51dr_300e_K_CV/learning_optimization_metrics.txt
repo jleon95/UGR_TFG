@@ -1,0 +1,113 @@
+/usr/lib64/python3.4/importlib/_bootstrap.py:321: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  return f(*args, **kwds)
+Using TensorFlow backend.
+Fitness metrics: KappaLoss, CrossValidationLoss
+
+Individual 104
+Population size: 30
+Generations: 20
+Seed: 29
+Max epochs: 300
+Learning rate range: [0.005, 0.3]
+Dropout range: [0.0, 0.51]
+Structure: [110   0   0   0]
+Crossover probability: 0.2
+Mutation probability: 0.8
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[0.23011267 0.17922222]
+[0.14031247 0.12980423]
+[0.11746136 0.13581481]
+[0.11125867 0.11823809]
+[0.10977926 0.11634921]
+[0.11180791 0.11261905]
+[0.11203844 0.10605291]
+[0.10670906 0.11210053]
+[0.10610067 0.11220106]
+[0.10836854 0.1075873 ]
+[0.1044435  0.10515344]
+[0.10136678 0.10795238]
+[0.1058907  0.10462963]
+[0.10930627 0.10128042]
+[0.10276507 0.10202116]
+[0.10192022 0.09937566]
+[0.09906148 0.10071958]
+[0.10164122 0.10107936]
+[0.09683719 0.09755026]
+[0.09995566 0.09903704]
+[0.10139238 0.10034392]
+
+
+
+Individual 107
+Population size: 30
+Generations: 20
+Seed: 29
+Max epochs: 300
+Learning rate range: [0.005, 0.3]
+Dropout range: [0.0, 0.51]
+Structure: [ 89 102   0   0]
+Crossover probability: 0.2
+Mutation probability: 0.8
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[0.29405506 0.23388889]
+[0.21431468 0.17755026]
+[0.17636005 0.14247619]
+[0.15850234 0.1356455 ]
+[0.14443973 0.12857672]
+[0.13732747 0.12796296]
+[0.11739947 0.1219418 ]
+[0.12945754 0.12302645]
+[0.12022369 0.12326455]
+[0.12613212 0.11833862]
+[0.12275478 0.11914815]
+[0.13032536 0.11743386]
+[0.11966326 0.11968783]
+[0.12471032 0.12473016]
+[0.12724519 0.11667196]
+[0.11684691 0.12440741]
+[0.12109193 0.11804233]
+[0.1190806  0.12027513]
+[0.12220053 0.12008466]
+[0.11995711 0.1154127 ]
+[0.12389339 0.11426455]
+
+
+
+Individual 110
+Population size: 30
+Generations: 20
+Seed: 29
+Max epochs: 300
+Learning rate range: [0.005, 0.3]
+Dropout range: [0.0, 0.51]
+Structure: [34  0  0  0]
+Crossover probability: 0.2
+Mutation probability: 0.8
+Pool proportion (to population size): 0.5
+Mean fitness values of each generation
+[0.29752841 0.20856085]
+[0.20219452 0.14797354]
+[0.20592071 0.13377249]
+[0.17443242 0.13265608]
+[0.17272197 0.13044444]
+[0.19549899 0.12339683]
+[0.16881388 0.12401587]
+[0.15753994 0.12810053]
+[0.16825391 0.11979894]
+[0.15838749 0.11628042]
+[0.14744945 0.11895238]
+[0.14941249 0.11939153]
+[0.14294945 0.11697354]
+[0.14211743 0.11261376]
+[0.14718482 0.11155026]
+[0.15449595 0.11322222]
+[0.15390115 0.11365079]
+[0.15251194 0.1171746 ]
+[0.16490157 0.11739683]
+[0.16095215 0.1171746 ]
+[0.15420742 0.117     ]
+
+
+
