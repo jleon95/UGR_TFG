@@ -56,7 +56,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 			\begin{itemize}
 
 				\item
-				Intel® Xeon® E5-2620 v2 @ 2.10GHz, 32GB DDR3.
+				Two Intel® Xeon® E5-2620 v2 @ 2.10GHz, 32GB DDR3.
 				\item
 				NVIDIA Tesla® K20c, 5GB GDDR5.
 
@@ -892,3 +892,43 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 
     \end{itemize}
+
+\newpage
+
+\section{Efficiency study}
+
+	Despite the fact that we have achieved excellent results throughout this work in terms of accuracy, one last aspect we should not disregard is efficiency. In the next few pages we will provide some insight into the relative time performance of multiple parts of the optimization process. We will start discussing speed in feature selection and afterwards we will move on to the much costlier neural network optimization and its more impactful potential efficiency improvements.
+
+	\subsection{Feature selection: Logistic Regression and \acs{SVM}s}
+
+		The first comparison we are going to draw is the use of Logistic Regression against the use of \acs{SVM}s at the feature selection stage. While the latter attains better average and peak performance, it is unknown if it happens because the model performs better for this problem or because it actually finds more suitable features. In order to aid future research in this direction, we put side by side the averages of 5 runs with 300 individuals and 150 generations:
+
+		\vspace{0.3cm}
+
+		\begin{table}[h]
+
+        \centering
+        \setlength\arrayrulewidth{0.8pt}
+
+        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} |}
+
+            \hline
+            \rowcolor{RoyalBlue}
+            \textbf{LogReg} & \textbf{SVM} \\
+            \hline
+            \textcolor{red}{$ $} & $ $ \\
+            \hline
+
+        \end{tabular}
+
+        \caption[Average running times: Logistic Regression versus \acs{SVM}]{Comparison of average running times for Logistic Regression and \acs{SVM}. Run in Intel® Xeon® E5-2620 v4 @ 2.10GHz.}\label{table:logreg_svm_speed}
+
+    \end{table}
+
+	\subsection{Feature selection: sequential and parallel}
+
+	\subsection{Structure search: simplicity and cross-validation}
+
+	\subsection{Neural network training: CPU and GPU}
+
+	\subsection{Neural network training: sequential and parallel}
