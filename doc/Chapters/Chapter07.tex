@@ -837,17 +837,19 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	\end{itemize}
 
-	Notice that this time we do not have a clear way to avoid using cross-validation. Furthermore, since in this section we will seek to get the best possible performance out of our neural networks, we cannot afford to use shortcuts in place of direct quality measures. This will probably produce the following effect: the algorithm will show a clear---almost monotonically decreasing---progression from its start point at the cost of a significant loss in speed.
+	Notice that this time we do not have a clear way to avoid using cross-validation. Furthermore, since in this section we will seek to get the best possible performance out of our neural networks, we cannot afford to use shortcuts in place of direct quality measures. This will probably produce the following effect: the algorithm will show a smoother---almost monotonically decreasing---progression from its start point at the cost of a significant loss in speed.
 
-	At the time of the writing, we only had time for two experiments with each test subject. In Figure \ref{gfx:learning_evolution} we display the evolution of one of them for each subject to show that the progression is indeed stable. Table \ref{table:average_best_learning} contains the peak performances; it is plausible (and expected) that the peak results improve as we rerun the algorithm from different starting points.
+	At the time of the writing, we only had time for two experiments with each test subject (around 8 hours each). In Figure \ref{gfx:learning_evolution} we display the evolution of one of them for each subject to show that the progression is indeed stable. Table \ref{table:average_best_learning} contains the average peak performances; it is plausible (and expected) that the peak results improve as we rerun the algorithm from different starting points.
 
-	% \begin{figure}[bth]
+\newpage
 
-	% 	\myfloatalign
-	% 	\includegraphics[width=0.9\textwidth]{gfx/LO_KappaEvolution.png}
-	% 	\caption[Evolution of the learning optimization algorithm]{Evolution of the learning optimization algorithm for the three test subjects.}\label{gfx:learning_evolution}
+	\begin{figure}[bth]
 
-	% \end{figure}
+		\myfloatalign
+		\includegraphics[width=0.9\textwidth]{gfx/SO_SimplicityEvolution.png} %gfx/LO_KappaEvolution.png
+		\caption[Evolution of the learning optimization algorithm]{Evolution of the learning optimization algorithm for the best peak values.}\label{gfx:learning_evolution}
+
+	\end{figure}
 
 	\begin{table}[h]
 
@@ -864,7 +866,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
             \hline
             \cellcolor{RoyalBlue}\textbf{107} & $ \pm $ & $0.08426$ \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{110} & $ \pm $ & $ $ \\
+            \cellcolor{RoyalBlue}\textbf{110} & $ \pm $ & $0.12636$ \\
             \hline
 
         \end{tabular}
@@ -872,3 +874,21 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
         \caption{Average and best Kappa loss scores of two learning optimization test runs.}\label{table:average_best_learning}
 
     \end{table}
+
+    As we can see in the table, the results we get are reasonably close to those obtained by \acs{SVM} in the feature selection phase. Further experimentation should produce better peak results, although the extent of these gains is something yet to be tested.
+
+    Finally, we list the configurations that yielded these best results:
+
+    \begin{itemize}
+
+    	\item
+    	Subject 104: $50$ features, $1$ hidden layer ($110$ units), $283$ epochs, $0.027$ learning rate, $0.0$ dropout, ELU activation function.
+
+    	\item
+    	Subject 107: $46$ features, $2$ hidden layers ($89$ units, $102$ units), $ $ learning rate, $ $ dropout, ELU activation function.
+
+    	\item
+    	Subject 110: $50$ features, $1$ hidden layer ($34$ units), $ $ learning rate, $ $ dropout, ELU activation function.
+
+
+    \end{itemize}
