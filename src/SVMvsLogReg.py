@@ -15,28 +15,39 @@ if __name__ == '__main__':
 	labels = {'train': np.load("../data/labels_training_104.npy"),
 			  'test': np.load("../data/labels_test_104.npy")}
 
-	start_logreg = time.time()
+	seeds = [29,28,20,11,26]
+	
+	time_logreg = 0
+	time_svm = 0
 
-	population, sort_scores, evaluation = \
-		logreg.FeatureSelection(data=data,labels=labels,max_features=50,
-		objective_funcs=[logreg.KappaLoss,logreg.CrossValidationLoss],
-		pop_size=800,generations=200,seed=29,crossover_prob=0.9,
-		crossover_func=logreg.UniformCrossover,mutation_prob=1.0,
-		mutation_func=logreg.FlipBitsMutation,pool_fraction=0.5,
-		n_cores=1,show_metrics=False)
+	for seed in seeds:
 
+		start_logreg = time.time()
+
+		population, sort_scores, evaluation = \
+			logreg.FeatureSelection(data=data,labels=labels,max_features=50,
+			objective_funcs=[logreg.KappaLoss,logreg.CrossValidationLoss],
+			pop_size=800,generations=200,seed=seed,crossover_prob=0.9,
+			crossover_func=logreg.UniformCrossover,mutation_prob=1.0,
+			mutation_func=logreg.FlipBitsMutation,pool_fraction=0.5,
+			n_cores=1,show_metrics=False)
+
+		time_logreg += time.time() - start_logreg
+
+		start_svm = time.time()
+
+		population, sort_scores, evaluation = \
+			svm.FeatureSelection(data=data,labels=labels,max_features=50,
+			objective_funcs=[svm.KappaLoss,svm.CrossValidationLoss],
+			pop_size=800,generations=200,seed=seed,crossover_prob=0.9,
+			crossover_func=svm.UniformCrossover,mutation_prob=1.0,
+			mutation_func=svm.FlipBitsMutation,pool_fraction=0.5,
+			n_cores=11,show_metrics=False)
+
+		time_svm += time.time() - start_svm
+
+	print("Average of %d trials" % len(seeds))
 	print("LogReg:")
-	print(time.time() - start_logreg)
-
-	start_svm = time.time()
-
-	population, sort_scores, evaluation = \
-		svm.FeatureSelection(data=data,labels=labels,max_features=50,
-		objective_funcs=[svm.KappaLoss,svm.CrossValidationLoss],
-		pop_size=800,generations=200,seed=29,crossover_prob=0.9,
-		crossover_func=svm.UniformCrossover,mutation_prob=1.0,
-		mutation_func=svm.FlipBitsMutation,pool_fraction=0.5,
-		n_cores=11,show_metrics=False)
-
+	print(1.0 * time_logreg / len(seeds))
 	print("SVM:")
-	print(time.time() - start_svm)
+	print(1.0 * time_svm / len(seeds))
