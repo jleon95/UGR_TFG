@@ -17,6 +17,31 @@
 
 		The dataset pertains to the area of \acs{BCI}, and in particular it is aimed at telling apart the imagined movements of the left hand, the right hand and the feet. Decisive advances in this classification task have the potential to be useful in medical applications.
 
-		If we assume the accuracy obtained in this work as correct, these results unfold optimistic prospects in terms of practical applications. Although more detailed research is still needed, we can at least say this much. What is more, we have witnessed how \acs{SVM}s---which are not very intricate both in concept and in training---are capable of fulfilling the classification task to an outstanding level
+		If we assume the accuracy obtained in this work as correct, these results unfold optimistic prospects in terms of practical applications. Although more detailed research is still needed, we can at least say this much. What is more, we have witnessed how \acs{SVM}s---which are not very intricate both in concept and in training---are capable of fulfilling the classification task to an outstanding level.
 
 		Using neural networks in this dataset is perhaps not the most efficient option. Nonetheless, it has allowed us to try the neural network optimization method and conclude that it is powerful enough to be useful.
+
+\section{Future work}
+
+	During the progress of this project many opportunities for further work have appeared. For clarity, we list the most important ones below:
+
+	\begin{itemize}
+
+		\item
+		Find the right feature limit in feature selection. Currently, the algorithm tends to use almost as many features as it is allowed; this raises the question of where to put the cap in order to maximize accuracy without losing generalization to unseen data (including the test set).
+
+		\item
+		Perform detailed testing of the use of cross-validation against the use of simplicity in the structure optimization phase.
+
+		\item
+		Tune the SVM hyperparameter $C$ in order to improve even more its current top accuracy. For this matter we could develop a modified version of the neural network learning optimization or we could use other techniques such as grid search or random search.
+
+		\item
+		Try more ambitious learning optimization setups (that is, more individuals and more generations) in order to find out if it yields better models.
+
+		\item
+		Find out if there is the possibity of feature transfer between different subjects. This would allow us to skip a big part of the process and make a possible real-world application easier to carry out.
+
+	\end{itemize}
+
+	Less relevant open issues include a better control over randomness in the code or making CPU parallelism a little more robust to increases in the scale of the experiments.
