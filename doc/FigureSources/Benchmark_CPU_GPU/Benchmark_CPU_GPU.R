@@ -9,3 +9,6 @@ options(scipen = 5)
 axis(1, at = c(4400, 20000, 40000, 60000, 80000, 100000), labels = c(4400, 20000, 40000, 60000, 80000, 100000))
 lines(x = gpu$Neurons, y = gpu$Time, lwd = 2, col = "blue")
 points(x = 4400, y = 0.9, pch = 20)
+legend(81000, 10, 
+       legend = c("CPU","GPU"),
+       col = c("red","blue"), lty = 1, lwd = 2, cex = 0.9)
