@@ -5,4 +5,13 @@
 
 \chapter*{Abstract}
 
+With the increase in computational power in the last years, neural networks have seen a grand revival that has brought along significant progress in many problems that were once considered too hard. However, this newfound power comes hand in hand with a raise in the difficulty of finding the optimal configuration for a given task.
+
+In this work we propose an incremental evolutionary method for optimizing hyperparameters in neural networks. Starting with a feature selection phase, a population of neural networks is first evolved to find appropriate hidden layer configurations (\textit{structure optimization}); then, another population is evolved in order to find the best combination of learning rate, dropout rate and number of epochs (\textit{learning optimization}). Every one of these three steps can leverage implicit GPU parallelism and explicit CPU task distribution if the computational loads demand it.
+
+Applied to classification of motor imagery tasks for brain-computer interfacing (\textit{BCI}), this method appears to produce very promising results in terms of accuracy, both using neural networks and some simpler classifiers like Support Vector Machines.\\
+
+\textbf{Keywords:} Brain-computer interfaces (BCI) · genetic algorithms · neural networks · feature selection · hyperparameter optimization
+
+
 \vfill
