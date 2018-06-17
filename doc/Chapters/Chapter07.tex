@@ -51,7 +51,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 			\end{itemize}
 
 			\item
-			First dedicated server:
+			\hypertarget{server:firstserver}{First dedicated server}:
 
 			\begin{itemize}
 
@@ -63,7 +63,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 			\end{itemize}
 
 			\item
-			Second dedicated server:
+			\hypertarget{server:secondserver}{Second dedicated server}:
 
 			\begin{itemize}
 
@@ -866,7 +866,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
             \hline
             \cellcolor{RoyalBlue}\textbf{107} & $ \pm $ & $0.08426$ \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{110} & $ \pm $ & $0.12636$ \\
+            \cellcolor{RoyalBlue}\textbf{110} & $ \pm $ & $0.11794$ \\
             \hline
 
         \end{tabular}
@@ -885,11 +885,10 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
     	Subject 104: $50$ features, $1$ hidden layer ($110$ units), $283$ epochs, $0.027$ learning rate, $0.0$ dropout, ELU activation function.
 
     	\item
-    	Subject 107: $46$ features, $2$ hidden layers ($89$ units, $102$ units), $ $ learning rate, $ $ dropout, ELU activation function.
+    	Subject 107: $46$ features, $2$ hidden layers ($89$ units, $102$ units), $289$ epochs, $0.022$ learning rate, $0.05$ dropout, ELU activation function.
 
     	\item
-    	Subject 110: $50$ features, $1$ hidden layer ($34$ units), $ $ learning rate, $ $ dropout, ELU activation function.
-
+    	Subject 110: $50$ features, $1$ hidden layer ($34$ units), $289$ epochs, $0.040$ learning rate, $0.05$ dropout, ELU activation function.
 
     \end{itemize}
 
@@ -901,29 +900,31 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	\subsection{Feature selection: Logistic Regression and \acs{SVM}s}
 
-		The first comparison we are going to draw is the use of Logistic Regression against the use of \acs{SVM}s at the feature selection stage. While the latter attains better average and peak performance, it is unknown if it happens because the model performs better for this problem or because it actually finds more suitable features. In order to aid future research in this direction, we put side by side the averages of 5 runs with 300 individuals and 150 generations:
+		The first comparison we are going to draw is the use of Logistic Regression against the use of \acs{SVM}s at the feature selection stage. While the latter attains better average and peak performance, it is unknown if it happens because the model performs better for this problem or because it actually finds more suitable features. Leaving that topic for future research in this direction, we put side by side the averages of 5 runs with 300 individuals and 150 generations:
 
 		\vspace{0.3cm}
 
 		\begin{table}[h]
 
-        \centering
-        \setlength\arrayrulewidth{0.8pt}
+	        \centering
+	        \setlength\arrayrulewidth{0.8pt}
 
-        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} |  >{\centering\arraybackslash}m{0.9in} |}
+	        \begin{tabular}{| >{\centering\arraybackslash}m{0.9in} | >{\centering\arraybackslash}m{0.9in} |}
 
-            \hline
-            \rowcolor{RoyalBlue}
-            \textbf{LogReg} & \textbf{SVM} \\
-            \hline
-            \textcolor{red}{$ $} & $ $ \\
-            \hline
+	            \hline
+	            \rowcolor{RoyalBlue}
+	            \textbf{LogReg (s)} & \textbf{SVM (s)} \\
+	            \hline
+	            $1043.635$ & $2220.472$ \\
+	            \hline
 
-        \end{tabular}
+	        \end{tabular}
 
-        \caption[Average running times: Logistic Regression versus \acs{SVM}]{Comparison of average running times for Logistic Regression and \acs{SVM}. Run in Intel® Xeon® E5-2620 v4 @ 2.10GHz.}\label{table:logreg_svm_speed}
+	        \caption[Average running times: Logistic Regression versus SVM]{Comparison of average running times for Logistic Regression and \acs{SVM}. Run in \hyperlink{server:secondserver}{the second server}.}\label{table:logreg_svm_speed}
 
-    \end{table}
+	    \end{table}
+
+	    We can confirm that \acs{SVM}s significantly slow down the algorithm. However, without more information we cannot advise against them, because we might be losing better feature sets---and we have seen that they are the most important component of the process. In an attempt to alleviate this, we will proceed to find out if parallelism helps.
 
 	\subsection{Feature selection: sequential and parallel}
 
