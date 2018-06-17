@@ -862,7 +862,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 			\rowcolor{RoyalBlue}
 			 & \textbf{Average} & \textbf{Best} \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{104} & $ \pm $ & $0.05916$ \\
+            \cellcolor{RoyalBlue}\textbf{104} & $ \pm $ & $0.05907$ \\
             \hline
             \cellcolor{RoyalBlue}\textbf{107} & $ \pm $ & $0.08424$ \\
             \hline
@@ -960,21 +960,46 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 			\myfloatalign
 			\includegraphics[width=0.9\textwidth]{gfx/FS_Sequential_Parallel.png}
-			\caption[Sequential against parallel feature selection]{Evolution of CPU time for increasingly higher thread usage.}\label{gfx:fs_sequential_parallel}
+			\caption[Sequential against parallel feature selection]{Evolution of CPU time for increasingly higher thread usage. Run in \hyperlink{server:secondserver}{the second dedicated server}.}\label{gfx:fs_sequential_parallel}
 
 		\end{figure}
 
 		Whereas using little parallelism worsens performance, we can observe how running times decrease steadily with the addition of more threads until it stabilizes at around half of the original. Heavier experiments are expected to take advantage of even higher thread counts.
+
 	\subsection{Neural network training: CPU and GPU}
 
-		As we saw in last section, cross-validation makes the whole process computationally very intensive. The first improvement that comes to mind is to use the GPU instead of the CPU to train neural networks. Since ours are rather simple, in Figure \ref{gfx:nn_cpu_gpu} we try to find the threshold from which the parallelism inside a GPU starts to outperform the raw power of a CPU core.
+		As we saw in the experimentation section, cross-validation makes the whole process computationally very intensive. The first improvement that comes to mind is to use the GPU instead of the CPU to train neural networks. Since ours are rather simple, in Figure \ref{gfx:nn_cpu_gpu} we try to find the threshold from which the parallelism within a GPU starts to outperform the raw power of a CPU core.
+
+		The intersection seems to happen at around 4400 units in a single layer. Consequently, we would have to work with models as complex as a 4400-unit single-layer network to be able to seize GPU parallelism---one could link this to multilayered networks by calculating the number of tunable weights, which hold the actual complexity of training the network.
+
+\newpage
 
 		\begin{figure}[bth]
 
 			\myfloatalign
 			\includegraphics[width=0.9\textwidth]{gfx/CPUvsGPU.png}
-			\caption[Evolution of CPU time and GPU time]{Evolution of CPU time and GPU time for increasingly bigger single-layer networks.}\label{gfx:nn_cpu_gpu}
+			\caption[Evolution of CPU time and GPU time]{Evolution of CPU time and GPU time for increasingly bigger single-layer networks. Run in \hyperlink{server:firstserver}{the first dedicated server}.}\label{gfx:nn_cpu_gpu}
 
 		\end{figure}
 
+		Since in this particular problem we do not work with big enough networks, we have to find the speedup in multi-CPU parallelism, which we talk about in the last part of this efficiency study.
+
 	\subsection{Neural network training: sequential and parallel}
+
+		When using a GPU does not bring a notable performance enhancement, we turn to multi-CPU parallelism. In situations when we have several multithreaded cores, distributing training processes among them can be very beneficial.
+
+		We said that using cross-validation made the optimization algorithm severely slow in the case of neural networks. Let us see if multiple CPUs can make a difference. If we take a 10-individual, 5-generation setup and observe in Figure \ref{gfx:nn_multicpu} what happens as we increase the thread count, we see that with just two threads the difference is massive. From that point on, subsequent gains are smaller but still noticeable until around 12 threads (the number of real CPU cores). Again, more ambitious experiments should make better use of it.
+
+\newpage
+
+		\begin{figure}[bth]
+
+			\myfloatalign
+			\includegraphics[width=0.9\textwidth]{gfx/MultiCPUvsGPU.png}
+			\caption[Evolution of multi-CPU time]{Evolution of multi-CPU time for increasingly higher thread counts. Run in \hyperlink{server:firstserver}{the first dedicated server}.}\label{gfx:nn_multicpu}
+
+		\end{figure}
+
+		Unfortunately, technical issues have prevented full use of this last type of parallelism. The correction of these issues is left as a future task.
+
+		With this efficiency analysis we have reached the end of the chapter dedicated to experimental results. We have gone over the different steps and reasonings within them to reach significant quality in the final results. We have also discussed several ways in which the process might be made faster. In the next and closing chapter we will draw conclusions from the whole work and point to some promising research questions that have not found an answer here.
