@@ -839,7 +839,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	Notice that this time we do not have a clear way to avoid using cross-validation. Furthermore, since in this section we will seek to get the best possible performance out of our neural networks, we cannot afford to use shortcuts in place of direct quality measures. This will probably produce the following effect: the algorithm will show a smoother---almost monotonically decreasing---progression from its start point at the cost of a significant loss in speed.
 
-	At the time of the writing, we only had time for two experiments with each test subject (around 8 hours each). In Figure \ref{gfx:learning_evolution} we display the evolution of one of them for each subject to show that the progression is indeed stable. Table \ref{table:average_best_learning} contains the average peak performances; it is plausible (and expected) that the peak results improve as we rerun the algorithm from different starting points.
+	At the time of the writing, we only had time for four experiments with each test subject. In Figure \ref{gfx:learning_evolution} we display the evolution of the three that returned the best results to show that the progression is indeed stable. Table \ref{table:average_best_learning} contains the average and peak performances; it is plausible (and expected) that the peak results improve as we rerun the algorithm from more starting points.
 
 \newpage
 
@@ -864,9 +864,9 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
             \hline
             \cellcolor{RoyalBlue}\textbf{104} & $ \pm $ & $0.05916$ \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{107} & $ \pm $ & $0.08426$ \\
+            \cellcolor{RoyalBlue}\textbf{107} & $ \pm $ & $0.08424$ \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{110} & $ \pm $ & $0.11794$ \\
+            \cellcolor{RoyalBlue}\textbf{110} & $ \pm $ & $0.10953$ \\
             \hline
 
         \end{tabular}
@@ -885,10 +885,10 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
     	Subject 104: $50$ features, $1$ hidden layer ($110$ units), $283$ epochs, $0.027$ learning rate, $0.0$ dropout, ELU activation function.
 
     	\item
-    	Subject 107: $46$ features, $2$ hidden layers ($89$ units, $102$ units), $289$ epochs, $0.022$ learning rate, $0.05$ dropout, ELU activation function.
+    	Subject 107: $46$ features, $2$ hidden layers ($89$ units, $102$ units), $239$ epochs, $0.048$ learning rate, $0.05$ dropout, ELU activation function.
 
     	\item
-    	Subject 110: $50$ features, $1$ hidden layer ($34$ units), $289$ epochs, $0.040$ learning rate, $0.05$ dropout, ELU activation function.
+    	Subject 110: $50$ features, $1$ hidden layer ($34$ units), $286$ epochs, $0.066$ learning rate, $0.05$ dropout, ELU activation function.
 
     \end{itemize}
 
@@ -920,7 +920,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	        \end{tabular}
 
-	        \caption[Average running times: Logistic Regression versus SVM]{Comparison of average running times for Logistic Regression and \acs{SVM}. Run in \hyperlink{server:secondserver}{the second server}.}\label{table:logreg_svm_speed}
+	        \caption[Average running times: Logistic Regression versus SVM]{Comparison of average running times for Logistic Regression and \acs{SVM}. Run in \hyperlink{server:secondserver}{the second dedicated server}.}\label{table:logreg_svm_speed}
 
 	    \end{table}
 
@@ -928,8 +928,53 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	\subsection{Feature selection: sequential and parallel}
 
-	\subsection{Structure search: simplicity and cross-validation}
+		In order to make feature selection with \acs{SVM} more scalable, parallelism would be very helpful. In this section, we will take a look at the speed gains when we increase the number of threads. For a start, we will see the average time the \acs{SVM}-driven algorithm takes with the same 300 individuals and 150 generations if we use all threads (16):
 
+		\vspace{0.1cm}
+
+		\begin{table}[!h]
+
+	        \centering
+	        \setlength\arrayrulewidth{0.8pt}
+
+	        \begin{tabular}{| >{\centering\arraybackslash}m{1in} | >{\centering\arraybackslash}m{1in} |}
+
+	            \hline
+	            \rowcolor{RoyalBlue}
+	            \textbf{Sequential (s)} & \textbf{Parallel (s)} \\
+	            \hline
+	            $2220.472$ & $922.550$ \\
+	            \hline
+
+	        \end{tabular}
+
+	        \caption[Average running times: sequential SVM and parallel SVM]{Comparison of average running times for \acs{SVM} with and without parallelism. Run in \hyperlink{server:secondserver}{the second dedicated server}.}\label{table:svm_sequential_parallel}
+
+	    \end{table}
+
+\newpage
+
+		The improvement is substantial, even surpassing the time achieved by sequential Logistic Regression. With that as a starting point, we will now plot the change in running times starting from one thread to all the second dedicated server is capable of. However, to make this experiment shorter, we will use 100 individuals and 50 generations instead. Figure \ref{gfx:fs_sequential_parallel} shows the evolution of running times.
+
+		\begin{figure}[bth]
+
+			\myfloatalign
+			\includegraphics[width=0.9\textwidth]{gfx/FS_Sequential_Parallel.png}
+			\caption[Sequential against parallel feature selection]{Evolution of CPU time for increasingly higher thread usage.}\label{gfx:fs_sequential_parallel}
+
+		\end{figure}
+
+		Whereas using little parallelism worsens performance, we can observe how running times decrease steadily with the addition of more threads until it stabilizes at around half of the original. Heavier experiments are expected to take advantage of even higher thread counts.
 	\subsection{Neural network training: CPU and GPU}
+
+		As we saw in last section, cross-validation makes the whole process computationally very intensive. The first improvement that comes to mind is to use the GPU instead of the CPU to train neural networks. Since ours are rather simple, in Figure \ref{gfx:nn_cpu_gpu} we try to find the threshold from which the parallelism inside a GPU starts to outperform the raw power of a CPU core.
+
+		\begin{figure}[bth]
+
+			\myfloatalign
+			\includegraphics[width=0.9\textwidth]{gfx/CPUvsGPU.png}
+			\caption[Evolution of CPU time and GPU time]{Evolution of CPU time and GPU time for increasingly bigger single-layer networks.}\label{gfx:nn_cpu_gpu}
+
+		\end{figure}
 
 	\subsection{Neural network training: sequential and parallel}
