@@ -1,0 +1,22 @@
+\chapter{Conclusions and future work}\label{ch:conclusions}
+%************************************************  
+
+\section{Conclusions}
+
+	\subsection{Software developed}
+
+		At the end of this work we have a fully functional codebase that is theoretically able to address any machine learning problem of the same nature as the one we have attempted to solve here; this means that we can perform a solid feature selection making use of well-established genetic operators and then pass the resulting features on to a two-step neural network optimization method of similar structure if the problem demands so.
+
+		The software is also able to leverage the implicit parallelism in GPUs via \texttt{TensorFlow} and the explicit process distribution to multiple CPU cores and threads, which---only lacking minor technical tweaks---makes for a scalable workflow that can be reused for larger datasets.
+
+		Additionally, the code is written in a modern language like \texttt{Python} and uses popular and up-to-date machine learning and deep learning libraries, which facilitates code maintenance, extensibility and longevity due to the wide community support.
+
+		We can safely state that we have accomplished the purpose of this work, since through the different optimization steps we have been able to choose in a non-arbitrary manner several hyperparameters found in neural networks: the structure (number of inputs and composition of the hidden layers) and three learning parameters (namely, the learning and dropout rates and the number of training epochs). Moreover, the process of designing and writing the necessary code has led to a superior understanding of how the involved technologies work, which was the remaining goal.
+
+	\subsection{The problem tackled in this work}
+
+		The dataset pertains to the area of \acs{BCI}, and in particular it is aimed at telling apart the imagined movements of the left hand, the right hand and the feet. Decisive advances in this classification task have the potential to be useful in medical applications.
+
+		If we assume the accuracy obtained in this work as correct, these results unfold optimistic prospects in terms of practical applications. Although more detailed research is still needed, we can at least say this much. What is more, we have witnessed how \acs{SVM}s---which are not very intricate both in concept and in training---are capable of fulfilling the classification task to an outstanding level
+
+		Using neural networks in this dataset is perhaps not the most efficient option. Nonetheless, it has allowed us to try the neural network optimization method and conclude that it is powerful enough to be useful.
