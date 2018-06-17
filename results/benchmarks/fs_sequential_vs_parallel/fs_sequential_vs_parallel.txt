@@ -1,0 +1,5 @@
+Average of 5 trials
+Sequential:
+2220.4717860221863
+Parallel:
+922.550149679184
