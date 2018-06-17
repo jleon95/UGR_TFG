@@ -1,6 +1,6 @@
 multicpu = read.table("multi_cpu-all.txt", col.names = c("Threads", "Time"))
 
-plot(x = multicpu$Threads, y = multicpu$Time, type = "l", main = "Evolution of training time with mutiple threads",
+plot(x = multicpu$Threads, y = multicpu$Time, type = "l", main = "Evolution of training time with multiple threads",
      xlab = "Number of threads", ylab = "Time (s)",
      xlim = c(multicpu$Threads[1]-1,multicpu$Threads[length(multicpu$Threads)]), 
      ylim = c(0,2500), lwd = 2, col = "blue", xaxt = "n")
