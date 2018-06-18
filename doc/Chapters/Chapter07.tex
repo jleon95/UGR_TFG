@@ -32,6 +32,8 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 		Lastly, many charts will be generated using \texttt{R} \footnote{\href{https://www.r-project.org/}{\texttt{R} Project website}}, which provides simple and powerful functionality for this task.
 
+		All the source code and experimental results can be found in its dedicated \textit{GitHub} repository \cite{githubrepo}.
+
 	\subsection{Hardware}
 
 		We can make a distinction in this regard between the main development system, used for testing and debugging, and the dedicated servers for full-scale experimentation:
@@ -875,7 +877,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
     \end{table}
 
-    As we can see in the table, the results we get are reasonably close to those obtained by \acs{SVM} in the feature selection phase. Further experimentation should produce better peak results, although the extent of these gains is something yet to be tested.
+    As we can see in the table, the results we get are reasonably close to those obtained by \acs{SVM} in the feature selection phase---and sometimes even better than Logistic Regression. Further experimentation should produce better peak results, although the extent of these gains is something yet to be tested.
 
     Finally, we list the configurations that yielded these best results:
 
@@ -970,7 +972,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 		As we saw in the experimentation section, cross-validation makes the whole process computationally very intensive. The first improvement that comes to mind is to use the GPU instead of the CPU to train neural networks. Since ours are rather simple, in Figure \ref{gfx:nn_cpu_gpu} we try to find the threshold from which the parallelism within a GPU starts to outperform the raw power of a CPU core.
 
-		The intersection seems to happen at around 4400 units in a single layer. Consequently, we would have to work with models as complex as a 4400-unit single-layer network to be able to seize GPU parallelism---one could link this to multilayered networks by calculating the number of tunable weights, which hold the actual complexity of training the network.
+		The intersection seems to happen at around 4400 units in a single layer. Consequently, we would have to train models with the equivalent complexity of a 4400-unit single-layer network to be able to seize GPU parallelism---one could link this to multilayered networks by calculating the number of tunable weights, which hold the actual complexity of training the network.
 
 \newpage
 
