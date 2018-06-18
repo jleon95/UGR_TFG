@@ -518,7 +518,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 			}
 
 		\end{center}
-		\caption[Kappa loss comparison with Logistic Regression and \acs{SVM}]{Comparison of Kappa loss evolution over time with Logistic Regression and \acs{SVM}.}\label{gfx:fs_models_kappa}
+		\caption[Kappa loss comparison with Logistic Regression and SVM]{Comparison of Kappa loss evolution over time with Logistic Regression and SVM.}\label{gfx:fs_models_kappa}
 
 	\end{figure}
 
@@ -553,7 +553,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 			}
 
 		\end{center}
-		\caption[Cross-validation loss comparison with Logistic Regression and \acs{SVM}]{Comparison of cross-validation loss evolution over time with Logistic Regression and \acs{SVM}.}\label{gfx:fs_models_cv}
+		\caption[Cross-validation loss comparison with Logistic Regression and SVM]{Comparison of cross-validation loss evolution over time with Logistic Regression and SVM.}\label{gfx:fs_models_cv}
 
 	\end{figure}
 
@@ -610,7 +610,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
         \end{tabular}
 
-        \caption{Comparison of p-values for Logistic Regression and \acs{SVM} in all test subjects.}\label{table:models_kruskal}
+        \caption{Comparison of p-values for Logistic Regression and SVM in all test subjects.}\label{table:models_kruskal}
 
     \end{table}
 
@@ -661,7 +661,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	This section covers the first step of the proposed neural network optimization workflow: the search for a good structure.
 
-	Before we start, it should be noted that, as opposed to feature selection---where time is not much of a concern---, from now on the experiments will be severely limited by the training process of neural networks. The decrease in population sizes and number of generations will be drastic (15 to 20 times less), but the running times will still be one order of magnitude higher if we cannot find any workarounds. This is one of the reasons why we have put so much effort into finding the right features.
+	Before we start, it should be noted that, as opposed to feature selection---where time is not much of a concern---, from now on the experiments will be severely limited by the training process of neural networks. The decrease in population sizes and number of generations will be drastic (15 to 20 times less), but the running times will still be one order of magnitude higher if we cannot find any solutions. This is one of the reasons why we have put so much effort into finding the right features.
 
 	Having said that, let us begin by explaining the motivation for a two-step optimization. When we try to optimize several parameters at the same time, the combined search space is as big as the product of the sizes of the individual search spaces; this is often quite a lot, and the genetic algorithm has to work with accordingly bigger populations and evolution periods to make up for it. In an attempt to take away a part of this complexity, we can concede a (hopefully) small decrease in potential quality and try to optimize one (or a few) of those parameters in isolation.
 
@@ -839,15 +839,15 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	Notice that this time we do not have a clear way to avoid using cross-validation. Furthermore, since in this section we will seek to get the best possible performance out of our neural networks, we cannot afford to use shortcuts in place of direct quality measures. This will probably produce the following effect: the algorithm will show a smoother---almost monotonically decreasing---progression from its start point at the cost of a significant loss in speed.
 
-	At the time of the writing, we only had time for four experiments with each test subject. In Figure \ref{gfx:learning_evolution} we display the evolution of the three that returned the best results to show that the progression is indeed stable. Table \ref{table:average_best_learning} contains the average and peak performances; it is plausible (and expected) that the peak results improve as we rerun the algorithm from more starting points.
+	At the time of the writing, we only had time for four experiments with each test subject. In Figure \ref{gfx:learning_evolution} we display the evolution of the three that returned the best results to show that the progression is indeed more stable. Table \ref{table:average_best_learning} contains the average and peak performances; it is plausible (and expected) that the peak results improve as we rerun the algorithm from more starting points.
 
 \newpage
 
 	\begin{figure}[bth]
 
 		\myfloatalign
-		\includegraphics[width=0.9\textwidth]{gfx/SO_SimplicityEvolution.png} %gfx/LO_KappaEvolution.png
-		\caption[Evolution of the learning optimization algorithm]{Evolution of the learning optimization algorithm for the best peak values.}\label{gfx:learning_evolution}
+		\includegraphics[width=0.9\textwidth]{gfx/LO_KappaEvolution.png}
+		\caption[Evolution of the learning optimization algorithm]{Evolution of the learning optimization algorithm runs that produced the best peak values.}\label{gfx:learning_evolution}
 
 	\end{figure}
 
@@ -862,11 +862,11 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 			\rowcolor{RoyalBlue}
 			 & \textbf{Average} & \textbf{Best} \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{104} & $ \pm $ & $0.05907$ \\
+            \cellcolor{RoyalBlue}\textbf{104} & $0.06756 \pm 0.0119$ & $0.05907$ \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{107} & $ \pm $ & $0.08424$ \\
+            \cellcolor{RoyalBlue}\textbf{107} & $0.08636 \pm 0.0106$ & $0.07582$ \\
             \hline
-            \cellcolor{RoyalBlue}\textbf{110} & $ \pm $ & $0.10953$ \\
+            \cellcolor{RoyalBlue}\textbf{110} & $0.11794 \pm 0.0069$ & $0.10953$ \\
             \hline
 
         \end{tabular}
@@ -898,7 +898,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	Despite the fact that we have achieved excellent results throughout this work in terms of accuracy, one last aspect we should not disregard is efficiency. In the next few pages we will provide some insight into the relative time performance of multiple parts of the optimization process. We will start discussing speed in feature selection and afterwards we will move on to the much costlier neural network optimization and its more impactful potential efficiency improvements.
 
-	\subsection{Feature selection: Logistic Regression and \acs{SVM}s}
+	\subsection{Feature selection: Logistic Regression and SVMs}
 
 		The first comparison we are going to draw is the use of Logistic Regression against the use of \acs{SVM}s at the feature selection stage. While the latter attains better average and peak performance, it is unknown if it happens because the model performs better for this problem or because it actually finds more suitable features. Leaving that topic for future research in this direction, we put side by side the averages of 5 runs with 300 individuals and 150 generations:
 
@@ -920,7 +920,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	        \end{tabular}
 
-	        \caption[Average running times: Logistic Regression versus SVM]{Comparison of average running times for Logistic Regression and \acs{SVM}. Run in \hyperlink{server:secondserver}{the second dedicated server}.}\label{table:logreg_svm_speed}
+	        \caption[Average running times: Logistic Regression versus SVM]{Comparison of average running times for Logistic Regression and SVM. Run in \hyperlink{server:secondserver}{the second dedicated server}.}\label{table:logreg_svm_speed}
 
 	    \end{table}
 
@@ -948,7 +948,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	        \end{tabular}
 
-	        \caption[Average running times: sequential SVM and parallel SVM]{Comparison of average running times for \acs{SVM} with and without parallelism. Run in \hyperlink{server:secondserver}{the second dedicated server}.}\label{table:svm_sequential_parallel}
+	        \caption[Average running times: sequential SVM and parallel SVM]{Comparison of average running times for SVM with and without parallelism. Run in \hyperlink{server:secondserver}{the second dedicated server}.}\label{table:svm_sequential_parallel}
 
 	    \end{table}
 
