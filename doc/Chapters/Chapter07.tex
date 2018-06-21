@@ -183,11 +183,11 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
             \rowcolor{RoyalBlue}
             \textbf{Subject} & \textbf{Uniform} & \textbf{Single-point} & \textbf{Two-point} \\
             \hline
-            \textbf{104} & $0.06534 \pm 0.0074$ & $0.08619 \pm 0.0102$ & $0.07941 \pm 0.0119$ \\
+            \cellcolor{RoyalBlue}\textbf{104} & $0.06534 \pm 0.0074$ & $0.08619 \pm 0.0102$ & $0.07941 \pm 0.0119$ \\
             \hline
-            \textbf{107} & $0.15202 \pm 0.0132$ & $0.18004 \pm 0.0137$ & $0.17725 \pm 0.0150$ \\
+            \cellcolor{RoyalBlue}\textbf{107} & $0.15202 \pm 0.0132$ & $0.18004 \pm 0.0137$ & $0.17725 \pm 0.0150$ \\
             \hline
-            \textbf{110} & $0.14829 \pm 0.0138$ & $0.17131 \pm 0.0158$ & $0.16569 \pm 0.0187$ \\
+            \cellcolor{RoyalBlue}\textbf{110} & $0.14829 \pm 0.0138$ & $0.17131 \pm 0.0158$ & $0.16569 \pm 0.0187$ \\
             \hline
 
         \end{tabular}
@@ -357,11 +357,11 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
             \rowcolor{RoyalBlue}
             \textbf{Subject} & \textbf{300-150} & \textbf{500-100} & \textbf{800-200} \\
             \hline
-            \textbf{104} & $0.06534 \pm 0.0074$ & $0.06310 \pm 0.0077$ & $0.05127 \pm 0.0067$ \\
+            \cellcolor{RoyalBlue}\textbf{104} & $0.06534 \pm 0.0074$ & $0.06310 \pm 0.0077$ & $0.05127 \pm 0.0067$ \\
             \hline
-            \textbf{107} & $0.15202 \pm 0.0132$ & $0.16830 \pm 0.0145$ & $0.12122 \pm 0.0126$ \\
+            \cellcolor{RoyalBlue}\textbf{107} & $0.15202 \pm 0.0132$ & $0.16830 \pm 0.0145$ & $0.12122 \pm 0.0126$ \\
             \hline
-            \textbf{110} & $0.14829 \pm 0.0138$ & $0.15448 \pm 0.0069$ & $0.13369 \pm 0.0083$ \\
+            \cellcolor{RoyalBlue}\textbf{110} & $0.14829 \pm 0.0138$ & $0.15448 \pm 0.0069$ & $0.13369 \pm 0.0083$ \\
             \hline
 
         \end{tabular}
@@ -574,11 +574,11 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
             \rowcolor{RoyalBlue}
             \textbf{Subject} & \textbf{SVM} & \textbf{LogReg} \\
             \hline
-            \textbf{104} & $0.05127 \pm 0.0103$ & $0.05128 \pm 0.0067$ \\
+            \cellcolor{RoyalBlue}\textbf{104} & $0.05127 \pm 0.0103$ & $0.05128 \pm 0.0067$ \\
             \hline
-            \textbf{107} & $0.09546 \pm 0.0093$ & $0.12122 \pm 0.0126$ \\
+            \cellcolor{RoyalBlue}\textbf{107} & $0.09546 \pm 0.0093$ & $0.12122 \pm 0.0126$ \\
             \hline
-            \textbf{110} & $0.11796 \pm 0.0095$ & $0.13369 \pm 0.0083$ \\
+            \cellcolor{RoyalBlue}\textbf{110} & $0.11796 \pm 0.0095$ & $0.13369 \pm 0.0083$ \\
             \hline
 
         \end{tabular}
@@ -691,7 +691,7 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 \newpage
 
-	Now, let us see how we can turn this in our favor. Suppose a population of 50 individuals and 20 generations, with the objective functions being again the Kappa loss and the 5-fold cross-validation. The amount of neural network trainings for each function is given by:
+	Now, let us see how we can turn this in our favor. Suppose a population of 50 individuals and 20 generations, with the objective functions being again Kappa loss and 5-fold cross-validation. The amount of neural network trainings for each function is given by:
 
 	\begin{itemize}
 
@@ -703,15 +703,13 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 	\end{itemize}
 
-	Which, summed up, yield a total of $6000$ trainings.
-
 	Let us discuss the importance of each fitness measure in the process. The Kappa value uses the test set to give an estimate of how well the model will behave with unseen data. The cross-validation accuracy, however, assesses the generalization capability of the model (without using new data), which is directly tied to a low overfitting. Then, if we swap in a simplicity measure for the cross-validation function, we are still pushing in the same direction to an extent.
 
-	The proposed simplicity measure is the sum of all the neurons of the given structure (note that the time it takes to compute it is negligible). This way, we can factor out $5000$ of the $6000$ evaluations ($~83\%$); in a more general statement, we are leaving the load of the fitness evaluation at something close to $T_{op} = T_0 -(\frac{k}{k+1})T_0 = (\frac{1}{k+1})T_0$, where $k$ is the number of cross-validation folds.
+	The proposed simplicity measure is the sum of all the neurons of the given structure (note that the time it takes to compute it is negligible). This way, we can factor out $5000$ of the $6000$ evaluations ($\sim83\%$); in a more general statement, we are leaving the load of the fitness evaluation at something close to $T_s = T_{cv} -(\frac{k}{k+1})T_{cv} = (\frac{1}{k+1})T_{cv}$, where $T_s$ and $T_{cv}$ are the times corresponding to the use of simplicity and cross-validation, and $k$ is the number of cross-validation folds.
 
 	Again, we have to keep in mind that this is only a fast alternative to improve the efficiency of this first optimization step---which is not the most important one. Also, it is derived from our previous results in this specific problem and, while there are experiments telling us that the speedup is worth the absence of cross-validation, further comparative testing would be required. Such testing is unfeasible in this work due to the large amounts of time needed for cross-validation.
 
-	However, despite not being able to statistically analyze their differences, a single visual comparison contains a lot of information. Figure \ref{gfx:cv_vs_simplicity} shows the evolution of a sample Kappa-CV run against a sample Kappa-Simplicity run; the first one had 30 individuals and 20 generations, while the second one had 50 individuals (thus taking advantage of the speedup to have a bigger population).
+	However, despite computational costs making it hard to statistically analyze their differences, a single visual comparison contains a lot of information. Figure \ref{gfx:cv_vs_simplicity} shows the evolution of a sample Kappa-CV run against a sample Kappa-Simplicity run; the first one had 30 individuals and 20 generations, while the second one had 50 individuals (thus taking advantage of the speedup to have a bigger population).
 
 	The first thing we notice is that the algorithm does not produce as significant a quality boost as in feature selection. Instead, it starts at an already decent point and tries to make improvements by evaluating new structures. Because it is only one of several hyperparameters to tune, it is not unusual to observe little average performance gains in both alternatives. Still, if we take a look at peak accuracy, Table \ref{table:best_cv_vs_simplicity} shows that these preliminary results are promising.
 
@@ -759,11 +757,11 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
             \rowcolor{RoyalBlue}
             \textbf{Subject} & \textbf{Cross-validation} & \textbf{Simplicity} \\
             \hline
-            \textbf{104} & $0.09289$ & $0.08456$ \\
+            \cellcolor{RoyalBlue}\textbf{104} & $0.09289$ & $0.08456$ \\
             \hline
-            \textbf{107} & $0.16840$ & $0.19395$ \\
+            \cellcolor{RoyalBlue}\textbf{107} & $0.16840$ & $0.19395$ \\
             \hline
-            \textbf{110} & $0.15169$ & $0.17690$ \\
+            \cellcolor{RoyalBlue}\textbf{110} & $0.15169$ & $0.17690$ \\
             \hline
 
         \end{tabular}
@@ -898,13 +896,11 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 \section{Efficiency study}
 
-	Despite the fact that we have achieved excellent results throughout this work in terms of accuracy, one last aspect we should not disregard is efficiency. In the next few pages we will provide some insight into the relative time performance of multiple parts of the optimization process. We will start discussing speed in feature selection and afterwards we will move on to the much costlier neural network optimization and its more impactful potential efficiency improvements.
+	Despite the fact that we have achieved excellent results throughout this work in terms of accuracy, one last aspect we should not disregard is efficiency. In the next few pages we will provide some insight into the relative time performance of multiple parts of the optimization process. We will start discussing speed in feature selection and afterwards we will move on to the much costlier neural network optimization and its more impactful potential efficiency improvements. Special attention will be paid to parallelism (a recent, more in-depth analysis in the case of neural networks can be found in \cite{ben2018demystifying}).
 
 	\subsection{Feature selection: Logistic Regression and SVMs}
 
-		The first comparison we are going to draw is the use of Logistic Regression against the use of \acs{SVM}s at the feature selection stage. While the latter attains better average and peak performance, it is unknown if it happens because the model performs better for this problem or because it actually finds more suitable features. Leaving that topic for future research in this direction, we put side by side the averages of 5 runs with 300 individuals and 150 generations:
-
-		\vspace{0.3cm}
+		We will start by studying the differences in time of using Logistic Regression or \acs{SVM} at the feature selection stage. While the latter attains better overall performance, it is unknown if it happens because the model is better for this problem or because it finds more suitable features. Leaving that topic for future research, we put side by side the averages of 5 runs with 300 individuals and 150 generations:
 
 		\begin{table}[h]
 
@@ -931,8 +927,6 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 	\subsection{Feature selection: sequential and parallel}
 
 		In order to make feature selection with \acs{SVM} more scalable, parallelism would be very helpful. In this section, we will take a look at the speed gains when we increase the number of threads. For a start, we will see the average time the \acs{SVM}-driven algorithm takes with the same 300 individuals and 150 generations if we use all threads (16):
-
-		\vspace{0.1cm}
 
 		\begin{table}[!h]
 
@@ -1002,6 +996,6 @@ In this chapter, we start by detailing in section \ref{sec:technologies} the cho
 
 		\end{figure}
 
-		Unfortunately, technical issues have prevented full use of this last type of parallelism. The correction of these issues is left as a future task.
+		Unfortunately, technical issues concerning memory usage in \texttt{Keras} have prevented full use of this last type of parallelism, because concurrent model creation seems to leave a memory bloat that is not properly freed until the execution finishes. The correction of these issues is left as a future task.
 
 		With this efficiency analysis we have reached the end of the chapter dedicated to experimental results. We have gone over the different steps and reasonings within them to reach significant quality in the final results. We have also discussed several ways in which the process might be made faster. In the next and closing chapter we will draw conclusions from the whole work and point to some promising research questions that have not found an answer here.
